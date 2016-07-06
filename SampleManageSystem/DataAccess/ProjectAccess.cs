@@ -51,6 +51,23 @@ namespace DataAccess
             }
             return projectList;
         }
+
+        public IList<Project> GetNotFinishedProjectList()
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                project.testerid,tester.Name TesterIdName,COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                Where project.StatusCode <= 3";
+
+
+
+            return null;
+        }
+
         public IList<Project> GetProjectListByTesterId(int userId)
         {
             string sqlStr = @"SELECT project.projectid, project.projectno, 
