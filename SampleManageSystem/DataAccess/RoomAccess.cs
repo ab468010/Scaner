@@ -110,7 +110,7 @@ namespace DataAccess
         public Model.Room GetModel(int roomid)
         {
             Room room = null;
-           string st="select * from dbo.room where roomid=@roomid";
+           string st="select roomid,name,roomcode from dbo.room where roomid=@roomid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@roomid",roomid)

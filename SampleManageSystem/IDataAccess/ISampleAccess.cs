@@ -21,6 +21,6 @@ namespace IDataAccess
         IList<Sample> GetSamplePageList(int pageNo);
         bool ExistsSampleCode(Sample sample);
 
-
+        bool UpdateContainerStatusCode(Sample sample);
     }
 }

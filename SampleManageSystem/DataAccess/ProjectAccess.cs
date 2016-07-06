@@ -11,6 +11,23 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+  
+        public IList<Project> GetProjectListByStatusCode()
+        {
+            IList<Project> projectList = new List<Project>();
+            string sqlStr = "select projectid,name from dbo.project where statuscode<3";
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.Name = rdr["name"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
         public IList<Project> GetProjectListByTesterId(int userId,int statusCode)
         {
             string sqlStr = @"SELECT project.projectid, project.projectno, 
@@ -20,7 +37,7 @@ namespace DataAccess
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
                                 Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                   where testerid=@testerid and statuscode=@statuscode";
+                                where testerid=@testerid and statuscode=@statuscode";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@testerid",userId),

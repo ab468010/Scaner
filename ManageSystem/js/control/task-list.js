@@ -64,7 +64,7 @@ function Page(page) {
         type: "post",
         contentType: "application/json; charset=utf-8",
         url: Globals.ServiceUrl + "SelectTask",
-        async: false,
+        //async: false,
         data: JSON.stringify(jsonPar),
         success: function (data) {
             var s = JSON.parse(data.d);

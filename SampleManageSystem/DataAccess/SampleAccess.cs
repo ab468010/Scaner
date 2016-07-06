@@ -8,12 +8,28 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
+        public bool UpdateContainerStatusCode(Sample sample)
+        {
+            string sqlStr = "update dbo.container set statuscode=2 where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@containerid",sample.ContainerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool ExistsSampleCode(Sample sample)
         {
             string st = "select count(1) from dbo.sample where samplecode=@samplecode";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@containercode",sample.SampleCode)
+                new NpgsqlParameter("@samplecode",sample.SampleCode)
             };
             if ((long)(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par)) > 0)
             {
@@ -158,7 +174,7 @@ namespace DataAccess
         {
             string sqlStr = @"SELECT sampleid, sample.name, COALESCE(sample.shelfid,-1) shelfid, shelf.Name ShelfIdName,
 				                COALESCE(sample.containerid,-1) containerid,container.Name ContainerIdName, samplecode, sampleclass,
-				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,sample.description
+				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,sample.description,COALESCE(project.statuscode,-1) statuscode
                                 FROM dbo.sample sample
                                 Left Join dbo.Shelf shelf On sample.shelfid = shelf.shelfid
                                 Left Join dbo.container container On sample.containerid = container.containerid
@@ -187,6 +203,7 @@ namespace DataAccess
                     sample.ContainerIdName = rdr["ContainerIdName"].ToString();
                     sample.ProjectIdName = rdr["ProjectIdName"].ToString();
                     sample.Description = rdr["description"].ToString();
+                    sample.ProjectStatusCode = Convert.ToInt32(rdr["statuscode"]);
                 }
             }
             return sample;

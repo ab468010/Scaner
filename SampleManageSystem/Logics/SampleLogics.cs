@@ -68,6 +68,13 @@ namespace Logics
                 return _Dal.Create(sample);
             }
         }
-     
+         public bool UpdateSample(Sample sample)
+        {
+            if (sample.ContainerId != null)
+            {
+                _Dal.UpdateContainerStatusCode(sample);
+            }
+            return Update(sample);
+        }
     }
 }

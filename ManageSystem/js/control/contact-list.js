@@ -66,7 +66,6 @@ function Page(page) {
         type: "post",
         url: Globals.ServiceUrl + "Selectcontact",
         contentType: "application/json; charset=utf-8",
-        async: false,
         data: JSON.stringify(jsonPar),
         success: function (data) {
             var s = JSON.parse(data.d);
@@ -100,7 +99,7 @@ function Page(page) {
                 }
             })
             $(".contact2.edit1").click(function () {
-                var jsonPar = {
+                var jsonPa = {
                     contactid: parseInt($(this).parent().parent().parent().parent().find("[name='contactid']").text())
                 }
 
@@ -108,7 +107,7 @@ function Page(page) {
                     type: "post",
                     contentType: "application/json; charset=utf-8",
                     url: Globals.ServiceUrl + "Scontactid",
-                    data: JSON.stringify(jsonPar),
+                    data: JSON.stringify(jsonPa),
                     success: function (data) {
                         var s = JSON.parse(data.d);
                         $("#contactid").val(s.Contactid)

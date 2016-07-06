@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 namespace Model
 {
      public  class Shelf:BaseModel
@@ -18,5 +18,9 @@ namespace Model
         public string Name { get; set; }
         public string ShelfCode { get; set; }
         public string Description { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int ModifiedBy { get; set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }
