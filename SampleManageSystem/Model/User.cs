@@ -1,4 +1,5 @@
-﻿namespace Model
+﻿using System;
+namespace Model
 {
     public class User : BaseModel
     {
@@ -56,6 +57,10 @@
         public string Password { get; set; }
         public int StateCode { get; set; }
         public int RoleId { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int ModifiedBy { get; set; }
+        public DateTime ModifiedOn { get; set; }
 
 
         /*Join字段*/

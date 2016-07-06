@@ -1,6 +1,7 @@
 ﻿
 
 $(function () {
+    $("#myModal .modal-body").load("child/edit-shelf.html");
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetShelfCount",
@@ -59,7 +60,7 @@ function Page(page) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetShelf",
-        async: false,
+       // async: false,
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -71,8 +72,7 @@ function Page(page) {
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
-            }
-            $("#myModal .modal-body").load("child/edit-shelf.html");
+            }        
             $(".edit1").click(function () {
                 var jsonPara = {
                     shelfid: $(this).parent().parent().parent().parent().find("[name='shelfid']").text()
@@ -129,14 +129,14 @@ function Page(page) {
 
             $(".delete1").click(function () {
                 if (confirm("删除吗？")) {
-                    var jsonPar = {
+                    var jsonPa = {
                         shelfid: $(this).parent().parent().parent().parent().find("[name='shelfid']").text()
                     }
                     $.ajax({
                         type: "post",
                         url: Globals.ServiceUrl + "DeleteShelf",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(jsonPar),
+                        data: JSON.stringify(jsonPa),
                         success: function (data) {
                             var s = JSON.parse(data.d);
                             if (s) {

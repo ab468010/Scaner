@@ -81,7 +81,7 @@ function Page(page) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetUserList",
-        async: false,
+        //async: false,
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {

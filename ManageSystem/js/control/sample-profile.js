@@ -26,7 +26,7 @@ function initConfig() {
             $("#myModal .modal-body").load("child/edit-sample.html");
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + "SelectProject",
+                url: Globals.ServiceUrl + "GetProjectListByStatusCode",
                 data: JSON.stringify(userInfo),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -76,6 +76,7 @@ function initConfig() {
                 var jsonPara = {
                     sampleId: id
                 };
+              
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "GetSample",
@@ -88,6 +89,10 @@ function initConfig() {
                             alert("样品不存在");
                             location.href = "sample-list.html";
                         } else {
+                            if (s.ProjectStatusCode <3) {
+                                $(".sample2.edit1").attr({ style: "display:inline" });
+                                $(".sample2.delete1").attr({style:"display:inline"})
+                            }
                             $("#txtName").val(s.Name);
                             $("#txtSampleCode").val(s.SampleCode);
 
@@ -130,6 +135,7 @@ function initConfig() {
                 });
             } else {
                 alert("样品不存在");
+                location.href = "sample-list.html";
             }
         });
 

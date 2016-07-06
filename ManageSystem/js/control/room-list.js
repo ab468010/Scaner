@@ -1,5 +1,6 @@
 ﻿function room() {
     (function () {
+        $("#myModal .modal-body").load("child/edit-room.html");
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "GetRoomCount",
@@ -49,6 +50,7 @@
                 Page((number - 1) * 10);
             }
         })
+   
 
         $("#savechange").click(function () {
             if (Globals.trim($("#txtName").val()) != "" && Globals.trim($("#roomcode").val()) != "") {
@@ -96,7 +98,7 @@ function Page(page) {
         type: "post",
         url: Globals.ServiceUrl + "GetRoomList",
         contentType: "application/json; charset=utf-8",
-        async: false,
+       
         data: JSON.stringify(jsonPar),
         success: function (data) {
             var s = JSON.parse(data.d);
@@ -108,7 +110,7 @@ function Page(page) {
                 row.innerHTML = cont;
                 tbody.append(row);
             }
-            $("#myModal .modal-body").load("child/edit-room.html");
+     
             $(".room2.delete1").click(function () {
                 if (confirm("确定删除？")) {
                     var jsonPara = {
@@ -118,6 +120,7 @@ function Page(page) {
                         type: "post",
                         url: Globals.ServiceUrl + "DeleteRoom",
                         contentType: "application/json; charset=utf-8",
+                        async: false,
                         data: JSON.stringify(jsonPara),
                         success: function (data) {
                             var s = JSON.parse(data.d);
@@ -130,7 +133,8 @@ function Page(page) {
                 }
             })
             $(".room2.edit1").click(function () {
-                var jsonPar = {
+
+                var jsonPa = {
                     roomid: parseInt($(this).parent().parent().parent().parent().find("[name='roomid']").text())
                 }
 
@@ -138,7 +142,8 @@ function Page(page) {
                     type: "post",
                     contentType: "application/json; charset=utf-8",
                     url: Globals.ServiceUrl + "GetRoom",
-                    data: JSON.stringify(jsonPar),
+                    async: false,
+                    data: JSON.stringify(jsonPa),
                     success: function (data) {
                         var s = JSON.parse(data.d);
                         $("#txtName").val(s.Name);
@@ -150,7 +155,6 @@ function Page(page) {
                     }
                 })
             })
-
 
         }, error: function (xhr) {
             alert(xhr);

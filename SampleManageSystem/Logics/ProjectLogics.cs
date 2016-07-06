@@ -106,6 +106,10 @@ namespace Logics
         {
             return _Dal.UpdateProjectStatusCode(projectId);
         }
-    
+        public IList<Project> GetProjectListByStatusCode()
+        {
+            return _Dal.GetProjectListByStatusCode();
+        }
+
     }
 }

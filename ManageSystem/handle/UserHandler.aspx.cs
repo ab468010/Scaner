@@ -160,7 +160,7 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ProjectLogics pro = new ProjectLogics();
         return JsonConvert.SerializeObject(pro.Update(project));
     }
-
+ 
 
     //contact
     [WebMethod]
@@ -297,10 +297,10 @@ public partial class handle_UserHandler : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string SelectProject()
+    public static string GetProjectListByStatusCode()
     {
         ProjectLogics po = new ProjectLogics();
-        return JsonConvert.SerializeObject(po.GetProjectList());
+        return JsonConvert.SerializeObject(po.GetProjectListByStatusCode());
     }
     [WebMethod]
     public static string SelectRoom()
@@ -618,7 +618,7 @@ public partial class handle_UserHandler : System.Web.UI.Page
     public static bool UpdateSample(Sample sample)
     {
         SampleLogics sampleLogics = new SampleLogics();
-        return sampleLogics.Update(sample);
+        return sampleLogics.UpdateSample(sample);
     }
 
     [WebMethod]

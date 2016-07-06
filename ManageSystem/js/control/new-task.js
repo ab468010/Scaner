@@ -3,7 +3,7 @@ $(function () {
    
     $.ajax({
         type: "post",
-        url: Globals.ServiceUrl + "SelectProject",
+        url: Globals.ServiceUrl + "GetProjectListByStatusCode",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             var s = JSON.parse(data.d);

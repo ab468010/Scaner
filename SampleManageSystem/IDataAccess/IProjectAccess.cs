@@ -21,6 +21,8 @@ namespace IDataAccess
         bool UpdateStatus(int projectid,int status);
         bool ExistTask(int projectId);
         int CreateProject(Project project);
-        bool UpdateProjectStatusCode(int projectId); 
+        bool UpdateProjectStatusCode(int projectId);
+        IList<Project> GetProjectListByStatusCode();
+ 
     }
 }
