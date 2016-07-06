@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2A55DF3A-35FA-4A88-A721-267F609FB328}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Logics</RootNamespace>
+    <AssemblyName>Logics</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseLogics.cs" />
+    <Compile Include="ContactLogics.cs" />
+    <Compile Include="ContainerWarningLogics.cs" />
+    <Compile Include="CustomerLogics.cs" />
+    <Compile Include="ModuleLogics.cs" />
+    <Compile Include="PrivilegeLogics.cs" />
+    <Compile Include="ProjectTemplateLogics.cs" />
+    <Compile Include="RoleLogics.cs" />
+    <Compile Include="RoomLogics.cs" />
+    <Compile Include="SampleLogics.cs" />
+    <Compile Include="ContainerLogics.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProjectLogics.cs" />
+    <Compile Include="ShelfLogics.cs" />
+    <Compile Include="TaskLogics.cs" />
+    <Compile Include="TaskSampleLogics.cs" />
+    <Compile Include="UserLogics.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{67a264ad-c35c-4b98-b04e-020749547d7c}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FactoryDataAccess\FactoryDataAccess.csproj">
+      <Project>{618d2166-7d9b-4e0e-9b86-ca105be5a162}</Project>
+      <Name>FactoryDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDataAccess\IDataAccess.csproj">
+      <Project>{4a4929be-baae-4e22-a10d-75ea5d7e5315}</Project>
+      <Name>IDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{69719b3d-8716-4a99-aca7-98509679585c}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

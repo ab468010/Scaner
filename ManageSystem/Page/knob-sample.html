@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+        <!-- bootstrap -->
+    <link href="../css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="../css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <input class="knob" type="text" value="30" data-width="150" data-fgcolor="#009100"  data-skin="tron" data-thickness=".1" data-angleoffset="0" />
+
+
+
+    <div class="knob-wrapper">
+        <input type="text" value="50" class="knob" disabled="disabled" />
+        <div class="info">
+            <div class="param">
+                <span class="line blue"></span>
+                延误项目
+            </div>
+        </div>
+    </div>
+    <!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../js/lib/bootstrap.min.js"></script>
+    <script src="../js/lib/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+        <!-- knob -->
+    <script src="../js/lib/jquery.knob.js"></script>
+    <script>
+        var maxNum = 100;
+        var minNum = 0;
+        $(".knob").knob({
+            width:150,
+            max: maxNum,
+            min: minNum,
+            thickness: .3,
+            'readonly':"readonly",
+            fgColor: '#30a1ec',
+            bgColor: "#d4ecfd",
+            "readOnly": true
+        });
+    </script>
+</body>
+</html>

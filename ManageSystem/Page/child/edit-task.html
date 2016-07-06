@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    
+        <div class="span5 field-box">
+            <label>任务名:</label>
+            <input class="span5" id="name" type="text" />
+        </div>
+        <div class="span5 field-box">
+            <label>项 目:</label>
+            <input class="span5" type="text" id="projectid" readonly/>
+        </div>
+        <div class="span5 field-box"style="width:470px">
+            <label>场 地:</label>
+            <select id="roomid" class="selectpicker form-control"></select>
+        </div>
+        <div class="span5 field-box">
+            <label>预计开始时间:</label> 
+                <div id="divEstimatedStart" class="input-append date">
+                    <input type="text" class="span5"id="estimatedstart"style="width:423px"disabled/>
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+       
+        <div class="span5 field-box">
+            <label>预计结束时间:</label>
+            <div id="divEstimatedEnd" class="input-append date">
+                <input type="text" class="span5" id="estimatedend" style="width:423px"disabled />
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                </span>
+            </div>
+        </div>
+        <div class="span5 field-box">
+            <label>描 述:</label>
+            <textarea id="description" rows="3" class="span5"></textarea>
+        </div>
+      <input id="taskid" style="display:none"/>
+
+    <script type="text/javascript">
+        $('#divEstimatedStart').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm',
+        language: 'en',
+        pickDate: true,
+        pickTime: true,
+        hourStep: 1,
+        minuteStep: 15,
+        secondStep: 30,
+        inputMask: true
+        });
+        $('#divEstimatedEnd').datetimepicker({
+            format: 'yyyy-MM-dd hh:mm',
+            language: 'en',
+            pickDate: true,
+            pickTime: true,
+            hourStep: 1,
+            minuteStep: 15,
+            secondStep: 30,
+            inputMask: true
+        });
+    </script>
+</body>
+</html>

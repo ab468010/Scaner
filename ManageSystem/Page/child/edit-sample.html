@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+    <form>
+
+        <div class="field-box">
+            <label>样品名:</label>
+            <input style="width: 500px" id="child_txtName" type="text" />
+        </div>
+
+        <div class="field-box" >
+            <label>条 码:</label>
+            <input id="child_txtSampleCode" type="text" style="width:500px"/>
+        </div>
+
+        <div class="field-box"style="width:515px">
+            <label>所属项目:</label>
+            <select id="child_sltProject"  class="selectpicker form-control">
+            </select>
+        </div>
+
+        <div class="field-box" style="width: 515px" >
+            <label>所属周转箱:</label>
+            <select id="child_sltContainer" class="selectpicker form-control">
+            </select>
+        </div>
+
+        <div class="field-box"  style="width: 515px">
+            <label>类型:</label>
+            <select id="child_sltSampleClass" class="selectpicker form-control">
+                <option value="1">样品</option>
+                <option value="2">附件</option>
+            </select>
+        </div>
+
+
+        <div class="field-box">
+            <label>描 述:</label>
+            <textarea id="child_textDescription" style="width: 500px" rows="3"></textarea>
+        </div>
+
+    </form>
+</body>
+</html>
