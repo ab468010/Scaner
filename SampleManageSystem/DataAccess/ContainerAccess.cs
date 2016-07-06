@@ -17,6 +17,7 @@ namespace DataAccess
             };
             if ((long)(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par)) > 0)
             {
+                //1
                 return true;
             }
             else
