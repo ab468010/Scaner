@@ -82,7 +82,6 @@ function Page(number) {
         type: "post",
         url: Globals.ServiceUrl + "GetContainerPageList",
         contentType: "application/json; charset=utf-8",
-        async: false,
         data:JSON.stringify(jsonPara),
         success: function (data) {
             var containerList = JSON.parse(data.d);
@@ -90,10 +89,10 @@ function Page(number) {
             for (i in containerList) {
                 var content = '<tr><td><a href="#">' + containerList[i].Name + '</a></td><td>' + containerList[i].ContainerCode + '</td><td>' + containerList[i].Size +
                                 '<ul class="actions">' +
-                                    '<li><a class="container2 edit1 edit" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">编辑</a></li>' +
+                                    '<li><a class="container2 edit1 edit" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">详情</a></li>' +
                                     '<li class="last"><a href="#" class="container2 delete1 delete">删除</a></li>' +
                                 '</ul>' +
-                            '</td>' + "<td style='display:none' name='Id'>" + containerList[i].ContainerId + "</td>" +
+                            '</td>' + "<td style='display:none' name='Id'>" + containerList[i].ContainerId + "</td><td name='projectstatuscode'style='display:none'>" +containerList[i].ProjectStatusCode+"</td>"
                         '</tr>';
 
                 var row = document.createElement("tr");
@@ -106,28 +105,34 @@ function Page(number) {
             });
 
             $(".delete").click(function () {
-                if (confirm("删除吗？")) {
-                    var jsonPar = {
-                        containerId: $(this).parent().parent().parent().parent().find("[name='Id']").text()
-                    }
-                    $.ajax({
-                        type: "post",
-                        url: Globals.ServiceUrl + "DeleteContainer",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(jsonPar),
-                        success: function (data) {
-                            var s = JSON.parse(data.d);
-                            if (s) {
-                                alert("删除成功");
-                                window.location.reload();
-                            } else {
-                                alert("删除失败");
-                            }
-                        }, error: function (xhr) {
-                            alert(xhr);
+                var s=$(this).parent().parent().parent().parent().find("[name=projectstatuscode]").text();
+                if (s > 2) {
+                    alert("项目已开始无法删除")
+                } else {
+                    if (confirm("删除吗？")) {
+                        var jsonPar = {
+                            containerId: $(this).parent().parent().parent().parent().find("[name='Id']").text()
                         }
-                    })
+                        $.ajax({
+                            type: "post",
+                            url: Globals.ServiceUrl + "DeleteContainer",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(jsonPar),
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    alert("移除成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("请先删除相关样品");
+                                }
+                            }, error: function (xhr) {
+                                alert(xhr);
+                            }
+                        })
+                    }
                 }
+              
             });
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

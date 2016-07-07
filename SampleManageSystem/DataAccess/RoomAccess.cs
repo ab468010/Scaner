@@ -42,11 +42,12 @@ namespace DataAccess
         }
         public bool CreateRoom(Room room)
         {
-            string st = "insert into dbo.room (name,roomcode) values(@name,@roomcode)";
+            string st = "insert into dbo.room (name,roomcode,createdby,createdon) values(@name,@roomcode,@createdby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",room.Name),
-                new NpgsqlParameter("@roomcode",room.RoomCode)
+                new NpgsqlParameter("@roomcode",room.RoomCode),
+                new NpgsqlParameter("@createdby",room.CreatedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -60,7 +61,7 @@ namespace DataAccess
         public IList<Room> GetRoomList(int number)
         {
             string sqlStr = @"SELECT roomid, name,roomcode
-                                FROM dbo.room limit 10 offset @number";
+                                FROM dbo.room order by createdon desc limit 10 offset @number";
 
 
             IList<Room> roomList = new List<Room>();

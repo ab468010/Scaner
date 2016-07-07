@@ -1,6 +1,6 @@
-﻿
-$(function () {
+﻿var createdby = Globals.getCookie("SystemUserId");
 
+$(function () {
 
     $('#roomid').selectpicker('refresh');
 
@@ -11,7 +11,8 @@ $(function () {
                     name: $("#txtName").val(),
                     samplecode: Globals.trim($("#txtSampleCode").val()),
                     sampleclass: $("#sltSampleClass").val(),
-                    description: $("#textDescription").val()
+                    description: $("#textDescription").val(),
+                    CreatedBy: createdby
                 }
             }
             $.ajax({

@@ -66,7 +66,7 @@ namespace DataAccess
         public IList<Customer> GoPage(int number)
         {
             IList<Customer> cus = new List<Customer>();
-            string st = "select customerid, name, description,statecode from dbo.customer limit 10 offset @number";
+            string st = "select customerid, name, description,statecode from dbo.customer order by createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number)
@@ -102,7 +102,7 @@ namespace DataAccess
         public IList<Customer> Selectcustomer()
         {
             IList<Customer> user = new List<Customer>();
-            string st = "select customerid, name, description,statecode from dbo.customer limit 10";
+            string st = "select customerid, name, description,statecode from dbo.customer order by createdon desc  limit 10";
             using (NpgsqlDataReader drt = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
             {
                 while (drt.Read())
@@ -142,7 +142,7 @@ namespace DataAccess
         public bool InCustomer(Customer customer)
         {
           
-            string st = "insert into dbo.customer (name,description,statecode) values(@name,@description,@statecode)";
+            string st = "insert into dbo.customer (name,description,statecode,createdon) values(@name,@description,@statecode,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",customer.Name),

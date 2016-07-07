@@ -83,5 +83,13 @@ namespace Logics
                 return _Dal.Update(container);
            
         }
+        public long GetBigContainer()
+        {
+            return _Dal.GetBigContainer();
+        }
+        public long GetSmallContainer()
+        {
+            return _Dal.GetSmallContainer();
+        }
     }
 }

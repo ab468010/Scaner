@@ -110,12 +110,17 @@ public partial class handle_UserHandler : System.Web.UI.Page
         UserLogics userLogics = new UserLogics();
         return JsonConvert.SerializeObject(userLogics.GetUserListByRole(3));
     }
-
     [WebMethod]
-    public static string GetUprojectListByUser()
+    public static string GetUProjectCount(int systemuserId,int roleId)
+    {
+        ProjectLogics project = new ProjectLogics();
+        return JsonConvert.SerializeObject(project.GetUProjectCount(systemuserId,roleId));
+    }
+    [WebMethod]
+    public static string GetUprojectListByUser(int systemuserId,int roleId,int page)
     {
         ProjectLogics projectLogics = new ProjectLogics();
-        return JsonConvert.SerializeObject(projectLogics.GetUProjectListByUser());
+        return JsonConvert.SerializeObject(projectLogics.GetUProjectListByUser(systemuserId,roleId,page));
     }
     [WebMethod]
     public static string GetProjectListByUserId(int userId,int roleId)
@@ -545,6 +550,18 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(cont.GetUseBigContainer());
     }
     [WebMethod]
+    public static string GetBigContainer()
+    {
+        ContainerLogics con = new ContainerLogics();
+        return JsonConvert.SerializeObject(con.GetBigContainer());
+    }
+    [WebMethod]
+    public static string GetSmallContainer()
+    {
+        ContainerLogics con = new ContainerLogics();
+        return JsonConvert.SerializeObject(con.GetSmallContainer());
+    }
+    [WebMethod]
     public static bool UpdateContainer(Container container)
     {
         ContainerLogics containerLogics = new ContainerLogics();
@@ -589,10 +606,10 @@ public partial class handle_UserHandler : System.Web.UI.Page
     }
   
     [WebMethod]
-    public static string UpdateContainerId(int sampleId)
+    public static string UpdateContainerId(int sampleId,int containerId)
     {
         SampleLogics sample = new SampleLogics();
-        return JsonConvert.SerializeObject(sample.UpdateContainerId(sampleId));
+        return JsonConvert.SerializeObject(sample.UpdateContainerId(sampleId,containerId));
     }
 
     [WebMethod]

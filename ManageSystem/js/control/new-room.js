@@ -1,11 +1,13 @@
-﻿function newroom() {
+﻿var createdby = Globals.getCookie("SystemUserId");
+function newroom() {
     (function () {
         $("#btnSave").click(function () {
             if (Globals.trim($("#name").val()) != "" && Globals.trim($("#roomcode").val()) != "") {
                 var jsonPar = {
                     room: {
                         name: $("#name").val(),
-                        roomcode: Globals.trim($("#roomcode").val())
+                        roomcode: Globals.trim($("#roomcode").val()),
+                        CreatedBy: createdby
                     }
                 }
                 $.ajax({

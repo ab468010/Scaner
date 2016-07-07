@@ -85,7 +85,7 @@ function taskprofile() {
                     $("#tleName").text(sh.Name);
                     $("#ProjectId").text(sh.ProjectName);
                     $("#RoomId").text(sh.RoomName);
-                    $("#Description").text(sh.Description);
+                    $("#pDescription").text(sh.Description);
                     $("#Estimatedstart").text(Globals.datetime_is_null(sh.EstimatedStart));
                     $("#Estimatedend").text(Globals.datetime_is_null(sh.EstimatedEnd));
 

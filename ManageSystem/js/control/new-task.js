@@ -1,5 +1,24 @@
 ﻿
 $(function () {
+    $.ajax({
+        type: "post",
+        url: Globals.ServiceUrl + "GetTesterList",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            var result = JSON.parse(data.d);
+            var list = $("#tester1").empty();
+            var list1 = $("#tester2").empty();
+            for (var i in result) {
+                list.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+                list1.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+
+            }
+       
+            $('#tester1').selectpicker('refresh');
+            $('#tester2').selectpicker('refresh');
+        }
+    });
+
    
     $.ajax({
         type: "post",
@@ -40,7 +59,9 @@ $(function () {
                     roomid: $("#roomid").val(),
                     estimatedstart: $("#estimatedstart").val(),
                     estimatedend: $("#estimatedend").val(),
-                    description: $("#description").val()
+                    description: $("#description").val(),
+                    tester1:$("#tester1").val(),
+                    tester2:$("#tester2").val()
                 }
             }
             $.ajax({

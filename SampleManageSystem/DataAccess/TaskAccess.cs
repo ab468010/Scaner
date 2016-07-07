@@ -12,15 +12,14 @@ namespace DataAccess
     {
         public long GetGoingProjectCount()
         {
-            string st = @"select count(distinct projectid) from dbo.task
-                          where  actualend is null";
+            string st = @"select count(1) from dbo.project
+                          where  statuscode=2";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
         public long GetFinishProjectCount()
         {
-            string st = @"select count(distinct projectid) from dbo.task
-                          where  actualend is not null";
+            string st = @"select count(1) from dbo.project where statuscode>2";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
@@ -33,7 +32,7 @@ namespace DataAccess
         }
         public long GetDelayTaskCount()
         {
-            string st = "select count(1) from dbo.task where now()>estimatedend";
+            string st = "select count(1) from dbo.task where now()>estimatedend and actualend is null";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
@@ -170,7 +169,7 @@ namespace DataAccess
         }
          public bool Create(Task task)
         {
-            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description)";
+            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description，tester1,tester2) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2)";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",task.Name),
@@ -178,7 +177,9 @@ namespace DataAccess
                 new NpgsqlParameter("@roomid",task.RoomId),
                 new NpgsqlParameter("@estimatedstart",task.EstimatedStart),
                 new NpgsqlParameter("@estimatedend",task.EstimatedEnd),
-                new NpgsqlParameter("@description",task.Description)
+                new NpgsqlParameter("@description",task.Description),
+                new NpgsqlParameter("@tester1",task.Tester1),
+                new NpgsqlParameter("@tester2",task.Tester2)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

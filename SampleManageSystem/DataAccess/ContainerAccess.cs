@@ -8,6 +8,21 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
+        public long GetBigContainer()
+        {
+            string sqlStr = " select count(1) from dbo.container where right(size,1)='大'";
+           
+         
+            long count =Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr));
+            return count;
+        }
+        public long GetSmallContainer()
+        {
+            string sqlStr = " select count(1) from dbo.container where right(size,1)='小'";
+         
+            long count =Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr));
+            return count;
+        }
         public bool ExsitsContainerCode(Container container)
         {
             string st = "select count(1) from dbo.container where containercode=@containercode";
@@ -33,9 +48,9 @@ namespace DataAccess
         }
         public IList<Container> GetContainerPageList(int pageNo)
         {
-            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description
+            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description ,COALESCE(project.statuscode,-1) projectstatuscode
                                 FROM dbo.container box
-                                Left Join dbo.Project project on box.projectid = project.projectid limit 10 offset @pageNo";
+                                Left Join dbo.Project project on box.projectid = project.projectid order by box.createdon desc limit 10 offset @pageNo";
 
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
@@ -56,6 +71,7 @@ namespace DataAccess
                     container.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     container.ProjectIdName = rdr["projectIdName"].ToString();
                     container.Description = rdr["Description"].ToString();
+                    container.ProjectStatusCode = Convert.ToInt32(rdr["projectstatuscode"]);
                     containerList.Add(container);
                 }
             }
@@ -64,8 +80,7 @@ namespace DataAccess
         public long GetUseBigContainer()
         {
             string st = @"select count(size) from dbo.container
-                        where containerid in (select distinct containerid from dbo.sample where containerid>0) and right(size,1) ='2'
-                        group by size";
+                        where containerid in (select distinct containerid from dbo.sample where containerid>0) and right(size,1) ='大'";
 
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
@@ -144,7 +159,7 @@ namespace DataAccess
 
         public Model.Container GetModel(int containerId)
         {
-            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description
+            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description,COALESCE(project.statuscode,-1) ProjectStatusCode
                                 FROM dbo.container box
                                 Left Join dbo.Project project on box.projectid = project.projectid
                                 Where containerId = @ContainerId";
@@ -169,6 +184,7 @@ namespace DataAccess
                     container.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     container.ProjectIdName = rdr["projectIdName"].ToString();
                     container.Description = rdr["Description"].ToString();
+                    container.ProjectStatusCode = Convert.ToInt32(rdr["ProjectStatusCode"]);
                 }
                 return container;
             }
@@ -225,12 +241,13 @@ namespace DataAccess
         public bool Create(Model.Container container)
         {
             string sqlStr = @"Insert into dbo.Container ( name, containercode, size,description, 
-             statuscode) values(@Name,@ContainerCode,@Size,@Description,1)";
+             statuscode,createdby,createdon) values(@Name,@ContainerCode,@Size,@Description,1,@createdby,now())";
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("@Name",container.Name),
                 new NpgsqlParameter("@ContainerCode",container.ContainerCode),
                 new NpgsqlParameter("@Size",container.Size),
-                new NpgsqlParameter("@Description",container.Description)
+                new NpgsqlParameter("@Description",container.Description),
+                new NpgsqlParameter("@createdby",container.CreatedBy)
             };
 
             int createCount = NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters);

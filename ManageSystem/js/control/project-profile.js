@@ -71,8 +71,8 @@ function initConfig() {
                 success: function (data) {
                  
                     var project = JSON.parse(data.d);
-                    if (project.StatusCode != 4) {
-                        $("#giveshelf").attr({style:"display:none"})
+                    if (project.StatusCode == 4) {
+                        $("#givecustomer").attr({style:"display:inline"})
                     } 
 
                     $("#tleName").text(project.Name);                  
@@ -272,7 +272,7 @@ function initConfig() {
             })
         })
 
-        $("#giveshelf").click(function () {         
+        $("#givecustomer").click(function () {         
             var jsonPara = {
                 projectId: id
             }

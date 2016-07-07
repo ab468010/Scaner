@@ -17,12 +17,20 @@ namespace IDataAccess
         IList<Project> GetAllProjectList(int statusCode);
         IList<Project> GetUProjectListByUserId();
         IList<Project> GetProjectList();
-      
+        IList<Project> GetUProjectList(int page);
+        IList<Project> GetUProjectListByEnginnerId(int systemuserId, int page);
+        IList<Project> GetUProjectListByTesterId(int systemuserId, int page);
+        long GetAllUProjectCount();
+        long GetProjectCountByEngineer(int systemuserId);
+        long GetProjectByTaksTester(int systemuserId);
+
         bool UpdateStatus(int projectid,int status);
         bool ExistTask(int projectId);
         int CreateProject(Project project);
         bool UpdateProjectStatusCode(int projectId);
         IList<Project> GetProjectListByStatusCode();
+        bool UpdateContainerProjectId(int projectId);
+        bool UpdateSampleProjectId(int projectId);
  
     }
 }

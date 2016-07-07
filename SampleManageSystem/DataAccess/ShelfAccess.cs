@@ -63,7 +63,7 @@ namespace DataAccess
         public IList<Shelf> GetShelf(int number)
         {
             IList<Shelf> sh = new List<Shelf>();
-            string st = "select shelfid,name,shelfcode,description from dbo.shelf limit 10 offset @number";
+            string st = "select shelfid,name,shelfcode,description from dbo.shelf order by createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number)
@@ -79,12 +79,13 @@ namespace DataAccess
         }
         public bool Create(Shelf shelf)
         {
-           string st = "insert into dbo.shelf (name,shelfcode,description) values(@name,@shelfcode,@description)";
+           string st = "insert into dbo.shelf (name,shelfcode,description,createdby,createdon) values(@name,@shelfcode,@description,@createdby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[] 
             {
                 new NpgsqlParameter("@name",shelf.Name),
                 new NpgsqlParameter("@shelfcode",shelf.ShelfCode),
-                new NpgsqlParameter("@description",shelf.Description)
+                new NpgsqlParameter("@description",shelf.Description),
+                new NpgsqlParameter("@createdby",shelf.CreatedBy)
             };
            if(NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

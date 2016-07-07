@@ -8,6 +8,38 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
+        public bool ExistsSample(int containerId)
+        {
+            string sqlStr = "select count(1) from dbo.sample where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if ((long)(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr,par)) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateContainerStatus(int containerId)
+        {
+            string sqlStr = "update dbo.container set statuscode=1 where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool UpdateContainerStatusCode(Sample sample)
         {
             string sqlStr = "update dbo.container set statuscode=2 where containerid=@containerid";
@@ -48,7 +80,7 @@ namespace DataAccess
                                 FROM dbo.sample sample
                                 Left Join dbo.Shelf shelf On sample.shelfid = shelf.shelfid
                                 Left Join dbo.container container On sample.containerid = container.containerid
-                                Left Join dbo.project project On sample.projectid = project.projectid limit 10 offset @pageNo";
+                                Left Join dbo.project project On sample.projectid = project.projectid order by sample.createdon desc limit 10 offset @pageNo";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@pageNo",pageNo)
@@ -82,7 +114,7 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
-        public bool UpdateContainerId(int sampleId)
+        public bool UpdateContainerId(int sampleId,int containerId)
         {
             string st = "update dbo.sample set containerid=@containerid where sampleid=@sampleid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -248,7 +280,7 @@ namespace DataAccess
         {
             string sqlStr = @"SELECT sampleid, sample.name, COALESCE(sample.shelfid,-1) shelfid, shelf.Name ShelfIdName,
 				                COALESCE(sample.containerid,-1) containerid,container.Name ContainerIdName, samplecode, sampleclass,
-				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName
+				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,COALESCE(project.statuscode,-1) ProjectStatusCode
                                 FROM dbo.sample sample
                                 Left Join dbo.Shelf shelf On sample.shelfid = shelf.shelfid
                                 Left Join dbo.container container On sample.containerid = container.containerid
@@ -277,6 +309,7 @@ namespace DataAccess
                     sample.ShelfIdName = rdr["ShelfIdName"].ToString();
                     sample.ContainerIdName = rdr["ContainerIdName"].ToString();
                     sample.ProjectIdName = rdr["ProjectIdName"].ToString();
+                    sample.ProjectStatusCode = Convert.ToInt32(rdr["ProjectStatusCode"]);
                     sampleList.Add(sample);
                 }
             }
@@ -285,13 +318,14 @@ namespace DataAccess
 
         public bool Create(Model.Sample sample)
         {
-            string sqlStr = "insert into dbo.sample (name,samplecode,sampleclass,description) values(@name,@samplecode,@sampleclass,@description)";
+            string sqlStr = "insert into dbo.sample (name,samplecode,sampleclass,description,createdby,createdon) values(@name,@samplecode,@sampleclass,@description,@createdby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",sample.Name),
                 new NpgsqlParameter("@samplecode",sample.SampleCode),
                 new NpgsqlParameter("@sampleclass",sample.SampleClass),
-                new NpgsqlParameter("@description",sample.Description)
+                new NpgsqlParameter("@description",sample.Description),
+                new NpgsqlParameter("@createdby",sample.CreatedBy)
             };
 
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
