@@ -45,9 +45,18 @@ namespace Logics
             _Dal.DeleteTaskSample(sampleId);
             return _Dal.Delete(sampleId);
         }
-        public bool UpdateContainerId(int sampleId)
+        public bool UpdateContainerId(int sampleId,int containerId)
         {
-            return _Dal.UpdateContainerId(sampleId);
+            bool boo= _Dal.UpdateContainerId(sampleId,containerId);
+            if (_Dal.ExistsSample(containerId))
+            {
+                return boo;
+            }
+            else
+            {
+                _Dal.UpdateContainerStatus(containerId);
+                return boo;
+            }
         }
         public long GetSampleCount()
         {

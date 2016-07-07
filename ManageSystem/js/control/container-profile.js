@@ -36,7 +36,11 @@ function initConfig() {
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var container = JSON.parse(data.d);
+                    if (container.ProjectStatusCode < 3) {
+                        $(".container2.edit1").attr({ style: "dispaly:inline" });
+                        $(".container2.delete1").attr({ style: "dispaly:inline" });
 
+                    }
                     $("#tleName").text(container.Name);
                     $("#pDescription").text(container.Description);
                     $("#spanContainerCode").text(container.ContainerCode);
@@ -75,7 +79,9 @@ function initConfig() {
                     var tbody = $(".table tbody").empty();
 
                     for (i in sampleList) {
-                        var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName +  "</td><td>" + sampleList[i].SampleCode + "<ul class='actions'><li class='last'><a class='delete1 sample2'>删除</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                        var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].SampleCode + "<ul class='actions samplelist' ><li class='last'><a class='delete1 sample2'>移除</a></li></ul></td>" +
+                                     "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td><td name='projectstatuscode'style='display:none'>"+sampleList[i].ProjectStatusCode+"</td>";
+                      
                         var row = document.createElement("tr");
                         row.innerHTML = content;
 
@@ -83,28 +89,35 @@ function initConfig() {
                     }
                 
                     $(".delete1.sample2").click(function () {
-                        if (confirm("删除吗？")) {
-                            var jsonPar = {
-                                sampleId: $(this).parent().parent().parent().parent().find("[name='Id']").text()
-                            }
-                            $.ajax({
-                                type: "post",
-                                url: Globals.ServiceUrl + "UpdateContainerId",
-                                contentType: "application/json; charset=utf-8",
-                                data: JSON.stringify(jsonPar),
-                                success: function (data) {
-                                    var s = JSON.parse(data.d);
-                                    if (s) {
-                                        alert("删除成功");
-                                        window.location.reload();
-                                    } else {
-                                        alert("删除失败");
-                                    }
-                                }, error: function (xhr) {
-                                    alert(xhr);
+                        var s = $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text();
+                        if(s>2){
+                            alert("项目已开始无法移除");
+                        }else{
+                            if (confirm("移除吗？")) {
+                                var jsonPar = {
+                                    sampleId: $(this).parent().parent().parent().parent().find("[name='Id']").text(),
+                                    containerId:id
                                 }
-                            })
+                                $.ajax({
+                                    type: "post",
+                                    url: Globals.ServiceUrl + "UpdateContainerId",
+                                    contentType: "application/json; charset=utf-8",
+                                    data: JSON.stringify(jsonPar),
+                                    success: function (data) {
+                                        var s = JSON.parse(data.d);
+                                        if (s) {
+                                            alert("删除成功");
+                                            window.location.reload();
+                                        } else {
+                                            alert("删除失败");
+                                        }
+                                    }, error: function (xhr) {
+                                        alert(xhr);
+                                    }
+                                })
+                            }
                         }
+                       
                     });
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

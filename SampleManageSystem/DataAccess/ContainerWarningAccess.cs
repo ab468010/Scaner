@@ -21,13 +21,13 @@ namespace DataAccess
         }
          public bool Update(ContainerWarning containerwarning)
         {
-            string st = " update dbo.containerwarning set bigcontainer=@bigcontainer,bigmessage=@bigmessage,smallcontainer=@smallcontainer,smallmessage=@smallmessage where containerid=@id";
+            string st = " update dbo.containerwarning set bigcontainer=@bigcontainer,smallcontainer=@smallcontainer where containerid=@id";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@bigcontainer",containerwarning.BigContainer),
-                new NpgsqlParameter("@bigmessage",containerwarning.BigMessage),
+                
                 new NpgsqlParameter("@smallcontainer",containerwarning.SmallContainer),
-                new NpgsqlParameter("@smallmessage",containerwarning.SmallMessage),
+              
                 new NpgsqlParameter("@id",containerwarning.ContainerId),
 
             };
@@ -43,7 +43,7 @@ namespace DataAccess
         public ContainerWarning GetModel(int id)
         {
             ContainerWarning con = new ContainerWarning();
-            string st = "select containerid,bigcontainer,bigmessage,smallcontainer,smallmessage from dbo.containerwarning where containerid=@id";
+            string st = "select containerid,bigcontainer,smallcontainer from dbo.containerwarning where containerid=@id";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@id",id)
@@ -52,10 +52,10 @@ namespace DataAccess
             {
                 while (rdr.Read())
                 {
-                    con.BigMessage = rdr["bigcontainer"].ToString();
+           
                     con.BigContainer = Convert.ToInt32(rdr["bigcontainer"]);
                     con.SmallContainer = Convert.ToInt32(rdr["smallcontainer"]);
-                    con.SmallMessage = rdr["smallmessage"].ToString();
+         
                     con.ContainerId = Convert.ToInt32(rdr["containerid"]);
                 }
             }

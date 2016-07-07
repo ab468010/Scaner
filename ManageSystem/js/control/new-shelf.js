@@ -1,5 +1,5 @@
 ﻿
-
+var createdby = Globals.getCookie("SystemUserId");
 $(function () {
     $("#btnSave").click(function () {
         if (Globals.trim($("#shelfName").val()) != "" && Globals.trim($("#shelfcode").val()) != "") {
@@ -7,7 +7,8 @@ $(function () {
                 shelf: {
                     name: $("#shelfName").val(),
                     shelfcode: Globals.trim($("#shelfcode").val()),
-                    description: $("#description").val()
+                    description: $("#description").val(),
+                    CreatedBy: createdby
                 }
             }
             $.ajax({

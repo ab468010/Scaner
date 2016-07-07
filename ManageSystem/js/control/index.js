@@ -107,23 +107,15 @@
                     alert(xhr);
                 }
             });
-            $.ajax({
-                type: "post",
-                url: Globals.ServiceUrl + "GetContainerCount",
-                contentType: "application/json;charset=utf-8",
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                    $("#containercount").val(s);
-                }
-            });
+      
          
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + "GetUseSmallContainer",
+                url: Globals.ServiceUrl + "GetUseBigContainer",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
                     var s = JSON.parse(data.d);
-                    s = s *8;
+                    
                    
                     //if (s / ($("#containercount").val()) * 100 > 70) {
                     //    alert("小周转箱数量不足")

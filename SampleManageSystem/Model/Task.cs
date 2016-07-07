@@ -63,6 +63,8 @@ namespace Model
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string Description { get; set; }
+        public int Tester1 { get; set; }
+        public int Tester2 { get; set; }
 
     }
 }

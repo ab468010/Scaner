@@ -32,7 +32,7 @@ $(function () {
     })
  
     $("#btnSave").click(function () {
-        if (Globals.trim($("#name").val()) != "") {
+        if (Globals.trim($("#name").val())!= "") {
             var jsonPar = {
                 contact: {
                     name: $("#name").val(),

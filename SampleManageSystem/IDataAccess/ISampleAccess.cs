@@ -16,11 +16,13 @@ namespace IDataAccess
         IList<Sample> GetSampleListByContainerId(int containerId);
         IList<Sample> ExceptSampleList(int taskid, int projectid);
         bool DeleteTaskSample(int sampleId);
-        bool UpdateContainerId(int sampleId);
+        bool UpdateContainerId(int sampleId,int containerId);
         long GetSampleCount();
         IList<Sample> GetSamplePageList(int pageNo);
         bool ExistsSampleCode(Sample sample);
 
         bool UpdateContainerStatusCode(Sample sample);
+        bool UpdateContainerStatus(int containerId);
+        bool ExistsSample(int containerId);
     }
 }

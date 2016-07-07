@@ -2,7 +2,7 @@
 var action = $.getUrlParam("action");
 var id = $.getUrlParam("id");
 var invokeMethod = action == "Create" ? "CreateUser" : "0"
-
+var createdby = Globals.getCookie("SystemUserId");
 
 function initConfig() {
     //初始化模块JS
@@ -42,7 +42,8 @@ function initConfig() {
                                 RoleId: $("#Role").val(),
                                 Email: $("#Email").val(),
                                 UserCode:Globals.trim($("#UserCode").val()),
-                                Description: $("#Description").val()
+                                Description: $("#Description").val(),
+                                CreatedBy:createdby
                             }
                         }
 

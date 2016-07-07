@@ -135,6 +135,7 @@
                        <li class="systemuser1"><a href="user-list.html">用 户</a></li>
                        <li class="role1"><a href="role-list.html">角 色</a></li>
                        <li class="projecttemplate1"><a href="projecttemplate-list.html">项目模板</a></li>
+                       <li class="containerwarning1"><a href="containerwarning.html">周转箱预警</a></li>
                    </ul>
                </li>
            </ul>
@@ -155,31 +156,43 @@
                             <form class="new_user_form">
 
                                 <div class="span12 field-box">
-                                    <div class="span10">
+                                    <div style="width:78%">
                                         <label>任务名:</label>
                                         <input class="span12" id="name" type="text" />
                                     </div>
                                 </div>
                                
                                     <div class="span12 field-box">
-                                        <div class="span10">
+                                        <div style="width:78%">
                                             <label>项 目:</label>
                                             <select id="projectid" class="selectpicker form-control"></select>
                                         </div>
                                     </div>
 
                                 <div class="span12 field-box">
-                                    <div class="span10">
+                                    <div style="width:78%">
                                         <label>场 地:</label>
                                         <select id="roomid" class="selectpicker form-control"></select>
                                     </div>
                                 </div>
+                                <div class="span12 field-box">
+                                    <div style="width:78%">
+                                        <label>接收者:</label>
+                                        <select id="tester1" class="selectpicker form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="span12 field-box">
+                                    <div style="width:78%">
+                                        <label>完成者:</label>
+                                        <select id="tester2" class="selectpicker form-control"></select>
+                                    </div>
+                                </div>
 
                                 <div class="span12 field-box">
-                                    <div class="span10">
+                                    <div class="span9"style="width:75%">
                                         <label>预计开始时间:</label>
-                                        <div id="divEstimatedStart" class="input-append date span12" style="margin-left:0">
-                                            <input type="text" id="estimatedstart" style="width:880px"class="span12" disabled/>
+                                        <div id="divEstimatedStart" class="input-append date span12"style="margin-left:0">
+                                            <input type="text" id="estimatedstart" class="span12" disabled/>
                                             <span class="add-on">
                                                 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                             </span>
@@ -188,10 +201,10 @@
                                 </div>
 
                                 <div class="span12 field-box">
-                                    <div class="span10">
+                                    <div style="width:75%">
                                         <label>预计结束时间:</label>
                                         <div id="divEstimatedEnd" class="input-append date span12" style="margin-left:0">
-                                            <input type="text" class="span12" id="estimatedend" style="width:880px"disabled />
+                                            <input type="text" class="span12" id="estimatedend" disabled />
                                             <span class="add-on">
                                                 <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                             </span>
@@ -200,13 +213,13 @@
                                 </div>
 
                                 <div class="span12 field-box">
-                                    <div class="span10">
+                                    <div style="width:78%">
                                         <label>描 述:</label>
                                         <textarea id="description" rows="3" class="span12"></textarea>
                                     </div>
                                 </div>
                           
-                                <div class="span8 field-box actions" style="float:right; margin-right:150px">
+                                <div class="span8 field-box actions" style="float:right; margin-right:200px">
                                     <input type="button" id="btnSave" class="btn-glow primary" value="创建任务" />
                                 </div>
                             </form>

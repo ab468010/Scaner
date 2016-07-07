@@ -20,6 +20,8 @@ namespace IDataAccess
         IList<Container> GetContainerPageList(int pageNo);
         long GetUseContainerCount();
         bool ExsitsContainerCode(Container container);
+        long GetBigContainer();
+        long GetSmallContainer();
        
     }
 }

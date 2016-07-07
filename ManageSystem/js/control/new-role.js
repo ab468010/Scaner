@@ -1,4 +1,5 @@
-﻿function nrole() {
+﻿var createdby= Globals.getCookie("SystemUserId");
+function nrole() {
 
     (function () {
         $("#btnSave").click(function () {
@@ -6,7 +7,8 @@
                 var jsnPar = {
                     role: {
                         rolename: $("#Name").val(),
-                        description: $("#Description").val()
+                        description: $("#Description").val(),
+                        CreatedBy:createdby
                     }
                 }
                 $.ajax({

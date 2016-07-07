@@ -21,9 +21,24 @@ namespace Logics
                 throw new NullReferenceException(_Type);
             }
         }
-        public IList<Project> GetUProjectListByUser()
+        public IList<Project> GetUProjectListByUser(int systemuserId, int roleId, int page)
         {
-            return _Dal.GetUProjectListByUserId();
+            if (roleId == 6)
+            {
+               return _Dal.GetUProjectList(page);
+            }else if(roleId==2){
+                return _Dal.GetUProjectListByEnginnerId(systemuserId, page);
+            }
+            else if(roleId==3)
+            {
+                return _Dal.GetUProjectListByTesterId(systemuserId,page);
+            }
+            else
+            {
+                IList<Project> projectList = null;
+                return projectList;
+            }
+           
         }
 
         public IList<Project> GetProjectListByUserId(int userId,int roleId)
@@ -104,11 +119,26 @@ namespace Logics
         }
         public bool UpdateProjectStatusCode(int projectId)
         {
+            _Dal.UpdateContainerProjectId(projectId);
+            _Dal.UpdateSampleProjectId(projectId);
             return _Dal.UpdateProjectStatusCode(projectId);
         }
         public IList<Project> GetProjectListByStatusCode()
         {
             return _Dal.GetProjectListByStatusCode();
+        }
+        public long GetUProjectCount(int systemuserId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetAllUProjectCount();
+            }else if(roleId==2){
+                return _Dal.GetProjectCountByEngineer(systemuserId);
+            }
+            else
+            {
+                return _Dal.GetProjectByTaksTester(systemuserId);
+            }
         }
 
     }

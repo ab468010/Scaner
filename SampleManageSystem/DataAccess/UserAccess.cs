@@ -174,7 +174,7 @@ namespace DataAccess
         {
             IList<User> userList = new List<User>();
             string sqlStr = @"Select SystemUserId,sy.Name,Username,email,ro.name roleidname,usercode from dbo.SystemUser sy left join dbo.role ro
-                              on  sy.roleid=ro.roleid and statecode=1  limit 10 offset @number";
+                              on  sy.roleid=ro.roleid and statecode=1 order by sy.createdon desc limit 10 offset @number";
            
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
@@ -217,8 +217,8 @@ namespace DataAccess
         public bool Create(User user)
         {
             //if (Authorization)
-            string sqlStr = @"Insert Into dbo.SystemUser(Name,Username,Password,StateCode,RoleId,UserCode,Email,Description) 
-                                Values(@Name,@Username,@Password,@StateCode,@RoleId,@UserCode,@Email,@Description)";
+            string sqlStr = @"Insert Into dbo.SystemUser(Name,Username,Password,StateCode,RoleId,UserCode,Email,Description,createdby,createdon) 
+                                Values(@Name,@Username,@Password,@StateCode,@RoleId,@UserCode,@Email,@Description,@createdby,now())";
 
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[] 
             {
@@ -229,7 +229,8 @@ namespace DataAccess
                 new NpgsqlParameter("@RoleId",user.RoleId),
                 new NpgsqlParameter("@UserCode",user.UserCode),
                 new NpgsqlParameter("@Email",user.Email),
-                new NpgsqlParameter("@Description",user.Description)
+                new NpgsqlParameter("@Description",user.Description),
+                new NpgsqlParameter("@createdby",user.CreatedBy)
             };
 
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters) > 0)

@@ -1,4 +1,4 @@
-﻿
+﻿var createdby = Globals.getCookie("SystemUserId");
 $(function () {
 
     $("#btnSave").click(function () {
@@ -8,7 +8,8 @@ $(function () {
                     Name: $("#txtName").val(),
                     ContainerCode: Globals.trim($("#txtContainerCode").val()),
                     Size: $("#txtSize").val(),
-                    Description: $("#textDescription").val()
+                    Description: $("#textDescription").val(),
+                    CreatedBy: createdby
                 }
             }
             $.ajax({

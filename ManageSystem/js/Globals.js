@@ -53,7 +53,7 @@ function datetime_is_null(time) {
     var errorDate = new Date("1900/1/1");
     var aTime = new Date(time);
 
-    return (errorDate - aTime == 0) ? "空" : aTime.Format('yyyy-MM-dd hh:mm');
+    return (errorDate - aTime == 0) ? "空" : aTime.Format('yyyy-MM-dd');
 }
 
 function getCookie(name) {
@@ -77,8 +77,8 @@ function getCookie(name) {
 //    return this.replace(/(\s*$)/g, "");
 //}
 
-
-　 function trim(str){ //删除左右两端的空格
+//删除左右两端的空格
+　 function trim(str){ 
 　　     return str.replace(/(^\s*)|(\s*$)/g,"");
 　　 }
 　　 function ltrim(str){ //删除左边的空格

@@ -1,5 +1,6 @@
 ﻿function warning() {
     (function () {
+        
         var jsonPar = {
             id:1
         }
@@ -10,22 +11,43 @@
             data:JSON.stringify(jsonPar),
             success: function (data) {
                 var s = JSON.parse(data.d);
-                $("#bignumber").val(s.BigContainer);
-                $("#bigmessage").val(s.BigMessage);
-                $("#smallnumber").val(s.SmallContainer);
-                $("#smallmessage").val(s.SmallMessage);
+                $("#bigcontainer").val(s.BigContainer);                
+                $("#smallcontainer").val(s.SmallContainer);
                 $("#id").val(s.ContainerId)
             }, error: function (xhr) {
                 alert(xhr);
             }
         })
+     
+        $.ajax({
+            type: "post",
+            url: Globals.ServiceUrl + "GetBigContainer",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var s=JSON.parse(data.d);
+                $("#bigcount").val(s);
+            }
+            
+        })
+   
+        $.ajax({
+            type: "post",
+            url: Globals.ServiceUrl + "GetSmallContainer",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var s = JSON.parse(data.d);
+                $("#smallcount").val(s);
+            }, error: function (xhr) {
+                alert(xhr);
+            }
+
+        })
         $(".containerwarning2").click(function () {
+
             var jsonPara = {
                 containerwarning: {
-                    BigContainer: $("#bignumber").val(),
-                    BigMessage:  $("#bigmessage").val(),
-                    SmallContainer :$("#smallnumber").val(),
-                    SmallMessage: $("#smallmessage").val(),
+                    BigContainer: $("#bigcontainer").val(),
+                    SmallContainer :$("#smallcontainer").val(),             
                     ContainerId: $("#id").val()
                 }
             }

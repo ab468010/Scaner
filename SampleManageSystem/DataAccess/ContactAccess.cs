@@ -55,7 +55,7 @@ namespace DataAccess
         {
             IList<Contact> cont = new List<Contact>();
             string st = @"select co.contactid Contactid,co.name contactname,co.description description,cu.Name Customername  
-                        from dbo.contact co left join dbo.customer cu on co.Customerid=cu.Customerid limit 10 offset @number";
+                        from dbo.contact co left join dbo.customer cu on co.Customerid=cu.Customerid order by co.createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number)
@@ -103,7 +103,7 @@ namespace DataAccess
         }
         public bool Incontact(Contact contact)
         {
-            string st = "insert into dbo.contact(name,description,customerid) values(@name,@description,@customerid) ";
+            string st = "insert into dbo.contact(name,description,customerid,createdon) values(@name,@description,@customerid,now()) ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",contact.Name),

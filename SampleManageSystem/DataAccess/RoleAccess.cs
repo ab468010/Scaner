@@ -58,7 +58,7 @@ namespace DataAccess
         public IList<Role> GetPageRoleList(int number)
         {
             IList<Role> ro = new List<Role>();
-            string st = "select roleid,name,description from dbo.role limit 10 offset @number";
+            string st = "select roleid,name,description from dbo.role order by createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number)
@@ -74,12 +74,13 @@ namespace DataAccess
         }
         public bool Create(Role role)
         {
-            string st = "insert into dbo.role (name,description,roletype) values(@name,@description,@roletype)";
+            string st = "insert into dbo.role (name,description,roletype,createdby,createdon) values(@name,@description,@roletype,@createdby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",role.RoleName),
                 new NpgsqlParameter("@description",role.Description),
-                new NpgsqlParameter("@roletype",2)
+                new NpgsqlParameter("@roletype",2),
+                new NpgsqlParameter("@createdby",role.CreatedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
