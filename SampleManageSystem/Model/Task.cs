@@ -66,6 +66,8 @@ namespace Model
         public string Description { get; set; }
         public int Tester1 { get; set; }
         public int Tester2 { get; set; }
+        public string Tester1IdName { get; set; }
+        public string Tester2IdName { get; set; }
       public int ProjectStatusCode { get; set; }
 
     }

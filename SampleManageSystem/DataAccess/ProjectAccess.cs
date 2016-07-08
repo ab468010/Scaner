@@ -283,7 +283,8 @@ namespace DataAccess
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
                                 Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                where testerid=@testerid and statuscode=@statuscode";
+                                left join dbo.task task on task.projectid=project.projectid
+                                where (task.tester1=@testerid or tester2=@testerid) and project.statuscode=@statuscode";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@testerid",userId),
@@ -315,21 +316,7 @@ namespace DataAccess
             return projectList;
         }
 
-        public IList<Project> GetNotFinishedProjectList()
-        {
-            string sqlStr = @"SELECT project.projectid, project.projectno, 
-                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
-                                project.testerid,tester.Name TesterIdName,COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
-                                FROM dbo.project project
-                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
-                                Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                Where project.StatusCode <= 3";
-
-
-
-            return null;
-        }
+  
 
         public IList<Project> GetProjectListByTesterId(int userId)
         {
@@ -737,6 +724,40 @@ namespace DataAccess
                 return false;
             }
          
+        }
+        public IList<Project> GetNotFinishedProjectList()
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                project.testerid,tester.Name TesterIdName,COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode<3 order by project.createdon desc ";
+     
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+                    project.TesterId = Convert.ToInt32(rdr["testerid"]);
+                    project.TesterIdName = rdr["TesterIdName"].ToString();
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
         }
         public bool Create(Project p)
         {

@@ -88,6 +88,25 @@ namespace Logics
         {
             return _Dal.GetFinishProjectCount();
         }
-        
+        public IList<Task> GetDelayTaskList(int systemuserId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal. GetAllDelayTask();
+            }else if (roleId == 2)
+            {
+                return _Dal. GetDelayTaskByEngineer(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal. GetDelayTaskByTester(systemuserId);
+            }
+            else
+            {
+                IList<Task> taskList = new List<Task>();
+                return taskList;
+            }
+        }
+
+
     }
 }

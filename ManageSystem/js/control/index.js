@@ -105,10 +105,29 @@ function index() {
                 data:JSON.stringify(jsonPar),
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
-                    var tbody = $(".table tbody").empty();
+                    var tbody = $("#table tbody").empty();
                     var s = JSON.parse(data.d);
                     for (var i in s) {
                         var cont = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectNo + "</td><td>" + s[i].EngineerIdName + "</td>"
+                        var row = document.createElement("tr");
+                        row.innerHTML = cont;
+                        tbody.append(row);
+                    }
+
+                }, error: function (xhr) {
+                    alert(xhr);
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: Globals.ServiceUrl + "GetDelayTaskList",
+                data: JSON.stringify(jsonPar),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    var tbody = $("#table1 tbody").empty();
+                    var s = JSON.parse(data.d);
+                    for (var i in s) {
+                        var cont = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].Tester1IdName + "</td><td>" + s[i].Tester2IdName + "</td>";
                         var row = document.createElement("tr");
                         row.innerHTML = cont;
                         tbody.append(row);

@@ -230,7 +230,7 @@
                 </div>
             </div>
             <div class="row-fluid" style="width:46%;float:left;margin:5px 0 0 15px;">
-                <table class="table1 table-hover" >
+                <table class="table table-hover"id="table1" >
                     <thead>
                         <tr>
                             <th class="span2">
@@ -240,9 +240,11 @@
                                 <span class="line"></span>项目名
                             </th>
                             <th class="span2">
-                                <span class="line"></span>测试工程师
+                                <span class="line"></span>样品接收者
                             </th>
-                            
+                            <th class="span2">
+                                <span class="line"></span>样品交付这
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -253,7 +255,7 @@
              
              </div>
             <div class="row-fluid" style="width:46%;float:right;margin:5px 15px 0 0;">
-                <table class="table table-hover">
+                <table class="table table-hover"id="table">
                     <thead>
                         <tr>
                             <th class="span2">
@@ -292,10 +294,10 @@
         var maxNum = 100;
         var minNum = 0;
         $(".knob").knob({
-            width:150,
+            width:"120",
             max: maxNum,
             min: minNum,
-            thickness: .3,
+            thickness: .2,
             'readonly':"readonly",
             fgColor: '#30a1ec',
             bgColor: "#d4ecfd",
