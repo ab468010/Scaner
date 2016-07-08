@@ -123,9 +123,9 @@ namespace Logics
             _Dal.UpdateSampleProjectId(projectId);
             return _Dal.UpdateProjectStatusCode(projectId);
         }
-        public IList<Project> GetProjectListByStatusCode()
+        public IList<Project> GetProjectListByStatus()
         {
-            return _Dal.GetProjectListByStatusCode();
+            return _Dal.GetProjectListByStatus();
         }
         public long GetUProjectCount(int systemuserId,int roleId)
         {
@@ -140,6 +140,23 @@ namespace Logics
                 return _Dal.GetProjectByTaksTester(systemuserId);
             }
         }
-
+         public IList<Project> GetDelayProjectList(int systemuserId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetALLDelayProject();
+            }else if (roleId == 2)
+            {
+                return _Dal.GetDelayProjectByEngineerId(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetDelayProjectByTester(systemuserId);
+            }
+            else
+            {
+                IList<Project> projectList = new List<Project>();
+                return projectList;
+            }
+        }
     }
 }

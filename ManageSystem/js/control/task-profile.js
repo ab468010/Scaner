@@ -1,8 +1,12 @@
-﻿
+﻿var statucode = $.getUrlParam("projectstatuscode");
 var id = $.getUrlParam("taskid");
 function taskprofile() {
     $("#myModal .modal-body").load("child/edit-task.html");
     $("#myModal2 .modal-body").load("child/edit-tasksample.html");
+    if (statucode < 3) {
+        $(".task2.delete1").attr({ style: "display:inline" });
+        $(".task2.edit1").attr({ style: "display:inline" });
+    }
     (function () {
         $(".sample2.create1").click(function () {
             var jsonPar = {
@@ -28,7 +32,7 @@ function taskprofile() {
             })
         })
         $("#savechange2").click(function () {
-            var jsonPar = {
+            var jsonPara = {
                 taskid: id,
                 sampleid:$("#edit_samplename").val()
             }
@@ -36,7 +40,7 @@ function taskprofile() {
                 type: "post",
                 contentType: "application/json; charset=utf-8",
                 url: Globals.ServiceUrl + "CreateTaskSample",
-                data: JSON.stringify(jsonPar),
+                data: JSON.stringify(jsonPara),
                 success: function (data) {
                     var s = JSON.parse(data.d);
                     if (s) {
@@ -65,14 +69,14 @@ function taskprofile() {
                 alert(xhr);
             }
         })
-        var jsonPara = {
+        var jsonPa = {
             taskid:id
         }          
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "SelectTaskId",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(jsonPara),
+                data: JSON.stringify(jsonPa),
                 success: function (data) {
                     var sh = JSON.parse(data.d);
                     $("#projectid_hidden").val(sh.ProjectId);
@@ -186,28 +190,33 @@ function taskprofile() {
 
                 })
                 $(".sample2.delete1").click(function () {
-                    if (confirm("删除吗？")) {
-                        var jsonPar = {
-                            sampleId: $(this).parent().parent().parent().parent().find("[name='Id']").text()
-                        }
-                        $.ajax({
-                            type: "post",
-                            url: Globals.ServiceUrl + "DeleteTaskSample",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(jsonPar),
-                            success: function (data) {
-                                var s = JSON.parse(data.d);
-                                if (s) {
-                                    alert("删除成功");
-                                    window.location.reload();
-                                } else {
-                                    alert("删除失败");
-                                }
-                            }, error: function (xhr) {
-                                alert(xhr);
+                    if (statucode > 2) {
+                        alert("项目已开始无法删除样品")
+                    } else {
+                        if (confirm("删除吗？")) {
+                            var jsonPar = {
+                                sampleId: $(this).parent().parent().parent().parent().find("[name='Id']").text()
                             }
-                        })
+                            $.ajax({
+                                type: "post",
+                                url: Globals.ServiceUrl + "DeleteTaskSample",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(jsonPar),
+                                success: function (data) {
+                                    var s = JSON.parse(data.d);
+                                    if (s) {
+                                        alert("删除成功");
+                                        window.location.reload();
+                                    } else {
+                                        alert("删除失败");
+                                    }
+                                }, error: function (xhr) {
+                                    alert(xhr);
+                                }
+                            })
+                        }
                     }
+                
                 })
             }, error: function (xhr) {
                 alert(xhr);

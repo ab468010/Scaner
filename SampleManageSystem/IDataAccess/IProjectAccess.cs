@@ -20,6 +20,9 @@ namespace IDataAccess
         IList<Project> GetUProjectList(int page);
         IList<Project> GetUProjectListByEnginnerId(int systemuserId, int page);
         IList<Project> GetUProjectListByTesterId(int systemuserId, int page);
+        IList<Project> GetALLDelayProject();
+        IList<Project> GetDelayProjectByEngineerId(int systemuserId);
+        IList<Project> GetDelayProjectByTester(int systemuserId);
         long GetAllUProjectCount();
         long GetProjectCountByEngineer(int systemuserId);
         long GetProjectByTaksTester(int systemuserId);
@@ -28,7 +31,7 @@ namespace IDataAccess
         bool ExistTask(int projectId);
         int CreateProject(Project project);
         bool UpdateProjectStatusCode(int projectId);
-        IList<Project> GetProjectListByStatusCode();
+        IList<Project> GetProjectListByStatus();
         bool UpdateContainerProjectId(int projectId);
         bool UpdateSampleProjectId(int projectId);
  

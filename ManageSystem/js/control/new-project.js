@@ -1,6 +1,6 @@
 ﻿var userJs, userVar;
 
-
+var createdby = Globals.getCookie("SystemUserId");
 function initConfig() {
     //初始化模块JS
     userJs = new Globals.project();
@@ -78,7 +78,8 @@ function initConfig() {
                         Description: $("#textDescription").text(),
                         CustomerId: $("#sltCustomer").val(),
                         EngineerId: $("#sltEngineer").val(),
-                        TesterId: $("#sltTester").val()
+                        TesterId: $("#sltTester").val(),
+                        CreatedBy: createdby
                     }
                 };
 

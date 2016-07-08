@@ -16,5 +16,7 @@ namespace IDataAccess
         long GetDelayProjectCount();
         long GetGoingProjectCount();
         long GetFinishProjectCount();
+       IList<Task> SelectTaskByEngineerId(int number, int systemuserId);
+       IList<Task> SelectTaskByTseterId(int number,int systemuserId);
     }
 }

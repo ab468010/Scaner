@@ -24,7 +24,7 @@ namespace Model
             this.ModifiedOn = modifiedon;
             this.Description = description;
         }
-        public Task(int taskid,string taskname,string projectname,string roomname, DateTime estimatedstart, DateTime estimatedend, DateTime actualstart, DateTime actualend)
+        public Task(int taskid,string taskname,string projectname,string roomname, DateTime estimatedstart, DateTime estimatedend, DateTime actualstart, DateTime actualend,int projectstatuscode)
         {
             this.TaskId = taskid;
             this.Name = taskname;
@@ -34,6 +34,7 @@ namespace Model
             this.EstimatedEnd = estimatedend;
             this.ActualStart = actualstart;
             this.ActualEnd = actualend;
+            this.ProjectStatusCode = projectstatuscode;
         }
         public Task(int taskid, string taskname, string projectname, string roomname, DateTime estimatedstart, DateTime estimatedend,string description)
         {
@@ -65,6 +66,7 @@ namespace Model
         public string Description { get; set; }
         public int Tester1 { get; set; }
         public int Tester2 { get; set; }
+      public int ProjectStatusCode { get; set; }
 
     }
 }

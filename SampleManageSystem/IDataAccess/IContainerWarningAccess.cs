@@ -8,5 +8,10 @@ namespace IDataAccess
 {
      public interface IContainerWarningAccess:IBaseAccess<Model.ContainerWarning>
     {
+
+        long  UseBigContainer();
+        long  UseSmallContainer();
+        int   GetBigContainerWarning(int id);
+        int GetSmallContaierWarning(int id);
     }
 }

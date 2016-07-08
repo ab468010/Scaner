@@ -302,10 +302,10 @@ public partial class handle_UserHandler : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string GetProjectListByStatusCode()
+    public static string GetProjectListByStatus()
     {
         ProjectLogics po = new ProjectLogics();
-        return JsonConvert.SerializeObject(po.GetProjectListByStatusCode());
+        return JsonConvert.SerializeObject(po.GetProjectListByStatus());
     }
     [WebMethod]
     public static string SelectRoom()
@@ -369,6 +369,13 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(task.GetDelayProjectCount());
     }
     [WebMethod]
+    
+    public static string GetDelayProjectList(int systemuserId,int roleId)
+    {
+        ProjectLogics project = new ProjectLogics();
+        return JsonConvert.SerializeObject(project.GetDelayProjectList(systemuserId, roleId));
+    }
+    [WebMethod]
     public static string GetDelayTaskCount()
     {
         TaskLogics task = new TaskLogics();
@@ -393,10 +400,10 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(task.GetTaskListByProjectId(projectId));
     }
     [WebMethod]
-    public static string SelectTask(int number)
+    public static string SelectTask(int number,int systemuserId,int roleId)
     {
         TaskLogics ta = new TaskLogics();
-        return JsonConvert.SerializeObject(ta.SelectTask(number));
+        return JsonConvert.SerializeObject(ta.SelectTask(number,systemuserId,roleId));
     }
     [WebMethod]
     public static string DeleteTask(int taskid)
@@ -710,7 +717,7 @@ public partial class handle_UserHandler : System.Web.UI.Page
     public static string GetContainerWarning(int id)
     {
         ContainerWarningLogics co = new ContainerWarningLogics();
-        return JsonConvert.SerializeObject(co.GetModel(id));
+        return JsonConvert.SerializeObject(co.GetContainerWarning(id));
     }
     [WebMethod]
     public static string UpdateContainerWarning(ContainerWarning containerwarning)

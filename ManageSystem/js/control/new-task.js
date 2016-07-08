@@ -1,4 +1,4 @@
-﻿
+﻿var createdby = Globals.getCookie("SystemUserId");
 $(function () {
     $.ajax({
         type: "post",
@@ -22,7 +22,7 @@ $(function () {
    
     $.ajax({
         type: "post",
-        url: Globals.ServiceUrl + "GetProjectListByStatusCode",
+        url: Globals.ServiceUrl + "GetProjectListByStatus",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             var s = JSON.parse(data.d);
@@ -61,7 +61,8 @@ $(function () {
                     estimatedend: $("#estimatedend").val(),
                     description: $("#description").val(),
                     tester1:$("#tester1").val(),
-                    tester2:$("#tester2").val()
+                    tester2: $("#tester2").val(),
+                    CreatedBy: createdby
                 }
             }
             $.ajax({

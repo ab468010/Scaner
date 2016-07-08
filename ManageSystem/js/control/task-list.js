@@ -1,5 +1,6 @@
-﻿$(function () {
-
+﻿var systemuserid = Globals.getCookie("SystemUserId");
+var roleid = Globals.getCookie("RoleId");
+$(function () {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetTaskCount",
@@ -58,7 +59,9 @@
 })
 function Page(page) {
     var jsonPar = {
-        number: page
+        number: page,
+        systemuserId: systemuserid,
+        roleId:roleid
     }
     $.ajax({
         type: "post",
@@ -76,7 +79,8 @@ function Page(page) {
                 var astart = Globals.datetime_is_null(s[i].ActualStart);
                 var aend = Globals.datetime_is_null(s[i].ActualEnd);
                 var con = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].RoomName + "</td><td>" + estart +
-                    "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 edit1'>编辑</a> <a class='task2 delete1'>删除</a></li></ul>" + "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td>";
+                    "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 edit1'>详情</a> <a class='task2 delete1'>删除</a></li></ul>" +
+                    "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td><td name='projectstatuscode'style='display:none'>"+s[i].ProjectStatusCode+"</td>"
                 var row = document.createElement("tr");
                 row.innerHTML = con;
                 tbody.append(row)
@@ -88,33 +92,40 @@ function Page(page) {
 
             $(".task2.edit1").click(function () {
                 
-                    location.href="task-profile.html?taskid="+ $(this).parent().parent().parent().parent().find("[name='taskid']").text()
+                location.href = "task-profile.html?taskid=" + $(this).parent().parent().parent().parent().find("[name='taskid']").text() + "&projectstatuscode=" +
+                    $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text();
                 })
       
            
             $(".task2.delete1").click(function () {
-                if (confirm("删除吗？")) {
-                    var jsonPar = {
-                        taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
-                    }
-                    $.ajax({
-                        type: "post",
-                        url: Globals.ServiceUrl + "DeleteTask",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(jsonPar),
-                        success: function (data) {
-                            var s = JSON.parse(data.d);
-                            if (s) {
-                                alert("删除成功");
-                                window.location.reload();
-                            } else {
-                                alert("删除失败");
-                            }
-                        }, error: function (xhr) {
-                            alert(xhr);
+                var s = $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text()
+                if (s > 2) {
+                    alert("项目已开始无法删除")
+                } else {
+                    if (confirm("删除吗？")) {
+                        var jsonPar = {
+                            taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
-                    })
+                        $.ajax({
+                            type: "post",
+                            url: Globals.ServiceUrl + "DeleteTask",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(jsonPar),
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    alert("删除成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("删除失败");
+                                }
+                            }, error: function (xhr) {
+                                alert(xhr);
+                            }
+                        })
+                    }
                 }
+           
 
             })
 

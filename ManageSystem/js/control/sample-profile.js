@@ -26,7 +26,7 @@ function initConfig() {
             $("#myModal .modal-body").load("child/edit-sample.html");
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + "GetProjectListByStatusCode",
+                url: Globals.ServiceUrl + "GetProjectListByStatus",
                 data: JSON.stringify(userInfo),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {

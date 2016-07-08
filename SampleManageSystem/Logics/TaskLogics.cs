@@ -25,9 +25,23 @@ namespace Logics
         {
             return _Dal.Create(task);
         }
-        public IList<Task> SelectTask(int number)
+        public IList<Task> SelectTask(int number,int systemuserId,int roleId)
         {
-            return _Dal.SelectTask(number);
+            if (roleId == 6)
+            {
+                return _Dal.SelectTask(number);
+            }else if (roleId == 2)
+            {
+                return _Dal.SelectTaskByEngineerId(number, systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.SelectTaskByTseterId(number, systemuserId);
+            }
+            else
+            {
+                return null;
+            }
+           
         }
         public bool DeleteTask(int taskid)
         {
@@ -74,5 +88,6 @@ namespace Logics
         {
             return _Dal.GetFinishProjectCount();
         }
+        
     }
 }
