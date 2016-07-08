@@ -41,6 +41,11 @@ namespace Logics
            
         }
 
+        public IList<Project> GetNotFinishedProjectList()
+        {
+            return _Dal.GetNotFinishedProjectList();
+        }
+
         public IList<Project> GetProjectListByUserId(int userId,int roleId)
         {
             if (roleId == 6)

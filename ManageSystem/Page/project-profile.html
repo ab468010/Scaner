@@ -165,10 +165,10 @@
                         
                         <span class="area"  id="spanProjectNo"></span>
                     </div>
-                    <a class="btn-flat icon pull-right delete-project project2 delete1" >
+                    <a class="btn-flat icon pull-right delete-project project2 delete1"style="display:none" >
                         <i class="icon-trash"></i>
                     </a>
-                    <a class="btn-flat icon large pull-right project2 edit1"style="margin-right:5px;" href="#myModal"data-toggle="modal">编辑
+                    <a class="btn-flat icon large pull-right project2 edit1"style="margin-right:5px;display:none;" href="#myModal"data-toggle="modal">编辑
                     </a>
                     <a class="btn-flat icon large pull-right"style="margin-right:5px;display:none"id="givecustomer">
                         规划客户
@@ -234,7 +234,7 @@
                   
                     <ul>
                         <li>项目工程师：<span id="spanEngineer">Leon S Kennedy</span> </li>
-                        <li>测试工程师：<span id="spanTester">Dannis Lin</span></li>
+                   
                         <li>客户：<span id="spanCustomer">上海罗盘信息科技有限公司</span></li>
                         <li>开始时间：<span id="spanStartTime">2012-01-01</span>
                         </li>
@@ -248,6 +248,7 @@
             </div>
         </div>
     </div>
+    <input id="projectstatuscode" type="hidden" />
     <!-- end main container -->
     <!-- 模态框（Modal） -->
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

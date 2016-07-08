@@ -33,7 +33,7 @@ namespace SystemService
         public XmlDocument GetProjectList()
         {
             ProjectLogics projectLogics = new ProjectLogics();
-            IList<Project> projectList = projectLogics.GetUProjectListByUser();
+            IList<Project> projectList = projectLogics.GetNotFinishedProjectList();
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.InnerXml = Xml<Project>.EntityToXml(projectList);

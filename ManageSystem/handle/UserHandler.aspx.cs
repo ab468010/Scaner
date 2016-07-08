@@ -117,7 +117,7 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(project.GetUProjectCount(systemuserId,roleId));
     }
     [WebMethod]
-    public static string GetUprojectListByUser(int systemuserId,int roleId,int page)
+    public static string GetUProjectListByUser(int systemuserId,int roleId,int page)
     {
         ProjectLogics projectLogics = new ProjectLogics();
         return JsonConvert.SerializeObject(projectLogics.GetUProjectListByUser(systemuserId,roleId,page));
@@ -380,6 +380,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
     {
         TaskLogics task = new TaskLogics();
         return JsonConvert.SerializeObject(task.GetDelayTaskCount());
+    }
+    [WebMethod]
+    public static string GetDelayTaskList(int systemuserId,int roleId)
+    {
+        TaskLogics task = new TaskLogics();
+        return JsonConvert.SerializeObject(task.GetDelayTaskList(systemuserId, roleId));
     }
     [WebMethod]
     public static string GetTaskCount()

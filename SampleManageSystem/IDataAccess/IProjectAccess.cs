@@ -23,6 +23,7 @@ namespace IDataAccess
         IList<Project> GetALLDelayProject();
         IList<Project> GetDelayProjectByEngineerId(int systemuserId);
         IList<Project> GetDelayProjectByTester(int systemuserId);
+        IList<Project> GetNotFinishedProjectList();
         long GetAllUProjectCount();
         long GetProjectCountByEngineer(int systemuserId);
         long GetProjectByTaksTester(int systemuserId);

@@ -17,27 +17,7 @@ function initConfig() {
         
         $(document).ready(function () {
             $("#myModal .modal-body").load("child/edit-project.html");
-            var jsonPa= {
-                rolename:"Tester"
-            }
-            $.ajax({            
-                type: "post",
-                url: Globals.ServiceUrl + "GetUserByRole",
-                data: JSON.stringify(jsonPa),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                    var option = $("#testengineer").empty();
-                    for (var i in s) {
            
-                     option.append($("<option>").val(s[i].SystemUserId).text(s[i].Name));                       
-                    }
-                    option.append($("<option>").val(-1).text("Nothing selected"));
-                    $('#testengineer').selectpicker('refresh');
-                }, error: function (xhr) {
-                    alert(xhr);
-                }
-            })
             var jsonP = {
                 rolename: "Engineer"
             }
@@ -71,6 +51,12 @@ function initConfig() {
                 success: function (data) {
                  
                     var project = JSON.parse(data.d);
+                    $("#projectstatuscode").val(project.StatusCode);
+                    if (project.StatusCode < 3) {
+                        $(".project2.edit1").attr({ style: "display:inline" });
+                        $(".project2.delete1").attr({ style: "display:inline" });
+                       
+                    }
                     if (project.StatusCode == 4) {
                         $("#givecustomer").attr({style:"display:inline"})
                     } 
@@ -79,7 +65,7 @@ function initConfig() {
                     $("#pDescription").text(project.Description);
                     $("#spanProjectNo").text(project.ProjectNo);
                     $("#spanEngineer").text(project.EngineerIdName);
-                    $("#spanTester").text(project.TesterIdName);
+                 
                     $("#spanCustomer").text(project.CustomerIdName);
                     $("#spanStatus").text(projectJs.bulidstatus(project.StatusCode));
                     $("#spanStartTime").text(Globals.datetime_is_null(project.StartTime));
@@ -122,62 +108,71 @@ function initConfig() {
                 var tbody = $(".table tbody").empty();
                 for (var i in s) {
                     var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
-                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
+                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'style='display:none'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
                         + "</td><td name='taskid' style='display:none'>" + s[i].TaskId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
+                    if ($("#projectstatuscode").val ()< 3) {
+                        $(".actions").attr({style:"display:inline"})
+                    }
                 }
 
                 $(".task2.delete1").click(function () {
-                    if (confirm("删除吗？")) {
-                        var jsonPar = {
+                  
+                        if (confirm("删除吗？")) {
+                            var jsonPar = {
+                                taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: Globals.ServiceUrl + "DeleteTask",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(jsonPar),
+                                success: function (data) {
+                                    var s = JSON.parse(data.d);
+                                    if (s) {
+                                        alert("删除成功");
+                                        window.location.reload();
+                                    } else {
+                                        alert("请先删除样品");
+                                    }
+                                }, error: function (xhr) {
+                                    alert(xhr);
+                                }
+                            })
+                        }
+                    
+                
+                });
+                $(".task2.edit1").click(function () {
+                 
+                        $("#myModal1 .modal-body").load("child/edit-task.html");
+                        var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
                         $.ajax({
                             type: "post",
-                            url: Globals.ServiceUrl + "DeleteTask",
+                            url: Globals.ServiceUrl + "SelectTaskId",
                             contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(jsonPar),
+                            data: JSON.stringify(json),
                             success: function (data) {
-                                var s = JSON.parse(data.d);
-                                if (s) {
-                                    alert("删除成功");
-                                    window.location.reload();
-                                } else {
-                                    alert("请先删除样品");
-                                }
+                                var sh = JSON.parse(data.d);
+                                $("#name").val(sh.Name);
+                                $("#projectid").val(sh.ProjectName);
+                                $("#description").val(sh.Description);
+                                $("#roomid").val(sh.RoomName);
+                                $("#taskid").val(sh.TaskId);
+                                $("#estimatedstart").val(Globals.datetime_is_null(sh.EstimatedStart) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedStart));
+                                $("#estimatedend").val(Globals.datetime_is_null(sh.EstimatedEnd) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedEnd));
+
+
                             }, error: function (xhr) {
                                 alert(xhr);
                             }
                         })
-                    }
-                });
-                $(".task2.edit1").click(function () {
-                    $("#myModal1 .modal-body").load("child/edit-task.html");
-                    var json = {
-                        taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
-                    }
-                    $.ajax({
-                        type: "post",
-                        url: Globals.ServiceUrl + "SelectTaskId",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(json),
-                        success: function (data) {
-                            var sh = JSON.parse(data.d);
-                            $("#name").val(sh.Name);
-                            $("#projectid").val(sh.ProjectName);
-                            $("#description").val(sh.Description);
-                            $("#roomid").val(sh.RoomName);
-                            $("#taskid").val(sh.TaskId);
-                            $("#estimatedstart").val(Globals.datetime_is_null(sh.EstimatedStart) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedStart));
-                            $("#estimatedend").val(Globals.datetime_is_null(sh.EstimatedEnd) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedEnd));
-
-                          
-                        }, error: function (xhr) {
-                            alert(xhr);
-                        }
-                    })
+                    
+                  
                 })
 
             }, error: function (xhr) {

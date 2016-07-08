@@ -10,6 +10,83 @@ namespace DataAccess
 {
      public  class TaskAccess:IDataAccess.ITaskAccess
     {
+        public IList<Task> GetDelayTaskByTester(int systemuserId)
+        {
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
+                          left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
+                          left join dbo.project project on project.projectid = task.projectid
+                          where now() > estimatedend and project.engineerid=@systemuserid ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(rdr["taskid"]);
+                    task.Name = rdr["name"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.ProjectName = rdr["projectidname"].ToString();
+                    taskList.Add(task);
+                }
+            }
+            return taskList;
+        }
+        public IList<Task> GetDelayTaskByEngineer(int systemuserId)
+        {
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
+                          left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
+                          left join dbo.project project on project.projectid = task.projectid
+                          where now() > estimatedend  and (tester1=@systemuserid or tester2=@systemuserid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
+            {
+                while (rdr.Read())
+                {
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(rdr["taskid"]);
+                    task.Name = rdr["name"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.ProjectName = rdr["projectidname"].ToString();
+                    taskList.Add(task);
+                }
+            }
+            return taskList;
+        }
+        public IList<Task> GetAllDelayTask()
+        {
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
+                          left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
+                          left join dbo.project project on project.projectid = task.projectid
+                          where now() > estimatedend ";
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+            {
+                while (rdr.Read())
+                {
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(rdr["taskid"]);
+                    task.Name = rdr["name"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.ProjectName = rdr["projectidname"].ToString();
+                    taskList.Add(task);
+                }
+            }
+            return taskList;
+        }
         public IList<Task> SelectTaskByTseterId(int number, int systemuserId)
         {
             IList<Task> ta = new List<Task>();
