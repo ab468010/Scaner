@@ -734,7 +734,7 @@ namespace DataAccess
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
                                 Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                where project.statuscode<3 order by project.createdon desc ";
+                                where project.statuscode<=3 order by project.createdon desc ";
      
             IList<Project> projectList = new List<Project>();
 
