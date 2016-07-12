@@ -46,39 +46,23 @@ namespace Logics
             return _Dal.GetNotFinishedProjectList();
         }
 
-        public IList<Project> GetProjectListByUserId(int userId,int roleId)
+        public IList<Project> GetProjectListByUserId(int userId,int roleId,int Page)
         {
             if (roleId == 6)
             {
-                return _Dal.GetAllProjectList();
+                return _Dal.GetAllProjectList(Page);
             }
            else if (roleId == 2)
             {
-                return _Dal.GetProjectListByEngineerId(userId);
+                return _Dal.GetProjectListByEngineerId(userId,Page);
             }
             else if(roleId==3)
             {
-                return _Dal.GetProjectListByTesterId(userId);
+                return _Dal.GetProjectListByTesterId(userId,Page);
             }
             return new List<Project>();
         }
-        public IList<Project> GetProjectListByStatusCode(int userId,int roleId,int statusCode)
-        {
-            if (roleId == 6)
-            {
-                return _Dal.GetAllProjectList(statusCode);
-            }
-            else if (roleId == 2)
-            {
-                return _Dal.GetProjectListByEngineerId(userId,statusCode);
-
-            }
-            else if (roleId == 3)
-            {
-                return _Dal.GetProjectListByTesterId(userId,statusCode);
-            }
-            return new List<Project>();
-        }
+  
         public IList<Project> GetProjectList()
         {
             return _Dal.GetProjectList();
@@ -138,24 +122,24 @@ namespace Logics
             {
                 return _Dal.GetAllUProjectCount();
             }else if(roleId==2){
-                return _Dal.GetProjectCountByEngineer(systemuserId);
+                return _Dal.GetUProjectCountByEngineer(systemuserId);
             }
             else
             {
-                return _Dal.GetProjectByTaksTester(systemuserId);
+                return _Dal.GetUProjectByTaksTester(systemuserId);
             }
         }
-         public IList<Project> GetDelayProjectList(int systemuserId,int roleId)
+         public IList<Project> GetDelayProjectList(int systemuserId,int roleId,int Page)
         {
             if (roleId == 6)
             {
-                return _Dal.GetALLDelayProject();
+                return _Dal.GetALLDelayProject(Page);
             }else if (roleId == 2)
             {
-                return _Dal.GetDelayProjectByEngineerId(systemuserId);
+                return _Dal.GetDelayProjectByEngineerId(systemuserId,Page);
             }else if (roleId == 3)
             {
-                return _Dal.GetDelayProjectByTester(systemuserId);
+                return _Dal.GetDelayProjectByTester(systemuserId,Page);
             }
             else
             {
@@ -163,5 +147,47 @@ namespace Logics
                 return projectList;
             }
         }
+        public long GetDelayProjectCount(int systemuserId, int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetDelayProjectCount();
+            }
+            else if (roleId == 2)
+            {
+                return _Dal.GetDelayProjectCountByEngineerId(systemuserId);
+            }
+            else if (roleId == 3)
+            {
+                return _Dal.GetDelayProjectCountByTesterId(systemuserId);
+            }
+            else
+            {
+                var a = 0;
+                return a;
+            }
+
+        }
+        public long GetProjectCount(int userId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetAllProjectCount();
+            }
+            else if (roleId == 2)
+            {
+                return _Dal.GetProjectCountByEngineer(userId);
+            }
+            else if (roleId == 3)
+            {
+                return _Dal.GetProjectByTaksTester(userId);
+            }
+            else
+            {
+                var a = 0;
+                return a;
+            }
+        }
+
     }
 }

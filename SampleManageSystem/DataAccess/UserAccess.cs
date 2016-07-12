@@ -170,7 +170,7 @@ namespace DataAccess
             return userList;
         }
 
-        public IList<User> GetUserList(int number)
+        public IList<User> GetUserListA(int number)
         {
             IList<User> userList = new List<User>();
             string sqlStr = @"Select SystemUserId,sy.Name,Username,email,ro.name roleidname,usercode from dbo.SystemUser sy left join dbo.role ro

@@ -155,18 +155,8 @@
 
                     <div class="row-fluid filter-block">
                         <div class="pull-right">
-                            <div class="ui-select"style="margin-right:10px;">
-                                <select id="Project">
-                                    <option value="1">项目创建</option>
-                                    <option value="2">项目测试</option>
-                                    <option value="3">测试完成</option>
-                                    <option value="4">归还货架</option>
-                                    <option value="5">项目完成</option>
-                                </select>
-                            </div>
-                            <a class="btn-flat icon large " style="margin-right:100px;height:15px" id="selectproject">
-                                搜索
-                            </a>
+                       
+                          
                             <a class="btn-flat success project2 create1 " id="btnNew">新建项目</a>
                         </div>
                     </div>
@@ -199,7 +189,17 @@
                 <!-- end products table -->
 
        
-
+                <div class="pagination " style="width:100%">
+                    <ul style="float:right">
+                        <li><a class="first">首 页</a></li>
+                        <li><a class="before">上一页</a></li>
+                        <li><a class="next">下一页</a></li>
+                        <li><a class="last">末 页</a></li>
+                        <li><input type="text" id="pageNum" name="pageNum" size="3" style="width:16px;height:16px;float:left;text-align:center"></li>
+                        <li><a class="Go">跳 转</a></li>
+                        <li><a> 第<span id="PageNo"></span>页/总计<span id="totalPageNo"></span>页</a></li>
+                    </ul>
+                </div>
 
             </div>
         </div>

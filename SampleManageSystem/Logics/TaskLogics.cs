@@ -72,14 +72,25 @@ namespace Logics
         {
             return _Dal.GetTaskList();
         }
-        public long GetDelayTaskCount()
+        public long GetDelayTaskCount(int systemuserId, int roleId)
         {
-            return _Dal.GetDelayTaskCount();
+            if (roleId == 6)
+            {
+                return _Dal.GetDelayTaskCount();
+            }else if (roleId == 2)
+            {
+                return _Dal.GetDelayTaskCountByEngineerId(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetDelayTaskCountByTesterId(systemuserId);
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
-        public long GetDelayProjectCount()
-        {
-            return _Dal.GetDelayProjectCount();
-        }
+    
         public long GetGoingProjectCount()
         {
             return _Dal.GetGoingProjectCount();
@@ -88,17 +99,17 @@ namespace Logics
         {
             return _Dal.GetFinishProjectCount();
         }
-        public IList<Task> GetDelayTaskList(int systemuserId,int roleId)
+        public IList<Task> GetDelayTaskList(int systemuserId,int roleId,int Page)
         {
             if (roleId == 6)
             {
-                return _Dal. GetAllDelayTask();
+                return _Dal. GetAllDelayTask(Page);
             }else if (roleId == 2)
             {
-                return _Dal. GetDelayTaskByEngineer(systemuserId);
+                return _Dal. GetDelayTaskByEngineer(systemuserId,Page);
             }else if (roleId == 3)
             {
-                return _Dal. GetDelayTaskByTester(systemuserId);
+                return _Dal. GetDelayTaskByTester(systemuserId,Page);
             }
             else
             {
@@ -106,7 +117,23 @@ namespace Logics
                 return taskList;
             }
         }
-
+        public long GetUTaskCount(int systemuserId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetAllUTaskCount();
+            }else if (roleId == 2)
+            {
+                return _Dal.GetUTaskByEngineerId(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetUTaskByTesterId(systemuserId);
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
     }
 }

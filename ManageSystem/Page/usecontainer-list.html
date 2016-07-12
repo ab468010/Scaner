@@ -24,12 +24,10 @@
 
     <!--<!-- open sans font -->
     <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />-->
-
     <!-- lato font -->
     <!--<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css' />-->
-
     <!--if lt IE 9]-->
-      <!--[script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <!--[script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
     <![endif]-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -177,28 +175,28 @@
                 <div class="row-fluid stats-row">
                     <div class="span3 stat">
                         <div class="data">
-                            <span class="number"id="delayproject"></span>
+                            <span class="number" id="delayproject"></span>
                             延误项目
                         </div>
                         <span class="date"></span>
                     </div>
                     <div class="span3 stat">
                         <div class="data">
-                            <span class="number"id="goingproject"></span>
+                            <span class="number" id="goingproject"></span>
                             进行中的项目
                         </div>
                         <span class="date"></span>
                     </div>
                     <div class="span3 stat">
                         <div class="data">
-                            <span class="number"id="finishproject"></span>
+                            <span class="number" id="finishproject"></span>
                             完成的项目
                         </div>
                         <span class="date"></span>
                     </div>
                     <div class="span3 stat last">
                         <div class="data">
-                            <span class="number"id="usecontainer"></span>
+                            <span class="number" id="usecontainer"></span>
                             已使用的周转箱
                         </div>
                         <span class="date"></span>
@@ -207,133 +205,54 @@
             </div>
             <!-- end upper main stats -->
 
-            <div id="pad-wrapper"style="font-size:16px">
-                <div class="knob-wrapper" style="float:left;margin-left:100px">
-                    <input id="utask" class="knob" type="text" data-width="150" data-fgcolor="#009100" data-skin="tron" data-thickness=".1" data-angleoffset="0" />
-                    <div class="info">
-                        <div class="param"style="margin:-70px 0 0 30px">
-                            <span class="line blue"></span>
-                            延误任务
-                        </div>
-                    </div>
-                    </div>
+        </div>
 
-                    <div class="knob-wrapper" style="float:right;margin-right:200px;margin-bottom:0px;">
-                        <input type="text" class="knobP" value="" disabled="disabled" id="uproject" />
-                        <div class="info">
-                            <div class="param"style="margin:-70px 0 0 30px;">
-                                <span class="line blue"></span>
-                                延误项目
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row-fluid table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                        <th class="span4">
+                            <span class="line"></span>周转箱
+                        </th>
+                        <th class="span4">
+                            <span class="line"></span>条 码
+                        </th>
+                        <th class="span4">
+                            <span class="line"></span>规 格
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+   
+            <div class="pagination " style="width:100%">
+                <ul style="float:right">
+                    <li><a class="first">首 页</a></li>
+                    <li><a class="before">上一页</a></li>
+                    <li><a class="next">下一页</a></li>
+                    <li><a class="last">末 页</a></li>
+
+                    <li><a> 第<span id="PageNo"></span>页/总计<span id="totalPageNo"></span>页</a></li>
+                </ul>
             </div>
-            <div class="row-fluid" style="width:46%;float:left;margin:25px 0 0 15px;">
-                <table class="table table-hover"id="table1" >
-                    <thead>
-                        <tr>
-                            <th class="span2">
-                                任务名
-                            </th>
-                            <th class="span2">
-                                <span class="line"></span>项目名
-                            </th>
-                            <th class="span2">
-                                <span class="line"></span>样品接收者
-                            </th>
-                            <th class="span2">
-                                <span class="line"></span>样品交付这
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- row -->
+        </div>
+       
 
-                    </tbody>
-                </table>
-                <div class="pagination " style="width:100%">
-                    <ul style="float:right">
-                        <li><a class="first">首 页</a></li>
-                        <li><a class="before">上一页</a></li>
-                        <li><a class="next">下一页</a></li>
-                        <li><a class="last">末 页</a></li>
-                    
-                        <li><a> 第<span id="PageNo"></span>页/总计<span id="totalPageNo"></span>页</a></li>
-                    </ul>
-                </div>
-             </div>
-            <div class="row-fluid" style="width:46%;float:right;margin:25px 15px 0 0;">
-                <table class="table table-hover"id="table">
-                    <thead>
-                        <tr>
-                            <th class="span2">
-                                项目名
-                            </th>
-                            <th class="span2">
-                                <span class="line"></span>项目编号
-                            </th>
-                            <th class="span2">
-                                <span class="line"></span>项目工程师
-                            </th>
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- row -->
-
-                    </tbody>
-                </table>
-                <div class="pagination " style="width:100%">
-                    <ul style="float:right">
-                        <li><a class="firstp">首 页</a></li>
-                        <li><a class="beforep">上一页</a></li>
-                        <li><a class="nextp">下一页</a></li>
-                        <li><a class="lastp">末 页</a></li>
-                        
-                        <li><a> 第<span id="PageNop"></span>页/总计<span id="totalPageNop"></span>页</a></li>
-                    </ul>
-                </div>
-    </div>
- 
-    <!-- scripts -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="../js/lib/bootstrap.min.js"></script>
-    <script src="../js/lib/jquery-ui-1.10.2.custom.min.js"></script>
-    <script src="js/lib/bootstrap.min.js"></script>
-    <script src="../js/lib/jquery.knob.js"></script>
-    <script src="../js/lib/theme.js"></script>
-    <script src="../js/Globals.js"></script>
-    <script src="../js/Command.js"></script>
-    <script src="../js/control/index.js"></script>
+        <!-- scripts -->
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="../js/lib/bootstrap.min.js"></script>
+        <script src="../js/lib/jquery-ui-1.10.2.custom.min.js"></script>
+        <script src="js/lib/bootstrap.min.js"></script>
+        <script src="../js/lib/jquery.knob.js"></script>
+        <script src="../js/lib/theme.js"></script>
+        <script src="../js/Globals.js"></script>
+    
+     
 
 
-    <script>
-        //var maxNum = 100;
-        //var minNum = 0;
-        //$(".knob").knob({
-        //    width:"120",
-        //    max: maxNum,
-        //    min: minNum,
-        //    thickness: .2,
-        //    'readonly':"readonly",
-        //    fgColor: '#30a1ec',
-        //    bgColor: "#d4ecfd",
-        //    "readOnly": true
-        //});
-        //var maxNumP = 100;
-        //var minNumP = 0;
-        //$(".knobP").knob({
-        //    width: "120",
-        //    max: maxNumP,
-        //    min: minNumP,
-        //    thickness: .2,
-        //    'readonly': "readonly",
-        //    fgColor: '#30a1ec',
-        //    bgColor: "#d4ecfd",
-        //    "readOnly": true
-        //});
-    </script>
+
 
 </body>
 </html>

@@ -49,7 +49,7 @@ $(function () {
         }
     })
     $(".Go").click(function () {
-        if(($("#totalPageNo").text()>=$("#pageNum").val() >= 1 && $("#pageNum").val()!=$("#PageNo"))){
+        if(($("#totalPageNo").text()>=$("#pageNum").val() >= 1 && $("#pageNum").val()!=$("#PageNo").val())){
             var number = parseInt($("#pageNum").val());
             $("#PageNo").text(number);
             Page((number-1)*10);
@@ -106,6 +106,7 @@ function Page(page) {
                 $.ajax({
                     type: "post",
                     contentType: "application/json; charset=utf-8",
+                    async: false,
                     url: Globals.ServiceUrl + "Scontactid",
                     data: JSON.stringify(jsonPa),
                     success: function (data) {

@@ -53,11 +53,11 @@ public partial class handle_UserHandler : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string GetUserList(int number)
+    public static string GetUserListA(int number)
     {
         UserLogics userLogics = new UserLogics();
 
-        return JsonConvert.SerializeObject(userLogics.GetUserList(number));
+        return JsonConvert.SerializeObject(userLogics.GetUserListA(number));
     }
 
     [WebMethod]
@@ -123,11 +123,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(projectLogics.GetUProjectListByUser(systemuserId,roleId,page));
     }
     [WebMethod]
-    public static string GetProjectListByUserId(int userId,int roleId)
+    public static string GetProjectListByUserId(int userId,int roleId,int Page)
     {
         ProjectLogics projectLogics = new ProjectLogics();
-        return JsonConvert.SerializeObject(projectLogics.GetProjectListByUserId(userId,roleId));
+        return JsonConvert.SerializeObject(projectLogics.GetProjectListByUserId(userId,roleId,Page));
     }
+
 
     [WebMethod]
     public static string CreateProject(Project project)
@@ -141,11 +142,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ProjectLogics project = new ProjectLogics();
         return JsonConvert.SerializeObject(project.UpdateProjectStatusCode(projectId));
     }
+
     [WebMethod]
-    public static string GetProjectListByStatusCode(int userId,int roleId,int statusCode)
+     public static string GetProjectCount(int userId,int roleId)
     {
         ProjectLogics project = new ProjectLogics();
-        return JsonConvert.SerializeObject(project.GetProjectListByStatusCode(userId, roleId, statusCode));
+        return JsonConvert.SerializeObject(project.GetProjectCount(userId, roleId));
     }
     [WebMethod]
     public static string GetProject(int projectId)
@@ -165,7 +167,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ProjectLogics pro = new ProjectLogics();
         return JsonConvert.SerializeObject(pro.Update(project));
     }
- 
+    [WebMethod]
+    public static string GetDelayProjectCount(int systemuserId, int roleId)
+    {
+        ProjectLogics project = new ProjectLogics();
+        return JsonConvert.SerializeObject(project.GetDelayProjectCount(systemuserId, roleId));
+    }
 
     //contact
     [WebMethod]
@@ -362,30 +369,25 @@ public partial class handle_UserHandler : System.Web.UI.Page
         TaskLogics task = new TaskLogics();
         return JsonConvert.SerializeObject(task.GetFinishProjectCount());
     }
-    [WebMethod]
-    public static string GetDelayProjectCount()
-    {
-        TaskLogics task = new TaskLogics();
-        return JsonConvert.SerializeObject(task.GetDelayProjectCount());
-    }
+ 
     [WebMethod]
     
-    public static string GetDelayProjectList(int systemuserId,int roleId)
+    public static string GetDelayProjectList(int systemuserId,int roleId,int Page)
     {
         ProjectLogics project = new ProjectLogics();
-        return JsonConvert.SerializeObject(project.GetDelayProjectList(systemuserId, roleId));
+        return JsonConvert.SerializeObject(project.GetDelayProjectList(systemuserId, roleId,Page));
     }
     [WebMethod]
-    public static string GetDelayTaskCount()
+    public static string GetDelayTaskCount(int systemuserId, int roleId)
     {
         TaskLogics task = new TaskLogics();
-        return JsonConvert.SerializeObject(task.GetDelayTaskCount());
+        return JsonConvert.SerializeObject(task.GetDelayTaskCount(systemuserId,roleId));
     }
     [WebMethod]
-    public static string GetDelayTaskList(int systemuserId,int roleId)
+    public static string GetDelayTaskList(int systemuserId,int roleId,int Page)
     {
         TaskLogics task = new TaskLogics();
-        return JsonConvert.SerializeObject(task.GetDelayTaskList(systemuserId, roleId));
+        return JsonConvert.SerializeObject(task.GetDelayTaskList(systemuserId, roleId,Page));
     }
     [WebMethod]
     public static string GetTaskCount()
@@ -398,6 +400,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
     {
         TaskLogics ta = new TaskLogics();
         return JsonConvert.SerializeObject(ta.CreateTask(task));
+    }
+    [WebMethod]
+    public static string GetUTaskCount(int systemuserId,int roleId)
+    {
+        TaskLogics task = new TaskLogics();
+        return JsonConvert.SerializeObject(task.GetUTaskCount(systemuserId, roleId));
     }
     [WebMethod]
     public static string GetTaskListByProjectId(int projectId)

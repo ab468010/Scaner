@@ -68,7 +68,7 @@ function taskprofile() {
             }, error: function (xhr) {
                 alert(xhr);
             }
-        })
+        });
         var jsonPa = {
             taskid:id
         }          
@@ -170,7 +170,7 @@ function taskprofile() {
             type: "post",
             contentType: "application/json; charset=utf-8",
             url: Globals.ServiceUrl + "GetSampleListByTaskId",
-            data: JSON.stringify(jsonPara),
+            data: JSON.stringify(jsonPa),
             success: function (data) {
                 var sampleList = JSON.parse(data.d);
                 var tbody = $(".table tbody").empty();

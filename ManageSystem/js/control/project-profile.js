@@ -44,7 +44,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetProject",
-               // async: true,
+               
                 data: JSON.stringify(jsonPara),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -119,7 +119,7 @@ function initConfig() {
                 }
 
                 $(".task2.delete1").click(function () {
-                  
+                    if ($("#projectstatuscode").val()<3) {
                         if (confirm("删除吗？")) {
                             var jsonPar = {
                                 taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
@@ -142,11 +142,15 @@ function initConfig() {
                                 }
                             })
                         }
-                    
+
+                    } else {
+                        alert("项目完成不能删除")
+                    }
+                        
                 
                 });
                 $(".task2.edit1").click(function () {
-                 
+                    if ($("#projectstatuscode").val() < 3) {
                         $("#myModal1 .modal-body").load("child/edit-task.html");
                         var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
@@ -171,6 +175,10 @@ function initConfig() {
                                 alert(xhr);
                             }
                         })
+                    } else {
+                        alert("项目完成不能编辑")
+                    }
+                        
                     
                   
                 })

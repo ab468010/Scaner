@@ -71,6 +71,8 @@ function initConfig() {
                         });
                     } else {
                         alert("两次密码不一致");
+                        $("#pwdPassword").val("");
+                        $("#pwdAgain").val("");
                     }
                 } else {
                     alert("条码不能空");

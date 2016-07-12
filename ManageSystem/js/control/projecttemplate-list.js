@@ -4,6 +4,7 @@
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "SelectRoom",
+            async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);

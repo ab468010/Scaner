@@ -19,7 +19,7 @@ var id = $.getUrlParam("id");
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "GetRoleList",
-       
+                    async: false,
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var s = JSON.parse(data.d);
@@ -39,6 +39,7 @@ var id = $.getUrlParam("id");
                     $.ajax({
                         type: "post",
                         url: Globals.ServiceUrl + "GetUserById",
+                        async: false,
                         data: JSON.stringify(jsonPara),
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",

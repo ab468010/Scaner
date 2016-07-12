@@ -13,14 +13,19 @@ namespace IDataAccess
         IList<Task> GetTaskListByProjectId(int projectId);
         IList<Task> GetTaskList();
         long GetDelayTaskCount();
-        long GetDelayProjectCount();
+       
         long GetGoingProjectCount();
         long GetFinishProjectCount();
        IList<Task> SelectTaskByEngineerId(int number, int systemuserId);
        IList<Task> SelectTaskByTseterId(int number,int systemuserId);
-        IList<Task> GetAllDelayTask();
-        IList<Task> GetDelayTaskByEngineer(int systemuserId);
-        IList<Task> GetDelayTaskByTester(int systemuserId);
+        IList<Task> GetAllDelayTask(int Page);
+        IList<Task> GetDelayTaskByEngineer(int systemuserId,int Page);
+        IList<Task> GetDelayTaskByTester(int systemuserId,int Page);
+        long GetAllUTaskCount();
+        long GetUTaskByEngineerId(int systemuserId);
+         long GetUTaskByTesterId(int systemuserId);
+        long GetDelayTaskCountByEngineerId(int systemuserId);
+       long GetDelayTaskCountByTesterId(int systemuserId);
     }
 
 }

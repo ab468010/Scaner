@@ -27,6 +27,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetProjectListByStatus",
+      
                 data: JSON.stringify(userInfo),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -48,7 +49,7 @@ function initConfig() {
                 }
             });
 
-            $(document).ready(function () {
+     
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "GetContainerList",
@@ -71,7 +72,7 @@ function initConfig() {
                         alert(xhr);
                     }
                 });
-            });
+        
             if (id != null && id != "") {
                 var jsonPara = {
                     sampleId: id

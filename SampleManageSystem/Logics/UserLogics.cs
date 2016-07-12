@@ -43,9 +43,9 @@ namespace Logics
         {
             return _Dal.GetUserList();
         }
-        public IList<User> GetUserList(int number)
+        public IList<User> GetUserListA(int number)
         {
-            return _Dal.GetUserList(number);
+            return _Dal.GetUserListA(number);
         }
 
         public IList<User> GetUserListByRole(int roleId)
