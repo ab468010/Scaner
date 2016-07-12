@@ -20,7 +20,8 @@
                 success: function (data) {
                     var s = JSON.parse(data.d);
                     if (s) {
-                        alert("添加成功")
+                        alert("添加成功");
+                        location.href="customer-list.html"
                     } else {
                         alert("添加失败")
                     }

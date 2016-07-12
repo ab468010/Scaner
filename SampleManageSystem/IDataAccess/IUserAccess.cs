@@ -34,7 +34,7 @@ namespace IDataAccess
         IList<User> GetUserListByRole(int RoleId);
         IList<User> GetUserByRoleId(int roleid);
         long GetUserCount();
-        IList<User> GetUserList(int number);
+        IList<User> GetUserListA(int number);
         bool ChangeUserPwd(User user);
         IList<User> GetUserByRole(string rolename);
     }

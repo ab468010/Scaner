@@ -3,7 +3,7 @@
     $("#newprivilege").click(function () {
         location.href = "new-privilege.html?id=" + id;
     })
-    if (id!= "") {
+    if (id!= ""&&id!=null) {
         $("#myModal .modal-body").load("child/edit-role.html");
         var jsonPara = {
             roleid: id
@@ -11,6 +11,7 @@
         $.ajax({
             type: "post",
             contentType: "application/json; charset=utf-8",
+       
             url: Globals.ServiceUrl + "GetRole",
             data: JSON.stringify(jsonPara),
             success: function (data) {

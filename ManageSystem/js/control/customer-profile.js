@@ -60,6 +60,7 @@
                     $.ajax({
                         type: "post",
                         contentType: "application/json; charset=utf-8",
+                        async: false,
                         url: Globals.ServiceUrl + "Scontactid",
                         data: JSON.stringify(jsoPara),
                         success: function (data) {

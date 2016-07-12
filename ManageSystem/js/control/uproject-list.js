@@ -50,7 +50,7 @@ function uproject() {
             }
         })
         $(".Go").click(function () {
-            if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo"))) {
+            if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                 var number = parseInt($("#pageNum").val());
                 $("#PageNo").text(number);
                 Page((number - 1) * 10);
@@ -82,7 +82,7 @@ function Page(number) {
 
             for (i in projectList) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
-                            '<td>' + projectList[i].TesterIdName +
+                            '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
                                     '<li><a class="project2 edit1" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
                                     '<li class="last"><a  class="project2 delete1 ">删除</a></li>' +

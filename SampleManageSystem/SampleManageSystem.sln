@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageService", "ManageService\ManageService.csproj", "{1E479626-3AFD-405B-8982-551C537FC3F7}"
 EndProject
@@ -41,6 +41,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageSystem", "http://loca
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemService", "WebService1\SystemService.csproj", "{12B961D4-24A3-4B67-87D8-C15CCA12245C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backup", "Backup", "{79D7ADC6-B794-4029-9E21-62DDF7F91843}"
+	ProjectSection(SolutionItems) = preProject
+		SqlBackup\0706.dump = SqlBackup\0706.dump
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

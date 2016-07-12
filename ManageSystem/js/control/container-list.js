@@ -57,7 +57,7 @@ function initConfig() {
                 }
             })
             $(".Go").click(function () {
-                if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo"))) {
+                if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                     var number = parseInt($("#pageNum").val());
                     $("#PageNo").text(number);
                     Page((number - 1) * 10);

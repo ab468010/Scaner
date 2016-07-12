@@ -30,6 +30,7 @@ function initConfig() {
 
             $.ajax({
                 type: "post",
+            
                 url: Globals.ServiceUrl + "GetContainer",
                 data: JSON.stringify(jsonPara),
                 dataType: "json",

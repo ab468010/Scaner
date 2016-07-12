@@ -10,17 +10,76 @@ namespace DataAccess
 {
      public  class TaskAccess:IDataAccess.ITaskAccess
     {
-        public IList<Task> GetDelayTaskByTester(int systemuserId)
+    
+        public long GetDelayTaskCountByEngineerId(int systemuserId)
+        {
+            string st = @"select count(1)  from dbo.task ta
+                        left join dbo.project pr on ta.projectid = pr.projectid
+                        where now() > estimatedend and actualend is null and pr.engineerid = @systemuserid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par));
+            return count;
+        }
+        public long GetDelayTaskCountByTesterId(int systemuserId)
+        {
+            string st = @"select count(1) from dbo.task task
+                          left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
+                          left join dbo.project project on project.projectid = task.projectid
+                          where now() > estimatedend and actualend is null and(tester1 = @systemuserid or tester2 = @systemuserid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par));
+            return count;
+        }
+        public long GetUTaskByTesterId(int systemuserId)
+        {
+            string st = @"select count(1) from dbo.task task
+                          left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
+                            where  actualend is null and (tester1=@systemuserid or tester2=@systemuserid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par));
+            return count;
+        }
+        public long GetUTaskByEngineerId(int systemuserId)
+        {
+            string st = @"select count(1)  from dbo.task ta
+                        left join dbo.project pr on ta.projectid = pr.projectid
+                        where actualend is null and pr.engineerid = @systemuserid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st,par));
+            return count;
+        }
+        public long GetAllUTaskCount()
+        {
+            string st = "select count(1) from dbo.task where actualend is null";
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
+            return count;
+        }
+        public IList<Task> GetDelayTaskByEngineer(int systemuserId,int Page)
         {
             IList<Task> taskList = new List<Task>();
             string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
                           left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
                           left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
                           left join dbo.project project on project.projectid = task.projectid
-                          where now() > estimatedend and project.engineerid=@systemuserid ";
+                          where now() > estimatedend and actualend is null and project.engineerid=@systemuserid limit 5 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@systemuserid",systemuserId)
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@page",Page)
             };
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
             {
@@ -33,21 +92,23 @@ namespace DataAccess
                     task.Tester2IdName = rdr["tester2idname"].ToString();
                     task.ProjectName = rdr["projectidname"].ToString();
                     taskList.Add(task);
+                   
                 }
             }
             return taskList;
         }
-        public IList<Task> GetDelayTaskByEngineer(int systemuserId)
+        public IList<Task> GetDelayTaskByTester(int systemuserId,int Page)
         {
             IList<Task> taskList = new List<Task>();
             string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
                           left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
                           left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
                           left join dbo.project project on project.projectid = task.projectid
-                          where now() > estimatedend  and (tester1=@systemuserid or tester2=@systemuserid)";
+                          where now() > estimatedend and actualend is null and (tester1=@systemuserid or tester2=@systemuserid) limit 5 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@systemuserid",systemuserId)
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@page",Page)
             };
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
             {
@@ -64,15 +125,19 @@ namespace DataAccess
             }
             return taskList;
         }
-        public IList<Task> GetAllDelayTask()
+        public IList<Task> GetAllDelayTask(int Page)
         {
             IList<Task> taskList = new List<Task>();
             string st = @"select taskid ,task.name,tester1.name tester1idname,tester2.name tester2idname,project.name projectidname from dbo.task task
                           left join dbo.systemuser tester1 on task.tester1 = tester1.systemuserid
                           left join dbo.systemuser tester2 on task.tester2 = tester2.systemuserid
                           left join dbo.project project on project.projectid = task.projectid
-                          where now() > estimatedend ";
-            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+                          where now() > estimatedend and actualend is null limit 5 offset @page";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page)
+            };
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
             {
                 while (rdr.Read())
                 {
@@ -141,13 +206,7 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
-        public long GetDelayProjectCount()
-        {
-            string st = @"select count(distinct projectid) from dbo.task
-                          where now() > estimatedend  and actualend is null and projectid is not null";
-            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
-            return count;
-        }
+    
         public long GetDelayTaskCount()
         {
             string st = "select count(1) from dbo.task where now()>estimatedend and actualend is null";
@@ -287,7 +346,7 @@ namespace DataAccess
         }
          public bool Create(Task task)
         {
-            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description，tester1,tester2,createdby,createdon) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now())";
+            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description,tester1,tester2,createdby,createdon) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",task.Name),

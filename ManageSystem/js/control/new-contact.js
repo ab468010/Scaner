@@ -1,8 +1,8 @@
-﻿
-
+﻿var id = $.getUrlParam("id");
+var address;
 $(function () {
-    var id = $.getUrlParam("id");
-    var address;
+ 
+  
     $.ajax({
         type: "post",
         contentType: "application/json; charset=utf-8",
@@ -14,16 +14,16 @@ $(function () {
                 option.append($("<option>").val(s[i].Customerid).text(s[i].Name));
             }
             $('#Select1').selectpicker('refresh');
-            if (Globals.trim(id)!="") {
+            if (id!=""&&id!=null) {
                 $("#Select1").attr("disabled", "disabled");
                 $("#Select1 option").attr("selected", false);
                 $("#Select1 option[value=" + id + "]").attr("selected", true);
                 $('#Select1').selectpicker('refresh');
                 
-                return address = "customer-profile.html?id=" + id;
+                 address = "customer-profile.html?id=" + id;
             } else {
                 $('#Select1').selectpicker('refresh');
-                return address = "contact-list.html";
+                 address = "contact-list.html";
             }
             
         }, error: function (xhr) {
