@@ -8,6 +8,25 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
+        public IList<Container> GetUseContainerList()
+        {
+            string st = "select containerid,name,size,containercode,statuscode from dbo.container where statuscode=2";
+            IList<Container> containerList = new List<Container>();
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+            {
+                while (rdr.Read())
+                {
+                    Container container = new Container();
+                    container.ContainerId = Convert.ToInt32(rdr["containerid"]);
+                    container.Name = rdr["name"].ToString();
+                    container.Size = rdr["size"].ToString();
+                    container.ContainerCode = rdr["containercode"].ToString();
+                    container.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    containerList.Add(container);
+                }
+            }
+            return containerList;
+        }
         public long GetBigContainer()
         {
             string sqlStr = " select count(1) from dbo.container where right(size,1)='大'";
@@ -42,7 +61,7 @@ namespace DataAccess
         }
         public long GetUseContainerCount()
         {
-            string st = "select count(distinct containerid) from dbo.sample";
+            string st = "select count(1) from dbo.container where statuscode=2";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
