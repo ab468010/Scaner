@@ -563,7 +563,13 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ContainerLogics containerLogics = new ContainerLogics();
         return JsonConvert.SerializeObject(containerLogics.GetModel(containerId));
     }
- 
+    [WebMethod]
+    public static string GetUseContainerList()
+    {
+        ContainerLogics con = new ContainerLogics();
+        return JsonConvert.SerializeObject(con.GetUseContainerList());
+    }
+
     [WebMethod]
     public static string GetUseBigContainer()
     {
