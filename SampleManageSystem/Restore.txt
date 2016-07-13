@@ -1,0 +1,1 @@
+pg_restore.exe -h localhost -U sa -d "managesystem" -v "G:\ScannerSystem\SampleManageSystem\SqlBackup\0706.dump"
