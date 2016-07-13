@@ -191,7 +191,7 @@ function initConfig() {
                 alert(xhr)
             }
         })
-        $(".delete-project").click(function () {
+        $(".project2.delete1").click(function () {
            var jsonPara = {
                 projectId: id
             };
