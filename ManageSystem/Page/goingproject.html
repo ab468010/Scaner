@@ -21,7 +21,8 @@
     <!-- this page specific styles -->
     <link rel="stylesheet" href="../css/compiled/tables.css" type="text/css" media="screen" />
 
- 
+    <!-- open sans font -->
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -42,12 +43,12 @@
             <ul class="nav pull-right">
 
                 <li class="settings hidden-phone">
-                    <a  role="button">
-                        <i class="icon-user"></i><span id="UserName" style="margin-left:10px;height:100%;"></span>
+                    <a href="personal-info.html" role="button">
+                        <i class="icon-user"></i><span id="UserName" style="margin-left:10px;height:100%;">钟奇君</span>
                     </a>
                 </li>
                 <li class="settings hidden-phone">
-                    <a id="login" role="button">
+                    <a href="signin.html" role="button">
                         <i class="icon-share-alt"></i>
                     </a>
                 </li>
@@ -64,7 +65,7 @@
                     <span>首页</span>
                 </a>
             </li>
-            <li class="active">
+            <li>
                 <div class="pointer">
                     <div class="arrow"></div>
                     <div class="arrow_border"></div>
@@ -74,8 +75,8 @@
                     <span>项目</span>
                     <i class="icon-chevron-down"></i>
                     <ul class="submenu active">
-                        <li class="project1"><a href="project-list.html">所有项目</a></li>
-                        <li class="project1"><a href="uproject-list.html"class="active">尚未结束项目</a></li>
+                        <li class="project1"><a href="project-list.html" class="active">所有项目</a></li>
+                        <li class="project1"><a href="uproject-list.html">尚未结束项目</a></li>
                         <li class="task1"><a href="task-list.html">任务管理</a></li>
                         <li class="sample1"><a href="sample-list.html">样品管理</a></li>
                     </ul>
@@ -142,15 +143,10 @@
                 <div class="table-wrapper products-table section">
                     <div class="row-fluid head">
                         <div class="span12">
-                            <h4>项 目</h4>
+                            <h4>进行中的项目</h4>
                         </div>
                     </div>
 
-                    <div class="row-fluid filter-block">
-                        <div class="pull-right">
-                            <a class="btn-flat success project2 create1 " href="new-project.html">新建项目</a>
-                        </div>
-                    </div>
 
                     <div class="row-fluid" id="divProject">
                         <table class="table table-hover">
@@ -179,6 +175,7 @@
                 </div>
                 <!-- end products table -->
 
+
                 <div class="pagination " style="width:100%">
                     <ul style="float:right">
                         <li><a class="first">首 页</a></li>
@@ -191,14 +188,9 @@
                     </ul>
                 </div>
 
-
             </div>
-
         </div>
-        <!-- end products table -->
-       
     </div>
-
     <!-- end main container -->
     <!-- scripts -->
     <script src="../jq/jquery-2.1.1.min.js"></script>
@@ -206,9 +198,9 @@
     <script src="../js/lib/theme.js"></script>
     <script src="../js/Globals.js"></script>
     <script src="../js/Command.js"></script>
-
     <script src="../js/module/projectModule/project.js"></script>
-    <script src="../js/control/uproject-list.js"></script>
+
+    <script src="../js/control/goingproject.js"></script>
 </body>
 </html>
 

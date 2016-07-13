@@ -7,25 +7,19 @@ namespace DataAccess
 {
     public class ContainerWarningAccess:IDataAccess.IContainerWarningAccess
     {
-        public int GetSmallContaierWarning(int id)
+        public int GetSmallContaierWarning()
         {
-            string st = "select smallcontainer from dbo.containerwarning where containerid=@id";
-            NpgsqlParameter[] par = new NpgsqlParameter[]
-            {
-                new NpgsqlParameter("@id",id)
-            };
+            string st = "select smallcontainer from dbo.containerwarning where containerid=1";
+          
             
-            int co = Convert.ToInt32(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st,par));
+            int co = Convert.ToInt32(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return co;
         }
-        public  int   GetBigContainerWarning(int id)
+        public  int   GetBigContainerWarning()
         {
-            string st = "select bigcontainer from dbo.containerwarning where containerid = @id";
-            NpgsqlParameter[] par = new NpgsqlParameter[]
-         {
-                new NpgsqlParameter("@id",id)
-         };
-            int co=Convert.ToInt32(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st,par));
+            string st = "select bigcontainer from dbo.containerwarning where containerid =1";
+       
+            int co=Convert.ToInt32(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return co;
         }
         public long UseSmallContainer()
@@ -58,14 +52,13 @@ namespace DataAccess
         }
          public bool Update(ContainerWarning containerwarning)
         {
-            string st = " update dbo.containerwarning set bigcontainer=@bigcontainer,smallcontainer=@smallcontainer where containerid=@id";
+            string st = " update dbo.containerwarning set bigcontainer=@bigcontainer,smallcontainer=@smallcontainer where containerid=1";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@bigcontainer",containerwarning.BigContainer),
                 
                 new NpgsqlParameter("@smallcontainer",containerwarning.SmallContainer),
               
-                new NpgsqlParameter("@id",containerwarning.ContainerId),
 
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)

@@ -2,7 +2,11 @@
 var address;
 $(function () {
  
-  
+    $("#login").click(function () {
+        if (confirm("确定注销？")) {
+            location.href = "login.html";
+        }
+    });
     $.ajax({
         type: "post",
         contentType: "application/json; charset=utf-8",

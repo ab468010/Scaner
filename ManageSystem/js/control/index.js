@@ -1,5 +1,6 @@
 ﻿var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
+var num = Globals.getCookie("Num");
 var jsonPar = {
     systemuserId: Number(systemuserid),
     roleId: Number(roleid)
@@ -34,12 +35,15 @@ function index() {
                 data: JSON.stringify(jsonPa),
                 success: function (data) {
                     var s = JSON.parse(data.d);
-                    if (s == 1) {
+                    if (s == 1 && num == 1) {
                         alert("大小周转箱剩余不足");
-                    } else if (s == 2) {
+                        document.cookie = "Num=" + "2";
+                    } else if (s == 2 && num == 1) {
                         alert("小周转箱剩余不足");
-                    } else if (s == 3) {
+                        document.cookie = "Num=" + "2";
+                    } else if (s == 3 && num == 1) {
                         alert("大周转箱剩余不足");
+                        document.cookie = "Num=" + "2";
                     } else {
                         return;
                     }
@@ -47,13 +51,19 @@ function index() {
                 }, error: function (xhr) {
                     alert(xhr);
                 }
-            })
+            });
+            $("#login").click(function () {
+                if (confirm("确定注销？")) {
+                    location.href = "login.html";
+                }
+            });
    
         //完成的项目
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetFinishProjectCount",
                 contentType: "application/json;charset=utf-8",
+                data:JSON.stringify(jsonPar),
                 success: function (data) {
                     var s = JSON.parse(data.d);
                   
@@ -137,6 +147,7 @@ function index() {
                 }
             });
         //延误的项目
+        
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetDelayProjectCount",
@@ -263,7 +274,8 @@ function Pagep(page) {
     var jsonP = {
         Page: page,
         systemuserId: Number(systemuserid),
-        roleId: Number(roleid)
+        roleId: Number(roleid),
+        Limit:5
     }
     //延误的项目列表
     $.ajax({

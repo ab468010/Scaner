@@ -1,7 +1,17 @@
-﻿
+﻿var page;
+if ($.getUrlParam("page") == null || undefined) {
+    page = 1;
+} else {
+    page = $.getUrlParam("page");
+}
 
 $(function () {
     $("#myModal .modal-body").load("child/edit-shelf.html");
+    $("#login").click(function () {
+        if (confirm("确定注销？")) {
+            location.href = "login.html";
+        }
+    });
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetShelfCount",
@@ -9,46 +19,59 @@ $(function () {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             var s = JSON.parse(data.d);
-            var page = Math.ceil(s / 10);
-            $("#PageNo").text(1);
-            $("#totalPageNo").text(page);
+            if (s == 0) {
+                s=1
+            }
+            var p = Math.ceil(s / 10);
+            $("#PageNo").text(page);
+            $("#totalPageNo").text(p);
         }, error: function (xhr) {
             alert(xhr);
         }
     })
-    Page(0);
+    Page((page-1)*10);
     $(".first").click(function () {
         if ($("#PageNo").text() != 1) {
             $("#PageNo").text(1);
-            Page(0);
+            location.href = "shelf-list.html?page=" + "1"
+                 
+            //Page((page-1)*10);
         }
     })
     $(".before").click(function () {
         if ($("#PageNo").text() > 1) {
-            var number = parseInt($("#PageNo").text() - 1);
+            var number = parseInt($("#PageNo").text())-1;
             $("#PageNo").text(number);
-            Page((number - 1) * 10);
+            location.href = "shelf-list.html?page=" + number;
+                  
+            //Page((page - 2) * 10);
         }
     })
     $(".last").click(function () {
         if ($("#PageNo").text() < $("#totalPageNo").text()) {
             var number = parseInt($("#totalPageNo").text());
             $("#PageNo").text(number);
-            Page((number - 1) * 10);
+            location.href = "shelf-list.html?page=" + number;
+          
+           // Page((page - 1) * 10);
         }
     })
     $(".next").click(function () {
         if (($("#PageNo").text() < $("#totalPageNo").text())) {
-            var number = parseInt($("#PageNo").text());
-            $("#PageNo").text(number + 1);
-            Page(number * 10);
+            var number = parseInt($("#PageNo").text())+1;
+            $("#PageNo").text(number);
+            location.href = "shelf-list.html?page=" +number ;
+          
+           // Page(page * 10);
         }
     })
     $(".Go").click(function () {
         if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
             var number = parseInt($("#pageNum").val());
             $("#PageNo").text(number);
-            Page((number - 1) * 10);
+            location.href = "shelf-list.html?page=" + number;
+           
+           // Page((number - 1) * 10);
         }
     })
 })
@@ -60,7 +83,7 @@ function Page(page) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetShelf",
-       // async: false,
+        //async: false,
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -80,7 +103,7 @@ function Page(page) {
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "SelectShelf",
-                    async: false,
+                    //async: false,
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(jsonPara),
                     success: function (data) {

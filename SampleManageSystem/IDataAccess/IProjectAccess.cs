@@ -9,9 +9,9 @@ namespace IDataAccess
         /// 获得所有指定用户的Project列表
         /// </summary>
         /// <returns></returns>
-        IList<Project> GetProjectListByEngineerId(int userId,int Page);
+        IList<Project> GetProjectListByEngineerId(int systemuserId,int Page);
 
-        IList<Project> GetProjectListByTesterId(int userId,int Page);
+        IList<Project> GetProjectListByTesterId(int systemuserId,int Page);
    
         IList<Project> GetAllProjectList(int Page);
      
@@ -20,16 +20,16 @@ namespace IDataAccess
         IList<Project> GetUProjectList(int page);
         IList<Project> GetUProjectListByEnginnerId(int systemuserId, int page);
         IList<Project> GetUProjectListByTesterId(int systemuserId, int page);
-        IList<Project> GetALLDelayProject(int Page);
-        IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page);
-        IList<Project> GetDelayProjectByTester(int systemuserId,int Page);
+        IList<Project> GetALLDelayProject(int Page,int Limit);
+        IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page,int Limit);
+        IList<Project> GetDelayProjectByTester(int systemuserId,int Page,int Limit);
         IList<Project> GetNotFinishedProjectList();
         long GetAllUProjectCount();
         long GetAllProjectCount();
         long GetUProjectCountByEngineer(int systemuserId);
-        long GetProjectCountByEngineer(int userId);
+        long GetProjectCountByEngineer(int systemuserId);
         long GetUProjectByTaksTester(int systemuserId);
-        long GetProjectByTaksTester(int userId);
+        long GetProjectByTaksTester(int systemuserId);
         long GetDelayProjectCount();
         long GetDelayProjectCountByEngineerId(int systemuserId);
         long GetDelayProjectCountByTesterId(int systemuserId);
@@ -40,8 +40,17 @@ namespace IDataAccess
         IList<Project> GetProjectListByStatus();
         bool UpdateContainerProjectId(int projectId);
         bool UpdateSampleProjectId(int projectId);
-  
-
-
+        IList<Project> GetAllFinishProjectList(int Page);
+        IList<Project> GetFinishProjectListByEngineerId(int Page,int systemuserId);
+        IList<Project> GetFinishProjectListByTseterId(int Page,int systemuserId);
+        long GetFinishProjectCount();
+        long GetFinishProjectCountByEngineerId(int systemuserId);
+        long GetFinishProjectCountByTesterId(int systemuserId);
+        IList<Project> GetProjectStatusCodeList( int Page,int statusCode);
+        IList<Project> GetProjectStatusCodeListByEngineerId(int systemuserId, int Page, int statusCode);
+        IList<Project> GetProjectStatusCodeListByTesterId(int systemuserId, int Page, int statusCode);
+        long GetProjectStatusCodeCount(int statusCode);
+        long GetProjectStatusCodeCountByEngineerId(int systemuserId, int statusCode);
+        long GetProjectStatusCodeCountByTesterId(int systemuserId, int statusCode);
     }
 }

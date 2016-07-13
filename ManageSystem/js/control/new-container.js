@@ -1,6 +1,10 @@
 ﻿var createdby = Globals.getCookie("SystemUserId");
 $(function () {
-
+    $("#login").click(function () {
+        if (confirm("确定注销？")) {
+            location.href = "login.html";
+        }
+    });
     $("#btnSave").click(function () {
         if (Globals.trim($("#txtName").val()) != "" && Globals.trim($("#txtContainerCode").val()) != "") {
             var jsonPara = {

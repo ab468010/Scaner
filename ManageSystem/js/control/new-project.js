@@ -12,7 +12,11 @@ function initConfig() {
 
     (function () {
         $(function () {
-
+            $("#login").click(function () {
+                if (confirm("确定注销？")) {
+                    location.href = "login.html";
+                }
+            });
             //获取项目工程师
             $.ajax({
                 type: "post",

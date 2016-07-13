@@ -24,6 +24,11 @@ function initConfig() {
 
         $(document).ready(function () {
             $("#myModal .modal-body").load("child/edit-sample.html");
+            $("#login").click(function () {
+                if (confirm("确定注销？")) {
+                    location.href = "login.html";
+                }
+            });
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetProjectListByStatus",

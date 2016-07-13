@@ -17,7 +17,11 @@ function initConfig() {
         
         $(document).ready(function () {
             $("#myModal .modal-body").load("child/edit-project.html");
-           
+            $("#login").click(function () {
+                if (confirm("确定注销？")) {
+                    location.href = "login.html";
+                }
+            });
             var jsonP = {
                 rolename: "Engineer"
             }
@@ -100,7 +104,7 @@ function initConfig() {
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "GetTaskListByProjectId",
-            async: false,
+            //async: false,
             data: JSON.stringify(jsonPar),
             contentType: "application/json; charset=utf-8",
             success: function (data) {

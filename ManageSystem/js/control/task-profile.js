@@ -8,6 +8,11 @@ function taskprofile() {
         $(".task2.edit1").attr({ style: "display:inline" });
     }
     (function () {
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
         $(".sample2.create1").click(function () {
             var jsonPar = {
                 taskid: id,

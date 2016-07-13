@@ -20,15 +20,16 @@ namespace Logics
                 throw new NullReferenceException(_Type);
             }
         }
-        public int GetContainerWarning(int id)
+    
+        public int GetContainerWarning()
         {
-            if (_Dal.UseBigContainer()>=(_Dal.GetBigContainerWarning(id)) && _Dal.UseSmallContainer()>=(_Dal.GetSmallContaierWarning(id)) )
+            if (_Dal.UseBigContainer()>=(_Dal.GetBigContainerWarning()) && _Dal.UseSmallContainer()>=(_Dal.GetSmallContaierWarning()) )
             {
                 return 1;
-            }else if (_Dal.UseBigContainer() <(_Dal.GetBigContainerWarning(id)) && _Dal.UseSmallContainer() >= (_Dal.GetSmallContaierWarning(id)))
+            }else if (_Dal.UseBigContainer() <(_Dal.GetBigContainerWarning()) && _Dal.UseSmallContainer() >= (_Dal.GetSmallContaierWarning()))
             {
                 return 2;
-            }else if (_Dal.UseBigContainer() >= (_Dal.GetBigContainerWarning(id)) && _Dal.UseSmallContainer() < (_Dal.GetSmallContaierWarning(id)) )
+            }else if (_Dal.UseBigContainer() >= (_Dal.GetBigContainerWarning()) && _Dal.UseSmallContainer() < (_Dal.GetSmallContaierWarning()) )
             {
                 return 3;
             }

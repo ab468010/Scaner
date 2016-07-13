@@ -1,6 +1,17 @@
-﻿function room() {
+﻿var page;
+if ($.getUrlParam("page") == null || undefined) {
+    page = 1;
+} else {
+    page = $.getUrlParam("page");
+}
+function room() {
     (function () {
         $("#myModal .modal-body").load("child/edit-room.html");
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "GetRoomCount",
@@ -8,46 +19,49 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);
-                var page = Math.ceil(s / 10);
-                $("#PageNo").text(1);
-                $("#totalPageNo").text(page);
+                if (s == 0) {
+                    s=1
+                }
+                var pa = Math.ceil(s / 10);
+                $("#PageNo").text(page);
+                $("#totalPageNo").text(pa);
             }, error: function (xhr) {
                 alert(xhr);
             }
         })
-        Page(0);
+        Page((page-1)*10);
         $(".first").click(function () {
             if ($("#PageNo").text() != 1) {
                 $("#PageNo").text(1);
-                Page(0);
+                location.href = "room-list.html?page=" + "1";
             }
         })
         $(".before").click(function () {
             if ($("#PageNo").text() > 1) {
                 var number = parseInt($("#PageNo").text() - 1);
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "room-list.html?page=" + number;
             }
         })
         $(".last").click(function () {
             if ($("#PageNo").text() < $("#totalPageNo").text()) {
                 var number = parseInt($("#totalPageNo").text());
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "room-list.html?page=" + number;
             }
         })
         $(".next").click(function () {
             if (($("#PageNo").text() < $("#totalPageNo").text())) {
-                var number = parseInt($("#PageNo").text());
-                $("#PageNo").text(number + 1);
-                Page(number * 10);
+                var number = parseInt($("#PageNo").text())+1;
+                $("#PageNo").text(number );
+                location.href = "room-list.html?page=" + number;
             }
         })
         $(".Go").click(function () {
             if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                 var number = parseInt($("#pageNum").val());
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "room-list.html?page=" + number;
             }
         })
    
@@ -90,9 +104,9 @@ $(function () {
   room()
 })
 
-function Page(page) {
+function Page(pa) {
     var jsonPar = {
-        number:page
+        number:pa
     }
     $.ajax({
         type: "post",
@@ -120,7 +134,7 @@ function Page(page) {
                         type: "post",
                         url: Globals.ServiceUrl + "DeleteRoom",
                         contentType: "application/json; charset=utf-8",
-                        async: false,
+            
                         data: JSON.stringify(jsonPara),
                         success: function (data) {
                             var s = JSON.parse(data.d);
@@ -142,7 +156,7 @@ function Page(page) {
                     type: "post",
                     contentType: "application/json; charset=utf-8",
                     url: Globals.ServiceUrl + "GetRoom",
-                    async: false,
+                    //async: false,
                     data: JSON.stringify(jsonPa),
                     success: function (data) {
                         var s = JSON.parse(data.d);

@@ -27,7 +27,11 @@ function initConfig() {
             jsonPara = {
                 containerId: id
             };
-
+            $("#login").click(function () {
+                if (confirm("确定注销？")) {
+                    location.href = "login.html";
+                }
+            });
             $.ajax({
                 type: "post",
             

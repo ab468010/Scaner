@@ -8,7 +8,7 @@ namespace IDataAccess
 {
       public interface IModuleAccess:IBaseAccess<Model.Module>
     {
-        IList<Module> GetModuleList();
+        IList<Module> GetModuleList(int roleId);
   
     }
 }

@@ -8,28 +8,314 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+        public long GetProjectStatusCodeCountByTesterId(int systemuserId, int statusCode)
+        {
+            string sqlStr = "select count(1) from dbo.project where statuscode=@statuscode and projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
+            return count;
+        }
+        public long GetProjectStatusCodeCountByEngineerId(int systemuserId, int statusCode)
+        {
+            string sqlStr = "select count(1) from dbo.project where statuscode=@statuscode and engineerid=@systemuserid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
+            return count;
+        }
+        public long GetProjectStatusCodeCount(int statusCode)
+        {
+            string st = @"select count(1) from dbo.project where statuscode=@statuscode";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st,par));
+            return count;
+        }
+        public IList<Project> GetProjectStatusCodeListByTesterId(int systemuserId, int Page,int statusCode)
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode=@statuscode and project.projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid) 
+                                order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+
+
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public IList<Project> GetProjectStatusCodeListByEngineerId(int systemuserId, int Page, int statusCode)
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode=@statuscode and engineerid=@engineerid order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@engineer",systemuserId),
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public IList<Project> GetProjectStatusCodeList(int Page, int statusCode)
+        {
+            string st = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode=@statuscode order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@statuscode",statusCode)
+            };
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public long GetFinishProjectCountByEngineerId(int systemuserId)
+        {
+            string sqlStr = "select count(1) from dbo.project where statuscode>2 and engineerid=@systemuserid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
+            return count;
+        }
+        public long GetFinishProjectCountByTesterId(int systemuserId)
+        {
+            string sqlStr = "select count(1) from dbo.project where statuscode>2 and projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
+            return count;
+        }
+        public long GetFinishProjectCount()
+        {
+            string st = @"select count(1) from dbo.project where statuscode>2";
+            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
+            return count;
+        }
+        public IList<Project> GetFinishProjectListByTseterId(int Page, int systemuserId)
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode>2 and project.projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid) 
+                                order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+
+
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+
+        }
+        public IList<Project> GetFinishProjectListByEngineerId(int Page, int systemuserId)
+        {
+            string sqlStr = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode>2 and engineerid=@engineerid order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@engineer",systemuserId)
+            };
+
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public IList<Project> GetAllFinishProjectList(int Page)
+        {
+            string st = @"SELECT project.projectid, project.projectno, 
+                                project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                FROM dbo.project project
+                                Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
+                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode>2 order by project.createdon desc limit 10 offset @page ";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page)
+            };
+            IList<Project> projectList = new List<Project>();
+
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.ProjectNo = rdr["projectno"].ToString();
+                    project.Name = rdr["name"].ToString();
+                    project.EngineerId = Convert.ToInt32(rdr["engineerid"]);
+                    project.EngineerIdName = rdr["EngineerIdName"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
+                    project.StateCode = Convert.ToInt32(rdr["statecode"]);
+                    project.CustomerId = Convert.ToInt32(rdr["customerid"]);
+                    project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
         public long GetAllProjectCount()
         {
             string sqlStr = "select count(1) from dbo.project ";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr));
             return count;
         }
-        public long GetProjectCountByEngineer(int userId)
+        public long GetProjectCountByEngineer(int systemuserId)
         {
             string sqlStr = "select count(1) from dbo.project where  and engineerid=@systemuserid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@systemuserid",userId)
+                new NpgsqlParameter("@systemuserid",systemuserId)
             };
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
             return count;
         }
-        public long GetProjectByTaksTester(int userId)
+        public long GetProjectByTaksTester(int systemuserId)
         {
             string sqlStr = "select count(1) from dbo.project where projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid)";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@systemuserid",userId)
+                new NpgsqlParameter("@systemuserid",systemuserId)
             };
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
             return count;
@@ -69,18 +355,19 @@ namespace DataAccess
             return count;
         }
 
-        public IList<Project> GetDelayProjectByTester(int systemuserId,int Page)
+        public IList<Project> GetDelayProjectByTester(int systemuserId,int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username from dbo.project pr 
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr 
                          left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                          where exists(
                          select 1 from dbo.task task
-                         where now() > estimatedend and actualend is null and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1) limit 5 offset @page";
+                         where now() > estimatedend and actualend is null and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1) limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
          {
                 new NpgsqlParameter("@systemuserid",systemuserId),
-                new NpgsqlParameter("@page",Page)
+                new NpgsqlParameter("@page",Page),
+                 new NpgsqlParameter("@limit",Limit)
          };
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
             {
@@ -90,6 +377,7 @@ namespace DataAccess
                     project.ProjectId= Convert.ToInt32(rdr["projectid"]);
                     project.ProjectNo = rdr["projectno"].ToString();
                     project.Name = rdr["name"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     project.EngineerIdName = rdr["username"].ToString();
                     projectList.Add(project);
                 }
@@ -97,17 +385,18 @@ namespace DataAccess
             return projectList;
 
         }
-        public IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page)
+        public IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username from dbo.project pr left join dbo.task ta
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr left join dbo.task ta
                          on pr.projectid = ta.projectid
                          left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
-                         where now() > estimatedend and actualend is null and pr.engineerid=@engineerid limit 5 offset @page";
+                         where now() > estimatedend and actualend is null and pr.engineerid=@engineerid limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@engineerid",systemuserId),
-                new NpgsqlParameter("@page",Page)
+                new NpgsqlParameter("@page",Page),
+                new NpgsqlParameter("@limit",Limit)
             };
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
             {
@@ -116,6 +405,7 @@ namespace DataAccess
                     Project project = new Project();
                     project.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     project.ProjectNo = rdr["projectno"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     project.Name = rdr["name"].ToString();
                     project.EngineerIdName = rdr["username"].ToString();
                     projectList.Add(project);
@@ -123,16 +413,17 @@ namespace DataAccess
             }
             return projectList;
         }
-        public IList<Project> GetALLDelayProject(int Page)
+        public IList<Project> GetALLDelayProject(int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username from dbo.project pr left join dbo.task ta
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr left join dbo.task ta
                         on pr.projectid = ta.projectid
                        left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
-                        where now() > estimatedend and actualend is null limit 5 offset @page";
+                        where now() > estimatedend and actualend is null limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@page",Page)
+                new NpgsqlParameter("@page",Page),
+                 new NpgsqlParameter("@limit",Limit)
             };
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par)) 
             {
@@ -141,6 +432,7 @@ namespace DataAccess
                     Project project = new Project();
                     project.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     project.ProjectNo = rdr["projectno"].ToString();
+                    project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     project.Name = rdr["name"].ToString();
                     project.EngineerIdName = rdr["username"].ToString();
                     projectList.Add(project);
@@ -345,7 +637,7 @@ namespace DataAccess
 
   
 
-        public IList<Project> GetProjectListByTesterId(int userId,int Page)
+        public IList<Project> GetProjectListByTesterId(int systemuserId,int Page)
         {
             string sqlStr = @"SELECT project.projectid, project.projectno, 
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
@@ -357,7 +649,7 @@ namespace DataAccess
                                    where testerid=@testerid order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@testerid",userId),
+                new NpgsqlParameter("@testerid",systemuserId),
                 new NpgsqlParameter("@page",Page)
             };
 
@@ -540,6 +832,7 @@ namespace DataAccess
 
             using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr,par))
             {
+             
                 while (rdr.Read())
                 {
                     project = new Project();
@@ -565,7 +858,7 @@ namespace DataAccess
 
        
 
-        public IList<Project> GetProjectListByEngineerId(int userId,int Page)
+        public IList<Project> GetProjectListByEngineerId(int systemuserId,int Page)
         {
             string sqlStr = @"SELECT project.projectid, project.projectno, 
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
@@ -577,7 +870,7 @@ namespace DataAccess
                                  where engineerid=@engineerid order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@engineerid",userId),
+                new NpgsqlParameter("@engineerid",systemuserId),
                 new NpgsqlParameter("@page",Page)
             };
 

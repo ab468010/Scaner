@@ -7,19 +7,28 @@ function newprivilege() {
         } else {
             mothed = "CreatePrivilege";
         }
+        var jsonP = {
+            roleId:roleid
+        }
         $.ajax({
             type: "post",
             contentType: "application/json; charset=utf-8",
             url: Globals.ServiceUrl + "GetModuleList",
+            data: JSON.stringify(jsonP),
             success: function (data) {
                 var s = JSON.parse(data.d);
-                var option=$("#Module").empty();
+                var option = $("#Module").empty();
                 for (var i in s) {
                     option.append($("<option>").val(s[i].ModuleId).text(s[i].Name))
                 }
                 $('#Module').selectpicker('refresh');
             }
-        })
+        });
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
         $("#btnSave").click(function () {
             var jsonPar = {
                 privilege: {

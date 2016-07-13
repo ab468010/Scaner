@@ -200,12 +200,7 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
-        public long GetFinishProjectCount()
-        {
-            string st = @"select count(1) from dbo.project where statuscode>2";
-            long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
-            return count;
-        }
+   
     
         public long GetDelayTaskCount()
         {

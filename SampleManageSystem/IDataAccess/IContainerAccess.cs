@@ -22,7 +22,7 @@ namespace IDataAccess
         bool ExsitsContainerCode(Container container);
         long GetBigContainer();
         long GetSmallContainer();
-        IList<Container> GetUseContainerList();
+        IList<Container> GetUseContainerList(int Page);
 
 
     }

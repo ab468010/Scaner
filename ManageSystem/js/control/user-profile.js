@@ -16,10 +16,18 @@ var id = $.getUrlParam("id");
 
             $(document).ready(function () {
                 $("#myModal .modal-body").load("child/edit-user.html");
+                $("#login").click(function () {
+                    if (confirm("确定注销？")) {
+                        location.href = "login.html";
+                    }
+                });
+                $("#changepwd").click(function () {
+                    location.href = "changepwd-list.html?id=" + id;
+                })
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "GetRoleList",
-                    async: false,
+                   // async: false,
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var s = JSON.parse(data.d);
@@ -39,7 +47,7 @@ var id = $.getUrlParam("id");
                     $.ajax({
                         type: "post",
                         url: Globals.ServiceUrl + "GetUserById",
-                        async: false,
+                        //async: false,
                         data: JSON.stringify(jsonPara),
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",

@@ -1,8 +1,33 @@
-﻿
+﻿var id = $.getUrlParam("id");
 function changepwd() {
   
     (function () {
-        $("#Username").val((Globals.getCookie("UserName")))
+        if (id == null || id == "") {
+            $("#Username").val((Globals.getCookie("UserName")));
+        } else {
+            var jsonPa = {
+                userId:id
+            }
+            $.ajax({
+                type: "post",
+                url: Globals.ServiceUrl + "GetUserById",
+                data: JSON.stringify(jsonPa),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var s = JSON.parse(data.d);
+                    $("#Username").val(s.Username);
+                }, error: function (xhr) {
+                    alert(xhr);
+                }
+            })
+        }
+       
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
         $("#btnSave").click(function () {
             if (Globals.trim($("#pwdPassword").val()) != "") {
                 if ($("#pwdPassword").val() == $("#pwdAgain").val()) {

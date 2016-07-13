@@ -1,5 +1,9 @@
 ﻿$(function () {
-    
+    $("#login").click(function () {
+        if (confirm("确定注销？")) {
+            location.href = "login.html";
+        }
+    });
     $("#btnSave").click(function () {
         if (Globals.trim($("#txtName").val()) == "") {
             alert("姓名不能为空")

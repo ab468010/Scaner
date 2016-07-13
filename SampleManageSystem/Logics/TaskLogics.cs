@@ -95,10 +95,7 @@ namespace Logics
         {
             return _Dal.GetGoingProjectCount();
         }
-        public long GetFinishProjectCount()
-        {
-            return _Dal.GetFinishProjectCount();
-        }
+    
         public IList<Task> GetDelayTaskList(int systemuserId,int roleId,int Page)
         {
             if (roleId == 6)

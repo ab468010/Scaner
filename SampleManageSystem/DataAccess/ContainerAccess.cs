@@ -8,11 +8,15 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
-        public IList<Container> GetUseContainerList()
+        public IList<Container> GetUseContainerList(int Page)
         {
-            string st = "select containerid,name,size,containercode,statuscode from dbo.container where statuscode=2";
+            string st = "select containerid,name,size,containercode,statuscode from dbo.container where statuscode=2 order by createdon desc limit 10 offset @page";
             IList<Container> containerList = new List<Container>();
-            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@page",Page)
+            };
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
             {
                 while (rdr.Read())
                 {

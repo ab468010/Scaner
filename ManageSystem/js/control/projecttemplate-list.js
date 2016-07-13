@@ -1,10 +1,15 @@
 ﻿function projecttemplate() {
     (function () {
         $("#myModal .modal-body").load("child/edit-projecttemplate.html");
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        })
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "SelectRoom",
-            async: false,
+            //async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);

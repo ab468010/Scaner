@@ -6,6 +6,7 @@
     })
     if (Globals.trim(id)!="") {
         $("#myModal .modal-body").load("child/edit-customer.html");
+        $("#myModal1 .modal-body").load("child/edit-contact.html");
         var jsonPara = {
             customerid: id
         }
@@ -31,12 +32,16 @@
         alert("客户不存在")
         location.href = "customer-list.html";
     }
-   
+    $("#login").click(function () {
+        if (confirm("确定注销？")) {
+            location.href = "login.html";
+        }
+    });
     $.ajax({
         type: "post",
         contentType: "application/json; charset=utf-8",
         url: Globals.ServiceUrl + "Scontact",
-        async: false,
+       // async: false,
         data: JSON.stringify(jsonPara),
         success: function (data) {
             var s = JSON.parse(data.d);
@@ -53,7 +58,7 @@
                     }
                 }
                 $(".editcontact").click(function () {
-                    $("#myModal1 .modal-body").load("child/edit-contact.html");
+                  
                     var jsoPara = {
                         contactid: $(this).parent().parent().parent().parent().find("[name='contactid']").text()
                     }

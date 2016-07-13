@@ -9,6 +9,9 @@ function initConfig() {
     };
 
     (function () {
+        $(".forgot").click(function () {
+            alert("请联系管理员")
+        })
         $(".login").click(function () {
             var _username = $("#txtUsername").val();
             var _password = $("#txtPassword").val();
@@ -41,6 +44,7 @@ function initConfig() {
                         document.cookie = "UserName=" + user.Username;
                         document.cookie = "Name=" + user.Name;
                         document.cookie = "RoleId=" + user.RoleId;
+                        document.cookie = "Num=" + "1";
                         document.cookie = "expirse=" + exp.toGMTString();
                         location.href = "index.html";
                     }

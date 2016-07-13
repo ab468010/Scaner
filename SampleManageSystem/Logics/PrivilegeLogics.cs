@@ -36,9 +36,9 @@ namespace Logics
         }
         public bool DeletePrivilege(int privilegeid)
         {
-            if (_Dal.Delete(privilegeid))
+            if (_Dal.DeleteRolePrivilege(privilegeid))
             {
-                return _Dal.DeleteRolePrivilege(privilegeid);
+                return _Dal.Delete(privilegeid);
             }
             else
             {

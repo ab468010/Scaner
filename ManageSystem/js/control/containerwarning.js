@@ -1,14 +1,19 @@
 ﻿function warning() {
     (function () {
-        
-        var jsonPar = {
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        })
+        var jsonPa = {
             id:1
         }
+     
         $.ajax({
             type: "post",
-            url: Globals.ServiceUrl + "GetContainerWarning",
+            url: Globals.ServiceUrl + "GetContainerWarningCount",
             contentType: "application/json;charset=utf-8",
-            data:JSON.stringify(jsonPar),
+            data:JSON.stringify(jsonPa),
             success: function (data) {
                 var s = JSON.parse(data.d);
                 $("#bigcontainer").val(s.BigContainer);                

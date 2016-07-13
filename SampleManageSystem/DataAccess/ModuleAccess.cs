@@ -9,12 +9,18 @@ namespace DataAccess
 {
     public class ModuleAccess:IDataAccess.IModuleAccess
     {
-       
-        public IList<Module> GetModuleList()
+
+        public IList<Module> GetModuleList(int roleId)
         {
             IList<Module> moduleList = new List<Module>();
-            string st = "select moduleid,name,tablename from dbo.module";
-            using(NpgsqlDataReader drt = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+            string st = @"select moduleid,name,tablename from dbo.module where moduleid  not in(
+                          select distinct moduleid from dbo.privilege where privilegeid  in
+                          (select privilegeid from dbo.roleprivilege where roleid=@roleid))";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("roleid",roleId)
+            };
+            using(NpgsqlDataReader drt = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
             {
                 while (drt.Read())
                 {

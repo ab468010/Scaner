@@ -20,9 +20,9 @@ namespace Logics
                 throw new NullReferenceException(_Type);
             }
         }
-        public IList<Module> GetModuleList()
+        public IList<Module> GetModuleList(int roleId)
         {
-            return _Dal.GetModuleList();
+            return _Dal.GetModuleList(roleId);
         }
    
     }

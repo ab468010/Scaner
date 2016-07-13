@@ -46,7 +46,7 @@ namespace Logics
             return _Dal.GetNotFinishedProjectList();
         }
 
-        public IList<Project> GetProjectListByUserId(int userId,int roleId,int Page)
+        public IList<Project> GetProjectListByUserId(int systemuserId,int roleId,int Page,int statusCode)
         {
             if (roleId == 6)
             {
@@ -54,11 +54,11 @@ namespace Logics
             }
            else if (roleId == 2)
             {
-                return _Dal.GetProjectListByEngineerId(userId,Page);
+                return _Dal.GetProjectListByEngineerId(systemuserId,Page);
             }
             else if(roleId==3)
             {
-                return _Dal.GetProjectListByTesterId(userId,Page);
+                return _Dal.GetProjectListByTesterId(systemuserId,Page);
             }
             return new List<Project>();
         }
@@ -129,17 +129,17 @@ namespace Logics
                 return _Dal.GetUProjectByTaksTester(systemuserId);
             }
         }
-         public IList<Project> GetDelayProjectList(int systemuserId,int roleId,int Page)
+         public IList<Project> GetDelayProjectList(int systemuserId,int roleId,int Page,int Limit)
         {
             if (roleId == 6)
             {
-                return _Dal.GetALLDelayProject(Page);
+                return _Dal.GetALLDelayProject(Page,Limit);
             }else if (roleId == 2)
             {
-                return _Dal.GetDelayProjectByEngineerId(systemuserId,Page);
+                return _Dal.GetDelayProjectByEngineerId(systemuserId,Page,Limit);
             }else if (roleId == 3)
             {
-                return _Dal.GetDelayProjectByTester(systemuserId,Page);
+                return _Dal.GetDelayProjectByTester(systemuserId,Page,Limit);
             }
             else
             {
@@ -168,7 +168,7 @@ namespace Logics
             }
 
         }
-        public long GetProjectCount(int userId,int roleId)
+        public long GetProjectCount(int systemuserId,int roleId,int statusCode)
         {
             if (roleId == 6)
             {
@@ -176,11 +176,11 @@ namespace Logics
             }
             else if (roleId == 2)
             {
-                return _Dal.GetProjectCountByEngineer(userId);
+                return _Dal.GetProjectCountByEngineer(systemuserId);
             }
             else if (roleId == 3)
             {
-                return _Dal.GetProjectByTaksTester(userId);
+                return _Dal.GetProjectByTaksTester(systemuserId);
             }
             else
             {
@@ -188,6 +188,78 @@ namespace Logics
                 return a;
             }
         }
+        public IList<Project> GetFinishProjectList(int Page,int systemuserId,int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetAllFinishProjectList(Page);
+            }else if (roleId == 2)
+            {
+                return _Dal.GetFinishProjectListByEngineerId(Page, systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetFinishProjectListByTseterId(Page, systemuserId);
+            }
+            else
+            {
+                IList<Project> projectList = new List<Project>();
+                return projectList;
+            }
+        }
+        public long GetFinishProjectCount(int systemuserId, int roleId)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetFinishProjectCount();
+            }else if (roleId == 2)
+            {
+                return _Dal.GetFinishProjectCountByEngineerId(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetFinishProjectCountByTesterId(systemuserId);
+            }
+            else
+            {
+                var a = 0;
+                return a;
+            }
 
+        }
+        public IList<Project> GetProjectStatusCodeList(int systemuserId,int roleId,int Page, int statusCode)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetProjectStatusCodeList(Page, statusCode);
+            }else if (roleId == 2)
+            {
+                return _Dal.GetProjectStatusCodeListByEngineerId(systemuserId,Page, statusCode);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetProjectStatusCodeListByTesterId(systemuserId,Page, statusCode);
+            }
+            else
+            {
+                IList<Project> projectList = new List<Project>();
+                return projectList;
+            }
+        }
+        public long GetProjectStatusCodeCount(int systemuserId, int roleId, int statusCode)
+        {
+            if (roleId == 6)
+            {
+                return _Dal.GetProjectStatusCodeCount(statusCode);
+            }else if (roleId == 2)
+            {
+                return _Dal.GetProjectStatusCodeCountByEngineerId(systemuserId, statusCode);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetProjectStatusCodeCountByTesterId(systemuserId, statusCode);
+            }
+            else
+            {
+                var a = 0;
+                return a;
+            }
+        }
     }
 }

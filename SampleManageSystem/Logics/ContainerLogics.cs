@@ -91,9 +91,9 @@ namespace Logics
         {
             return _Dal.GetSmallContainer();
         }
-        public IList<Container> GetUseContainerList()
+        public IList<Container> GetUseContainerList(int Page)
         {
-            return _Dal.GetUseContainerList();
+            return _Dal.GetUseContainerList(Page);
         }
     }
 }

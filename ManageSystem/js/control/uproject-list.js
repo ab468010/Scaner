@@ -1,5 +1,11 @@
 ﻿var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
+var page;
+if ($.getUrlParam("page") == null || undefined) {
+    page = 1;
+} else {
+    page = $.getUrlParam("page");
+}
 function uproject() {
     projectJs = new Globals.project();
     (function () {
@@ -10,50 +16,58 @@ function uproject() {
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "GetUProjectCount",
-            data:JSON.stringify(jsonPar),
+            data: JSON.stringify(jsonPar),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);
-                var page = Math.ceil(s / 10);
-                $("#PageNo").text(1);
-                $("#totalPageNo").text(page);
+                if (s == 0) {
+                    s = 1
+                }
+                var p = Math.ceil(s / 10);
+                $("#PageNo").text(page);
+                $("#totalPageNo").text(p);
             }, error: function (xhr) {
                 alert(xhr);
             }
-        })
-        Page(0);
+        });
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
+        Page((page-1)*10);
         $(".first").click(function () {
             if ($("#PageNo").text() != 1) {
                 $("#PageNo").text(1);
-                Page(0);
+                location.href = "uproject-list.html?page=" + "1";
             }
         })
         $(".before").click(function () {
             if ($("#PageNo").text() > 1) {
                 var number = parseInt($("#PageNo").text() - 1);
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "uproject-list.html?page=" + number;
             }
         })
         $(".last").click(function () {
             if ($("#PageNo").text() < $("#totalPageNo").text()) {
                 var number = parseInt($("#totalPageNo").text());
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "uproject-list.html?page=" + number;
             }
         })
         $(".next").click(function () {
             if (($("#PageNo").text() < $("#totalPageNo").text())) {
-                var number = parseInt($("#PageNo").text());
-                $("#PageNo").text(number + 1);
-                Page(number * 10);
+                var number = parseInt($("#PageNo").text())+1;
+                $("#PageNo").text(number);
+                location.href = "uproject-list.html?page=" + number;
             }
         })
         $(".Go").click(function () {
             if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                 var number = parseInt($("#pageNum").val());
                 $("#PageNo").text(number);
-                Page((number - 1) * 10);
+                location.href = "uproject-list.html?page=" + number;
             }
         })
 
