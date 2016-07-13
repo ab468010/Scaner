@@ -29,6 +29,13 @@ namespace SystemService
             xmlDoc.InnerXml = Xml<User>.EntityToXml(userList);
             return xmlDoc;
         }
+
+
+
+        /// <summary>
+        /// 获得状态为'创建项目'、'项目测试'、'测试完成'的项目列表
+        /// </summary>
+        /// <returns>Xml文档</returns>
         [WebMethod]
         public XmlDocument GetProjectList()
         {
@@ -39,6 +46,13 @@ namespace SystemService
             xmlDoc.InnerXml = Xml<Project>.EntityToXml(projectList);
             return xmlDoc;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="status"></param>
+        /// <returns>Xml文档</returns>
         [WebMethod]
         public bool UpdateProjectStatus(int projectId,int status)
         {
@@ -97,6 +111,11 @@ namespace SystemService
             return xmlDoc;
         }
 
+
+        /// <summary>
+        /// 获得状态为'创建项目'、'项目测试'、'测试完成'的项目下的所有任务
+        /// </summary>
+        /// <returns></returns>
         [WebMethod]
         public XmlDocument GetTaskList()
         {
