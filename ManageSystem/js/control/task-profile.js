@@ -111,29 +111,34 @@ function taskprofile() {
                 }
             })
           
-        $("#deletetask").click(function () {
-            if (confirm("删除吗？")) {
-                var jsonPar = {
-                    taskid: id
-                }
-                $.ajax({
-                    type: "post",
-                    url: Globals.ServiceUrl + "DeleteTask",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(jsonPar),
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("删除成功");
-                            location.href = "task-list.html";
-                        } else {
-                            alert("请先删除样品");
+            $("#deletetask").click(function () {
+                if (statucode > 2) {
+                    alert("无法删除");
+                } else {
+                    if (confirm("删除吗？")) {
+                        var jsonPar = {
+                            taskid: id
                         }
-                    }, error: function (xhr) {
-                        alert(xhr);
+                        $.ajax({
+                            type: "post",
+                            url: Globals.ServiceUrl + "DeleteTask",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(jsonPar),
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    alert("删除成功");
+                                    location.href = "task-list.html";
+                                } else {
+                                    alert("请先删除样品");
+                                }
+                            }, error: function (xhr) {
+                                alert(xhr);
+                            }
+                        })
                     }
-                })
-            }
+                }
+        
 
         })
         $("#savechange").click(function () {

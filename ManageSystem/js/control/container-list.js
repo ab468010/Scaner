@@ -1,6 +1,6 @@
 ﻿var containerJs, containerVar;
 var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -102,8 +102,8 @@ function Page(number) {
             for (i in containerList) {
                 var content = '<tr><td><a href="#">' + containerList[i].Name + '</a></td><td>' + containerList[i].ContainerCode + '</td><td>' + containerList[i].Size +
                                 '<ul class="actions">' +
-                                    '<li><a class="container2 edit1 edit" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">详情</a></li>' +
-                                    '<li class="last"><a href="#" class="container2 delete1 delete">删除</a></li>' +
+                                    '<li><a class="container2 read1" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">详情</a></li>' +
+                                    '<li class="last"><a href="#" class="container2 delete1">删除</a></li>' +
                                 '</ul>' +
                             '</td>' + "<td style='display:none' name='Id'>" + containerList[i].ContainerId + "</td><td name='projectstatuscode'style='display:none'>" +containerList[i].ProjectStatusCode+"</td>"
                         '</tr>';
@@ -117,7 +117,7 @@ function Page(number) {
                 location.href = "container-profile.html?id=" + $(this).find("[name='Id']").text();
             });
 
-            $(".delete").click(function () {
+            $(".container2.delete1").click(function () {
                 var s=$(this).parent().parent().parent().parent().find("[name=projectstatuscode]").text();
                 if (s > 2) {
                     alert("项目已开始无法删除")

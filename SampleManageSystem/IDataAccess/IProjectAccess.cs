@@ -38,8 +38,8 @@ namespace IDataAccess
         int CreateProject(Project project);
         bool UpdateProjectStatusCode(int projectId);
         IList<Project> GetProjectListByStatus();
-        bool UpdateContainerProjectId(int projectId);
-        bool UpdateSampleProjectId(int projectId);
+        IList<Container> UpdateContainerProjectId(int projectId);
+        bool UpdateSampleContainer(int projectId);
         IList<Project> GetAllFinishProjectList(int Page);
         IList<Project> GetFinishProjectListByEngineerId(int Page,int systemuserId);
         IList<Project> GetFinishProjectListByTseterId(int Page,int systemuserId);
@@ -52,5 +52,7 @@ namespace IDataAccess
         long GetProjectStatusCodeCount(int statusCode);
         long GetProjectStatusCodeCountByEngineerId(int systemuserId, int statusCode);
         long GetProjectStatusCodeCountByTesterId(int systemuserId, int statusCode);
+          bool   ExistsSample(int ContainerId);
+        bool UpdateContainerCode(int ContainerId);
     }
 }

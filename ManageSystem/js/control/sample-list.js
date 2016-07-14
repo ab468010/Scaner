@@ -1,6 +1,6 @@
 ﻿var sampleJs, sampleVar;
 var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -100,13 +100,13 @@ function Page(number) {
             var tbody = $(".table tbody").empty();
 
             for (i in sampleList) {
-                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) + "<ul class='actions'><li class='last'><a  class='sample2 edit1'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) + "<ul class='actions'><li class='last'><a  class='sample2 read1'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
 
                 tbody.append(row);
             }
-            $(".sample2.edit1").click(function () {
+            $(".sample2.read1").click(function () {
                 location.href = "sample-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
             });
         

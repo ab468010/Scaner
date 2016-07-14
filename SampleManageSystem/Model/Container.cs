@@ -20,7 +20,7 @@ namespace Model
         public string Size { get; set; }
         public string ContainerCode { get; set; }
         public int StatusCode { get; set; }
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         public string Description {get;set;}
         public int CreatedBy { get; set; }

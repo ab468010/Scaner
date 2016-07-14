@@ -2,7 +2,7 @@
 var roleid = Globals.getCookie("RoleId");
 var projectJs, projectVar;
 var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -35,35 +35,35 @@ function finishProject() {
         $(".first").click(function () {
             if ($("#PageNo").text() != 1) {
                 $("#PageNo").text(1);
-                location.href = "finishproject.html?page" + "1";
+                location.href = "finishproject.html?page=" + "1";
             }
         })
         $(".before").click(function () {
             if ($("#PageNo").text() > 1) {
                 var number = parseInt($("#PageNo").text() - 1);
                 $("#PageNo").text(number);
-                location.href = "finishproject.html?page" + number;
+                location.href = "finishproject.html?page=" + number;
             }
         })
         $(".last").click(function () {
             if ($("#PageNo").text() < $("#totalPageNo").text()) {
                 var number = parseInt($("#totalPageNo").text());
                 $("#PageNo").text(number);
-                location.href = "finishproject.html?page" + number;
+                location.href = "finishproject.html?page=" + number;
             }
         })
         $(".next").click(function () {
             if (($("#PageNo").text() < $("#totalPageNo").text())) {
                 var number = parseInt($("#PageNo").text())+1;
                 $("#PageNo").text(number);
-                location.href = "finishproject.html?page" + number;
+                location.href = "finishproject.html?page=" + number;
             }
         })
         $(".Go").click(function () {
             if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                 var number = parseInt($("#pageNum").val());
                 $("#PageNo").text(number);
-                location.href = "finishproject.html?page" + number;
+                location.href = "finishproject.html?page=" + number;
             }
         })
     })()

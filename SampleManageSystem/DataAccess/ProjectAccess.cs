@@ -8,6 +8,38 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+        public bool UpdateContainerCode(int ContainerId)
+        {
+            string st = "update dbo.container set statuscode=1 where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@containerid",ContainerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool ExistsSample(int ContainerId)
+        {
+            string st = "select count(1) from dbo.sample where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@containerid",ContainerId)
+            };
+            if ((long)NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public long GetProjectStatusCodeCountByTesterId(int systemuserId, int statusCode)
         {
             string sqlStr = "select count(1) from dbo.project where statuscode=@statuscode and projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid)";
@@ -47,7 +79,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                     
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode=@statuscode and project.projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid) 
                                 order by project.createdon desc limit 10 offset @page ";
@@ -88,13 +120,13 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                   
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode=@statuscode and engineerid=@engineerid order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@page",Page),
-                new NpgsqlParameter("@engineer",systemuserId),
+                new NpgsqlParameter("@engineerid",systemuserId),
                 new NpgsqlParameter("@statuscode",statusCode)
             };
 
@@ -126,7 +158,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                          
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode=@statuscode order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -188,7 +220,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                         
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode>2 and project.projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid) 
                                 order by project.createdon desc limit 10 offset @page ";
@@ -229,13 +261,13 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                           
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode>2 and engineerid=@engineerid order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@page",Page),
-                new NpgsqlParameter("@engineer",systemuserId)
+                new NpgsqlParameter("@engineerid",systemuserId)
             };
 
             IList<Project> projectList = new List<Project>();
@@ -266,7 +298,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                         
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode>2 order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -302,7 +334,7 @@ namespace DataAccess
         }
         public long GetProjectCountByEngineer(int systemuserId)
         {
-            string sqlStr = "select count(1) from dbo.project where  and engineerid=@systemuserid";
+            string sqlStr = "select count(1) from dbo.project where  engineerid=@systemuserid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@systemuserid",systemuserId)
@@ -447,7 +479,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                              
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode<3 and project.projectid in(select projectid from dbo.task where tester1=@systemuserid or tester2=@systemuserid) 
                                 order by project.createdon desc limit 10 offset @page ";
@@ -488,13 +520,13 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                        
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode<3 and engineerid=@engineerid order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@page",page),
-                new NpgsqlParameter("@engineer",systemuserId)
+                new NpgsqlParameter("@engineerid",systemuserId)
             };
 
             IList<Project> projectList = new List<Project>();
@@ -528,7 +560,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                             
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode<3 order by project.createdon desc limit 10 offset @page ";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -585,12 +617,13 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
             return count;
         }
-        public bool UpdateSampleProjectId(int projectId)
+        public bool UpdateSampleContainer(int projectId)
         {
-            string sqlStr = "update  dbo.sample set projectid=-1 where projectid=@projectid";
+            string sqlStr = "update  dbo.sample set containerid=@null where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@projectid",projectId)
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@null",DBNull.Value)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
             {
@@ -601,21 +634,24 @@ namespace DataAccess
                 return false;
             }
         }
-        public bool UpdateContainerProjectId(int projectId)
-        {
-            string sqlStr = "update  dbo.container set projectid=-1 where projectid=@projectid";
+        public IList<Container> UpdateContainerProjectId(int projectId)
+        { IList<Container> containerList = new List<Container>();
+            string sqlStr = "update  dbo.container set projectid=@null where projectid=@projectid returning containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@projectid",projectId)
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@null",DBNull.Value)
             };
-            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
+         using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
             {
-                return true;
+                while (rdr.Read())
+                {
+                    Container container = new Container();
+                    container.ContainerId = Convert.ToInt32(rdr["containerid"]);
+                    containerList.Add(container);
+                }
             }
-            else
-            {
-                return false;
-            }
+            return containerList;
         }
         public IList<Project> GetProjectListByStatus()
         {
@@ -644,7 +680,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                     
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                    where testerid=@testerid order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -684,7 +720,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                  
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid order by project.createdon desc limit 10 offset @page";
 
             IList<Project> projectList = new List<Project>();
@@ -738,7 +774,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                         
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode<3";
 
@@ -819,7 +855,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.description
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                            
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 Where project.projectid = @ProjectId";
 
@@ -865,7 +901,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                             
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                  where engineerid=@engineerid order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -905,7 +941,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                                
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid";
 
             IList<Project> projectList = new List<Project>();
@@ -983,7 +1019,7 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                Left Join dbo.SystemUser tester On project.testerid = tester.systemuserid
+                   
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
                                 where project.statuscode<=3 order by project.createdon desc ";
      

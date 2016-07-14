@@ -39,7 +39,7 @@ function config() {
                         var statecode = "禁用";
                     }
                     var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" +"<span class='label label-success'>"+ statecode+"</span>"+
-                        " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>"+"</td>"
+                        " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>"+"</td>"
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
@@ -68,7 +68,7 @@ function config() {
                         })
                     }
                 })
-                $(".edit1").click(function () {
+                $(".read1").click(function () {
                     var id = parseInt($(this).parent().parent().parent().parent(). find("[name='id']").text())
                     location.href = "customer-profile.html?id=" + id;
                 })
@@ -99,7 +99,7 @@ function config() {
                                 var statecode = "禁用";
                             }
                             var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + "<span class='label label-success'>" + statecode + "</span>" +
-                                 " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
+                                 " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
                             var row = document.createElement("tr");
                             row.innerHTML = cont;
                             tbody.append(row);
@@ -160,7 +160,7 @@ function config() {
                                 var statecode = "禁用";
                             }
                             var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + "<span class='label label-success'>" + statecode + "</span>" +
-                                 " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
+                                 " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
                             var row = document.createElement("tr");
                             row.innerHTML = cont;
                             tbody.append(row);
@@ -221,7 +221,7 @@ function config() {
                                 var statecode = "禁用";
                             }
                             var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + "<span class='label label-success'>" + statecode + "</span>" +
-                                " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
+                                " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
                             var row = document.createElement("tr");
                             row.innerHTML = cont;
                             tbody.append(row);
@@ -276,7 +276,7 @@ function config() {
                                 var statecode = "禁用";
                             }
                             var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + "<span class='label label-success'>" + statecode + "</span>" +
-                      " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
+                      " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
                             var row = document.createElement("tr");
                             row.innerHTML = cont;
                             tbody.append(row);
@@ -338,7 +338,7 @@ function config() {
                                 var statecode = "禁用";
                             }
                             var cont = "<td name='id' style='display:none'>" + s[i].Customerid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + "<span class='label label-success'>" + statecode + "</span>" +
-                                " <ul class='actions'><li class='last'><a class='customer2 edit1'>编辑</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
+                                " <ul class='actions'><li class='last'><a class='customer2 read1'>详情</a> <a  class='customer2 delete1'>删除</a></li></ul>" + "</td>"
                             var row = document.createElement("tr");
                             row.innerHTML = cont;
                             tbody.append(row);

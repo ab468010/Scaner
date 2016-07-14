@@ -11,28 +11,26 @@ namespace Model
         /// 只用于列表的Project构造方法
         /// </summary>
         public Project(int projectId, string projectNo, string name, int engineerId,
-            string engineerIdName, int stateCode, int statusCode,int testerId,string testerIdName)
+            string engineerIdName, int stateCode, int statusCode)
         {
             this.ProjectId = projectId;
             this.ProjectNo = projectNo;
             this.Name = name;
             this.EngineerId = engineerId;
             this.EngineerIdName = engineerIdName;
-            this.TesterId = testerId;
-            this.TesterIdName = testerIdName;
+           
             this.StatusCode = statusCode ;
             this.StateCode = stateCode;
         }
         public Project(int projectId, string projectNo, string name, int engineerId,
-    string engineerIdName, int stateCode, int statusCode, int testerId, string testerIdName,string description)
+    string engineerIdName, int stateCode, int statusCode,string description)
         {
             this.ProjectId = projectId;
             this.ProjectNo = projectNo;
             this.Name = name;
             this.EngineerId = engineerId;
             this.EngineerIdName = engineerIdName;
-            this.TesterId = testerId;
-            this.TesterIdName = testerIdName;
+         
             this.StatusCode = statusCode;
             this.StateCode = stateCode;
             this.Description = description;

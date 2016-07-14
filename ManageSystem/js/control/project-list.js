@@ -53,16 +53,17 @@ function initConfig() {
             };
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl +GetCount ,
+                url: Globals.ServiceUrl + GetCount ,
                 data: JSON.stringify(jsonPa),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var s = JSON.parse(data.d);
-                    if (s == 0) {
-                        s=1
-                    }
+                 
                     var pa = Math.ceil(s / 10);
+                    if (pa == 0) {
+                        pa=1
+                    }
                     $("#PageNo").text(page);
                     $("#totalPageNo").text(pa);
                 }
@@ -74,14 +75,14 @@ function initConfig() {
             $(".first").click(function () {
                 if ($("#PageNo").text() != 1) {
                     $("#PageNo").text(1);
-                    location.href = "project-list?page=" + "1";
+                    location.href = "project-list.html?page=" + "1";
                 }
             })
             $(".before").click(function () {
                 if ($("#PageNo").text() > 1) {
                     var number = parseInt($("#PageNo").text())-1;
                     $("#PageNo").text(number);
-                    location.href = "project-list?page=" + number;
+                    location.href = "project-list.html?page=" + number;
                     //Page((number - 1) * 10);
                 }
             })
@@ -89,7 +90,7 @@ function initConfig() {
                 if ($("#PageNo").text() < $("#totalPageNo").text()) {
                     var number = parseInt($("#totalPageNo").text());
                     $("#PageNo").text(number);
-                    location.href = "project-list?page=" + number;
+                    location.href = "project-list.html?page=" + number;
                    // Page((number - 1) * 10);
                 }
             })
@@ -97,7 +98,7 @@ function initConfig() {
                 if (($("#PageNo").text() < $("#totalPageNo").text())) {
                     var number = parseInt($("#PageNo").text())+1;
                     $("#PageNo").text(number);
-                    location.href = "project-list?page=" + number;
+                    location.href = "project-list.html?page=" + number;
                    // Page(number * 10);
                 }
             })
@@ -106,7 +107,7 @@ function initConfig() {
                 if (($("#totalPageNo").text() >= $("#pageNum").val() >= 1 && $("#pageNum").val() != $("#PageNo").val())) {
                     var number = parseInt($("#pageNum").val());
                     $("#PageNo").text(number);
-                    location.href = "project-list?page=" + number;
+                    location.href = "project-list.html?page=" + number;
                     //Page((number - 1) * 10);
                 }
             })
@@ -143,7 +144,7 @@ function Page(pa) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 edit1" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">编辑</a></li>' +
+                                    '<li><a class="project2 read1" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
                                     '<li class="last"><a  class="project2 delete1 ">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +

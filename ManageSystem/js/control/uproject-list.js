@@ -1,7 +1,7 @@
 ﻿var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");

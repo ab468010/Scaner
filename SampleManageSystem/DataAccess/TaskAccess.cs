@@ -154,10 +154,14 @@ namespace DataAccess
         }
         public IList<Task> SelectTaskByTseterId(int number, int systemuserId)
         {
-            IList<Task> ta = new List<Task>();
-            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode
-                from (dbo.task ta left join dbo.project pr on ta.projectid=pr.projectid) left join dbo.room ro on ta.roomid=ro.roomid 
-                 where tester1=@systemuserid or tester2=@systemuserid order by ta.createdon desc limit 10 offset @number";
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,tester1.name tester1idname,tester2.name tester2idname,
+                          COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode pstatuscode
+                          from dbo.task ta left join dbo.project pr on ta.projectid=pr.projectid
+                          left join dbo.room ro on ta.roomid=ro.roomid 
+                          left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
+                          where tester1=@systemuserid or tester2=@systemuserid order by ta.createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number),
@@ -167,17 +171,33 @@ namespace DataAccess
             {
                 while (drt.Read())
                 {
-                    ta.Add(new Task(drt.GetInt32(0), drt.GetString(1), drt.GetString(2), drt.GetString(3), drt.GetDateTime(4), drt.GetDateTime(5), drt.GetDateTime(6), drt.GetDateTime(7), drt.GetInt32(8)));
+                    Task task =new Task();
+                    task.TaskId = Convert.ToInt32(drt["taskid"]);
+                    task.Name = drt["taskname"].ToString();
+                    task.ProjectName = drt["projectname"].ToString();
+                    task.RoomName = drt["roomname"].ToString();
+                    task.Tester1IdName = drt["tester1idname"].ToString();
+                    task.Tester2IdName = drt["tester2idname"].ToString();
+                    task.EstimatedStart = Convert.ToDateTime(drt["estimatedstart"]);
+                    task.EstimatedEnd = Convert.ToDateTime(drt["estimatedend"]);
+                    task.ActualStart = Convert.ToDateTime(drt["actualstart"]);
+                    task.ActualEnd = Convert.ToDateTime(drt["actualend"]);
+                    task.ProjectStatusCode = Convert.ToInt32(drt["pstatuscode"]);
+                    taskList.Add(task);
                 }
             }
-            return ta;
+            return taskList;
         }
         public IList<Task> SelectTaskByEngineerId(int number, int systemuserId)
         {
-            IList<Task> ta = new List<Task>();
-            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode
-                from (dbo.task ta left join dbo.project pr on ta.projectid=pr.projectid) left join dbo.room ro on ta.roomid=ro.roomid 
-                 where ta.projectid in(select projectid from dbo.project where engineerid=@systemuserid) order by ta.createdon desc limit 10 offset @number";
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,tester1.name tester1idname,tester2.name tester2idname,
+                          COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode pstatuscode
+                          from dbo.task ta left join dbo.project pr on ta.projectid=pr.projectid
+                          left join dbo.room ro on ta.roomid=ro.roomid 
+                          left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
+                          where ta.projectid in(select projectid from dbo.project where engineerid=@systemuserid) order by ta.createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number),
@@ -187,10 +207,22 @@ namespace DataAccess
             {
                 while (drt.Read())
                 {
-                    ta.Add(new Task(drt.GetInt32(0), drt.GetString(1), drt.GetString(2), drt.GetString(3), drt.GetDateTime(4), drt.GetDateTime(5), drt.GetDateTime(6), drt.GetDateTime(7), drt.GetInt32(8)));
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(drt["taskid"]);
+                    task.Name = drt["taskname"].ToString();
+                    task.ProjectName = drt["projectname"].ToString();
+                    task.RoomName = drt["roomname"].ToString();
+                    task.Tester1IdName = drt["tester1idname"].ToString();
+                    task.Tester2IdName = drt["tester2idname"].ToString();
+                    task.EstimatedStart = Convert.ToDateTime(drt["estimatedstart"]);
+                    task.EstimatedEnd = Convert.ToDateTime(drt["estimatedend"]);
+                    task.ActualStart = Convert.ToDateTime(drt["actualstart"]);
+                    task.ActualEnd = Convert.ToDateTime(drt["actualend"]);
+                    task.ProjectStatusCode = Convert.ToInt32(drt["pstatuscode"]);
+                    taskList.Add(task);
                 }
             }
-            return ta;
+            return taskList;
         }
     
         public long GetGoingProjectCount()
@@ -323,9 +355,14 @@ namespace DataAccess
         }
         public IList<Task> SelectTask(int number)
         {
-            IList<Task> ta = new List<Task>();
-            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode
-                from (dbo.task ta inner join dbo.project pr on ta.projectid=pr.projectid) inner join dbo.room ro on ta.roomid=ro.roomid order by ta.createdon desc limit 10 offset @number";
+            IList<Task> taskList = new List<Task>();
+            string st = @"select taskid, ta.name taskname,pr.name projectname,ro.name roomname,tester1.name tester1idname,tester2.name tester2idname,
+                          COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend,pr.statuscode pstatuscode
+                          from dbo.task ta left join dbo.project pr on ta.projectid=pr.projectid 
+                          left join dbo.room ro on ta.roomid=ro.roomid 
+                          left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                          left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
+                          order by ta.createdon desc limit 10 offset @number";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@number",number)
@@ -334,10 +371,22 @@ namespace DataAccess
             {
                 while (drt.Read())
                 {
-                    ta.Add(new Task(drt.GetInt32(0), drt.GetString(1), drt.GetString(2), drt.GetString(3), drt.GetDateTime(4), drt.GetDateTime(5), drt.GetDateTime(6), drt.GetDateTime(7),drt.GetInt32(8)));
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(drt["taskid"]);
+                    task.Name = drt["taskname"].ToString();
+                    task.ProjectName = drt["projectname"].ToString();
+                    task.RoomName = drt["roomname"].ToString();
+                    task.Tester1IdName = drt["tester1idname"].ToString();
+                    task.Tester2IdName = drt["tester2idname"].ToString();
+                    task.EstimatedStart = Convert.ToDateTime(drt["estimatedstart"]);
+                    task.EstimatedEnd = Convert.ToDateTime(drt["estimatedend"]);
+                    task.ActualStart = Convert.ToDateTime(drt["actualstart"]);
+                    task.ActualEnd = Convert.ToDateTime(drt["actualend"]);
+                    task.ProjectStatusCode = Convert.ToInt32(drt["pstatuscode"]);
+                    taskList.Add(task);
                 }
             }
-            return ta;
+            return taskList;
         }
          public bool Create(Task task)
         {

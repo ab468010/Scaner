@@ -154,8 +154,11 @@ function index() {
                 contentType: "application/json;charset=utf-8",
                 data:JSON.stringify(jsonPar),
                 success: function (data) {
-                    var s = JSON.parse(data.d);
+                    var s = JSON.parse(data.d);                  
                     var page = Math.ceil(s / 5);
+                    if (page == 0) {
+                        page=1
+                    }
                     $("#PageNop").text(1);
                     $("#totalPageNop").text(page);
                     $("#delayproject").text(s);
@@ -202,7 +205,11 @@ function index() {
                 data: JSON.stringify(jsonPar),
                 success: function (data) {
                     var s = JSON.parse(data.d);
+                  
                     var page = Math.ceil(s / 5);
+                    if (page == 0) {
+                        page=1
+                    }
                     $("#PageNo").text(1);
                     $("#totalPageNo").text(page);
                     var count = s

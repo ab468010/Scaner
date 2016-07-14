@@ -108,9 +108,19 @@ namespace Logics
         }
         public bool UpdateProjectStatusCode(int projectId)
         {
-            _Dal.UpdateContainerProjectId(projectId);
-            _Dal.UpdateSampleProjectId(projectId);
-            return _Dal.UpdateProjectStatusCode(projectId);
+            IList<Container> containerList = _Dal.UpdateContainerProjectId(projectId);
+            _Dal.UpdateSampleContainer(projectId);
+            foreach (Container container in containerList)
+            {
+                if (!_Dal.ExistsSample(container.ContainerId))
+                {
+                    _Dal.UpdateContainerCode(container.ContainerId);
+                }
+            }
+            
+                
+                return _Dal.UpdateProjectStatusCode(projectId);
+            
         }
         public IList<Project> GetProjectListByStatus()
         {

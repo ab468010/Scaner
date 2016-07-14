@@ -1,6 +1,6 @@
 ﻿var userJs, userVar;
 var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -103,7 +103,7 @@ function Page(p) {
 
             for (i in userList) {
                 var content = "<td>" + userList[i].Name + "</td><td>" + userList[i].Username + "</td><td style='display:none' name='Id'>" + userList[i].SystemUserId + "</td><td>" +
-                    userList[i].RoleIdName + "</td><td>" + userList[i].Email + "<ul class='actions'><li class='last'><a class='systemuser2 edit1'>编辑</a>  <a class='systemuser2 delete1' >删除</a></li></ul>" + "</td>";
+                    userList[i].RoleIdName + "</td><td>" + userList[i].Email + "<ul class='actions'><li class='last'><a class='systemuser2 read1'>详情</a>  <a class='systemuser2 delete1' >删除</a></li></ul>" + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
                 tbody.append(row);
@@ -111,7 +111,7 @@ function Page(p) {
 
            
 
-            $(".edit1").click(function () {
+            $(".read1").click(function () {
                 location.href = "user-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
             })
 

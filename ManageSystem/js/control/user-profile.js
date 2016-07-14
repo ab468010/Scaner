@@ -86,7 +86,7 @@ var id = $.getUrlParam("id");
                 });
                 
           
-            $(".delete-user").click(function () {
+            $(".customer2.delete1").click(function () {
                 jsonPara = {
                     userId: id
                 };

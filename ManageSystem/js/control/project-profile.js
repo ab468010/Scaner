@@ -17,6 +17,7 @@ function initConfig() {
         
         $(document).ready(function () {
             $("#myModal .modal-body").load("child/edit-project.html");
+            $("#myModal1 .modal-body").load("child/edit-task.html");
             $("#login").click(function () {
                 if (confirm("确定注销？")) {
                     location.href = "login.html";
@@ -112,14 +113,14 @@ function initConfig() {
                 var tbody = $(".table tbody").empty();
                 for (var i in s) {
                     var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
-                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'style='display:none'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
+                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
                         + "</td><td name='taskid' style='display:none'>" + s[i].TaskId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
-                    if ($("#projectstatuscode").val ()< 3) {
-                        $(".actions").attr({style:"display:inline"})
-                    }
+                    //if ($("#projectstatuscode").val ()< 3) {
+                      //  $(".actions").attr({style:"display:inline"})
+                    //}
                 }
 
                 $(".task2.delete1").click(function () {
@@ -148,14 +149,15 @@ function initConfig() {
                         }
 
                     } else {
-                        alert("项目完成不能删除")
+                        alert("项目无法删除");
+                        return false;
                     }
                         
                 
                 });
                 $(".task2.edit1").click(function () {
                     if ($("#projectstatuscode").val() < 3) {
-                        $("#myModal1 .modal-body").load("child/edit-task.html");
+                 
                         var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
@@ -180,7 +182,8 @@ function initConfig() {
                             }
                         })
                     } else {
-                        alert("项目完成不能编辑")
+                        alert("项目无法编辑");
+                        return false;
                     }
                         
                     
@@ -293,6 +296,7 @@ function initConfig() {
                     if (s) {
                         $("#spanStatus").text(projectJs.bulidstatus(5));
                         alert("归还成功");
+                        window.location.reload()
                     } else {
                         alert("归还失败");
                     }

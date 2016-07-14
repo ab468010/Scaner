@@ -95,25 +95,25 @@ function initConfig() {
                             alert("样品不存在");
                             location.href = "sample-list.html";
                         } else {
-                            if (s.ProjectStatusCode <3) {
-                                $(".sample2.edit1").attr({ style: "display:inline" });
-                                $(".sample2.delete1").attr({style:"display:inline"})
-                            }
+                            $("#statusCode").val(s.ProjectStatusCode);
+                         
                             $("#txtName").val(s.Name);
                             $("#txtSampleCode").val(s.SampleCode);
 
                             $("#sltProject option").attr("selected", false);
                             $("#sltProject option[value=" + s.ProjectId + "]").attr("selected", true);
+                            $('#sltProject').selectpicker('refresh');
 
                             $("#sltContainer option").attr("selected", false);
                             $("#sltContainer option[value=" + s.ContainerId + "]").attr("selected", true);
+                            $('#sltContainer').selectpicker('refresh');
 
                             $("#sltSampleClass option").attr("selected", false);
                             $("#sltSampleClass option[value=" + s.SampleClass + "]").attr("selected", true);
 
                             $("#textDescription").val(s.Description);
-                            $('#sltProject').selectpicker('refresh');
-                            $('#sltContainer').selectpicker('refresh');
+                            
+                         
                             $('#sltSampleClass').selectpicker('refresh');
 
 
@@ -144,35 +144,46 @@ function initConfig() {
                 location.href = "sample-list.html";
             }
         });
-
+        $(".sample2.edit1").click(function () {
+            if($("#statusCode").val() < 3){
+                return true;
+            } else {
+                return false;
+            }
+        })
 
         $(".delete1").click(function () {
             jsonPara = {
                 sampleId: id
             };
-
-            if (confirm("确认要删除该样品?")) {
-                $.ajax({
-                    type: "post",
-                    url: Globals.ServiceUrl + "DeleteSample",
-                    data: JSON.stringify(jsonPara),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        if (data.d) {
-                            alert("删除成功");
-                            location.href = "sample-list.html";
+            if ($("#statusCode").val() < 3) {
+                if (confirm("确认要删除该样品?")) {
+                    $.ajax({
+                        type: "post",
+                        url: Globals.ServiceUrl + "DeleteSample",
+                        data: JSON.stringify(jsonPara),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.d) {
+                                alert("删除成功");
+                                location.href = "sample-list.html";
+                            }
+                            else
+                                alert("删除失败");
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.status);
+                            alert(XMLHttpRequest.readyState);
+                            alert(textStatus);
                         }
-                        else
-                            alert("删除失败");
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status);
-                        alert(XMLHttpRequest.readyState);
-                        alert(textStatus);
-                    }
-                });
+                    });
+                } else {
+                    alert("样品无法删除");
+                    return false;
+                }
             }
+          
         });
         $("#savechange").click(function () {
             if (Globals.trim($("#child_txtName").val()) != "" && Globals.trim($("#child_txtSampleCode").val()) != "") {
@@ -197,7 +208,7 @@ function initConfig() {
                         var s = JSON.parse(data.d);
                         if (s) {
                             alert("更新成功");
-                            location.href = "sample-list.html";
+                            window.location.reload();
                         } else {
                             alert("更新失败");
                         }

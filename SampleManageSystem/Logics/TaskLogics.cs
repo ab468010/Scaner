@@ -39,7 +39,8 @@ namespace Logics
             }
             else
             {
-                return null;
+                IList<Task> tasklist = new List<Task>();
+                return tasklist;
             }
            
         }

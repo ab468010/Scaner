@@ -1,5 +1,5 @@
 ﻿var page;
-if ($.getUrlParam("page") == null || undefined) {
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefinedd) {
     page = 1;
 } else {
     page = $.getUrlParam("page");

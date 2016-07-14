@@ -4,7 +4,8 @@ function existcookie()
 {
     var de='delete1';
     var ed='edit1';
-    var cr='create1';
+    var cr = 'create1';
+    var rd='read1'
     var jsonPar;
     if ((Globals.getCookie("UserName") == "" || Globals.getCookie("UserName") == null) || Globals.getCookie("RoleId") == null || Globals.getCookie("RoleId") == "")
     {
@@ -27,14 +28,16 @@ function existcookie()
         $(".privilege1").attr({ style: "display:none" });
         $(".room1").attr({ style: "display:none" });
         if (Globals.getCookie("RoleId") == 6) {
-            $("#changepwd").attr({ style: "margin-right:inline" });
+            $("#changepwd").attr({ style: "display:inline" });
         } else {
             $(".projecttemplate1").attr({ style: "display:none" });
             $(".containerwarning1").attr({ style: "display:none" });
         }
-      
-       
-    
+        $(".project2.read1").attr({ style: "display:none" });
+        $(".sample2.read1").attr({ style: "display:none" });
+        $(".container2.read1").attr({ style: "display:none" });
+        $(".task2.task1").attr({ style: "display:none" });
+        $(".customer2.read1").attr({ style: "display:none" });
 
         $(".project2.edit1").attr({ style: "display:none" });
         $(".task2.edit1").attr({ style: "display:none" });
@@ -47,6 +50,7 @@ function existcookie()
         $(".shelf2.edit1").attr({ style: "display:none" });
         $(".privilege2.edit1").attr({ style: "display:none" });
         $(".room2.edit1").attr({ style: "display:none" });
+      
 
         $(".project2.delete1").attr({ style: "display:none" });
         $(".task2.create1").attr({ style: "display:none" });
@@ -96,8 +100,29 @@ function existcookie()
                     if (s[i].CanWrite == true) {
                         $("." + s[i].Tablename + 2 + "." + ed).attr({ style: "display:inline" });
                     }
+                    if (s[i].CanRead == true) {
+                        $("." + s[i].Tablename + 2 + "." + rd).attr({ style: "display:inline" });
+                    }
                 }
-              
+
+
+                $("#dashboard-menu > li").each(function () {
+                    var hideModel = true;
+                    if ($(this).children("ul:first").attr("class") == "submenu")
+                    {
+                        $(this).children("ul:first").children("li").each(function () {
+                            if ($(this).css('display') == "inline") {
+                                hideModel = false;
+                            }
+                        });
+                        if (hideModel) {
+                            $(this).css("display","none");
+                        }
+                    }
+                });
+
+
+
             }, error: function (xhr) {
                 alert(xhr);
             }

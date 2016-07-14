@@ -50,7 +50,7 @@ function initConfig() {
                     $("#pDescription").text(container.Description);
                     $("#spanContainerCode").text(container.ContainerCode);
                     $("#spanSize").text(container.Size);
-                   // $("#spanProject").text(container.ProjectIdName);
+                    $("#spanProject").text(container.ProjectIdName);
                     $("#spanStatus").text(containerJs.bulidstatus(container.StatusCode));
 
                     $("#txtName").val(container.Name);
@@ -96,7 +96,8 @@ function initConfig() {
                     $(".delete1.sample2").click(function () {
                         var s = $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text();
                         if(s>2){
-                            alert("项目已开始无法移除");
+                            alert("无法移除样品");
+                            return false;
                         }else{
                             if (confirm("移除吗？")) {
                                 var jsonPar = {
