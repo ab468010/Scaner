@@ -53,7 +53,8 @@ function initConfig() {
             };
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + GetCount ,
+                url: Globals.ServiceUrl + GetCount,
+                async: false,
                 data: JSON.stringify(jsonPa),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -68,7 +69,8 @@ function initConfig() {
                     $("#totalPageNo").text(pa);
                 }
             });
-            Page((page-1)*10);
+            Page((page - 1) * 10);
+           
             $("#serch").click(function () {
                 location.href = "project-list.html?page=" + "1" + "&statusCode=" + $("#selectStatusCode").val();
             })
@@ -132,6 +134,7 @@ function Page(pa) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + GetList,
+    
         data: JSON.stringify(jsonPara),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -179,14 +182,12 @@ function Page(pa) {
                     })
                 }
 
-            })
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
+            });
+          
         }
-    });
 
+     
+    });
+  
 }
 

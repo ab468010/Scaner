@@ -74,10 +74,16 @@ function index() {
                 }
             });
         //进行中的项目
+            var jsonP = {
+                systemuserId: Number(systemuserid),
+                roleId: Number(roleid),
+                statusCode: 2
+            }
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + "GetGoingProjectCount",
+                url: Globals.ServiceUrl + "GetProjectStatusCodeCount",
                 contentType: "application/json;charset=utf-8",
+                data:JSON.stringify(jsonP),
                 success: function (data) {
                     var s = JSON.parse(data.d);
                     $("#goingproject").text(s);

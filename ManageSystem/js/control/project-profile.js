@@ -29,6 +29,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetUserByRole",
+             
                 data: JSON.stringify(jsonP),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -49,19 +50,22 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetProject",
-               
                 data: JSON.stringify(jsonPara),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                  
                     var project = JSON.parse(data.d);
+
+                    $("#projectengineer option").attr("selected", false);
+                   
+                    $("#projectengineer option[val=" + project.EngineerId + "]").attr("selected", true);
+                     $("#projectengineer").val(project.EngineerId);
+                    $('#projectengineer').selectpicker('refresh');
+
+
                     $("#projectstatuscode").val(project.StatusCode);
-                    if (project.StatusCode < 3) {
-                        $(".project2.edit1").attr({ style: "display:inline" });
-                        $(".project2.delete1").attr({ style: "display:inline" });
-                       
-                    }
+
                     if (project.StatusCode == 4) {
                         $("#givecustomer").attr({style:"display:inline"})
                     } 
@@ -79,24 +83,13 @@ function initConfig() {
                     $("#projectname").val(project.Name);
                     $("#projectno").val(project.ProjectNo);
                     $("#statuscode").val(projectJs.bulidstatus(project.StatusCode));
-
-                    $("#testengineer option").attr("selected", false);
-                    $("#testengineer option[val=" + project.TesterId + "]").attr("selected",true);
-                    $('#testengineer').selectpicker('refresh');
-
-                    $("#projectengineer option").attr("selected", false);
-                    $("#projectengineer option[val=" + project.EngineerId + "]").attr("selected",true);
-                    $('#projectengineer').selectpicker('refresh');
+                 
 
                     $("#description").val(project.Description);
 
 
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
                 }
+           
             });
         });
         var jsonPar = {
@@ -119,12 +112,12 @@ function initConfig() {
                     row.innerHTML = cont;
                     tbody.append(row);
                     //if ($("#projectstatuscode").val ()< 3) {
-                      //  $(".actions").attr({style:"display:inline"})
+                    //  $(".actions").attr({style:"display:inline"})
                     //}
                 }
 
                 $(".task2.delete1").click(function () {
-                    if ($("#projectstatuscode").val()<3) {
+                    if ($("#projectstatuscode").val() < 3) {
                         if (confirm("删除吗？")) {
                             var jsonPar = {
                                 taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
@@ -152,12 +145,12 @@ function initConfig() {
                         alert("项目无法删除");
                         return false;
                     }
-                        
-                
+
+
                 });
                 $(".task2.edit1").click(function () {
                     if ($("#projectstatuscode").val() < 3) {
-                 
+
                         var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
@@ -185,42 +178,51 @@ function initConfig() {
                         alert("项目无法编辑");
                         return false;
                     }
-                        
-                    
-                  
+
+
+
                 })
 
             }, error: function (xhr) {
                 alert(xhr)
             }
+        });
+        $(".project2.edit1").click(function () {
+            if ($("#projectstatuscode").val() < 3) {
+                return true;
+            } else {
+                alert("无法编辑");
+                return false;
+            }
         })
         $(".project2.delete1").click(function () {
-           var jsonPara = {
-                projectId: id
-            };
+            if ($("#projectstatuscode").val() < 3) {
+                var jsonPa = {
+                    projectId: id
+                };
 
-            if (confirm("确认要删除该项目?")) {
-                $.ajax({
-                    type: "post",
-                    url: Globals.ServiceUrl + "DeleteProject",
-                    data: JSON.stringify(jsonPara),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("删除成功");
-                            location.href = "project-list.html";
+                if (confirm("确认要删除该项目?")) {
+                    $.ajax({
+                        type: "post",
+                        url: Globals.ServiceUrl + "DeleteProject",
+                        data: JSON.stringify(jsonPa),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            var s = JSON.parse(data.d);
+                            if (s) {
+                                alert("删除成功");
+                                location.href = "project-list.html";
+                            }
+                            else
+                                alert("请先删除相关任务");
                         }
-                        else
-                            alert("请先删除相关任务");
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status);
-                        alert(XMLHttpRequest.readyState);
-                        alert(textStatus);
-                    }
-                });
+
+                    });
+                }
+            } else {
+                alert("无法删除")
             }
+        
         });
         $("#savechange").click(function () {
             var jsonPara = {

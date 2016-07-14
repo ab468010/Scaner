@@ -1,4 +1,5 @@
 ﻿var page;
+var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -83,7 +84,7 @@ function Page(page) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetShelf",
-        //async: false,
+        
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -95,7 +96,8 @@ function Page(page) {
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
-            }        
+            }
+          
             $(".edit1").click(function () {
                 var jsonPara = {
                     shelfid: $(this).parent().parent().parent().parent().find("[name='shelfid']").text()

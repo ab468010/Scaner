@@ -87,6 +87,7 @@ function Page(number) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetUProjectListByUser",
+      
         data: JSON.stringify(jsonP),
         //dataType:"json",
         contentType: "application/json; charset=utf-8",
@@ -98,8 +99,8 @@ function Page(number) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 edit1" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
-                                    '<li class="last"><a  class="project2 delete1 ">删除</a></li>' +
+                                    '<li><a class="project2 edit1" style="display:none" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
+                                    '<li class="last"><a  class="project2 delete1 " style="display:none">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +
                         '</tr>';
@@ -133,12 +134,9 @@ function Page(number) {
                     })
                 }
 
-            })
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
+            });
+           
         }
+     
     });
 }

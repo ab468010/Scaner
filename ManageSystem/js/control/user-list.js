@@ -1,5 +1,6 @@
 ﻿var userJs, userVar;
 var page;
+var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -94,7 +95,7 @@ function Page(p) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetUserListA",
-        //async: false,
+        async: false,
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -109,7 +110,7 @@ function Page(p) {
                 tbody.append(row);
             }
 
-           
+         
 
             $(".read1").click(function () {
                 location.href = "user-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
@@ -140,11 +141,7 @@ function Page(p) {
                     })
                 }
             })
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
         }
+    
     });
 }

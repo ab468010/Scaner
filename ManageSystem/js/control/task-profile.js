@@ -62,6 +62,7 @@ function taskprofile() {
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "SelectRoom",
+            
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);
@@ -80,10 +81,16 @@ function taskprofile() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "SelectTaskId",
+           
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(jsonPa),
                 success: function (data) {
                     var sh = JSON.parse(data.d);
+                    $("#roomid option").attr("selected", false)
+                    $("#roomid option[val=" + sh.RoomId + "]").attr("selected", true);
+                    $("#roomid").val(sh.RoomId);
+                    $('#roomid').selectpicker('refresh');
+
                     $("#projectid_hidden").val(sh.ProjectId);
                     $("#name").val(sh.Name);
                     $("#projectid").val(sh.ProjectName);
@@ -98,9 +105,8 @@ function taskprofile() {
                     $("#Estimatedstart").text(Globals.datetime_is_null(sh.EstimatedStart));
                     $("#Estimatedend").text(Globals.datetime_is_null(sh.EstimatedEnd));
 
-                    $("#roomid option").attr("selected",false)
-                    $("#roomid option[val=" + sh.RoomId + "]").attr("selected", true);
-                    $('#roomid').selectpicker('refresh');
+               
+
                     if (Globals.datetime_is_null(sh.ActualStart)!== "空") {
                         $("#roomid").attr("disabled", "disabled");
                     } 
@@ -197,7 +203,12 @@ function taskprofile() {
                     tbody.append(row);
                 }
                 $(".sample2.edit1").click(function () {
-
+                    if (statucode > 2) {
+                        alert("无法编辑");
+                        return false;
+                    } else {
+                        return true;
+                    }
                 })
                 $(".sample2.delete1").click(function () {
                     if (statucode > 2) {

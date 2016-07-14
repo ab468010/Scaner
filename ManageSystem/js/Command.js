@@ -27,12 +27,7 @@ function existcookie()
         $(".shelf1").attr({ style: "display:none" });
         $(".privilege1").attr({ style: "display:none" });
         $(".room1").attr({ style: "display:none" });
-        if (Globals.getCookie("RoleId") == 6) {
-            $("#changepwd").attr({ style: "display:inline" });
-        } else {
-            $(".projecttemplate1").attr({ style: "display:none" });
-            $(".containerwarning1").attr({ style: "display:none" });
-        }
+     
         $(".project2.read1").attr({ style: "display:none" });
         $(".sample2.read1").attr({ style: "display:none" });
         $(".container2.read1").attr({ style: "display:none" });
@@ -52,7 +47,7 @@ function existcookie()
         $(".room2.edit1").attr({ style: "display:none" });
       
 
-        $(".project2.delete1").attr({ style: "display:none" });
+        $(".project2.create1").attr({ style: "display:none" });
         $(".task2.create1").attr({ style: "display:none" });
         $(".sample2.create1").attr({ style: "display:none" });
         $(".customer2.create1").attr({ style: "display:none" });
@@ -75,6 +70,13 @@ function existcookie()
         $(".shelf2.delete1").attr({ style: "display:none" });
         $(".privilege2.delete1").attr({ style: "display:none" });
         $(".room2.delete1").attr({ style: "display:none" });
+
+        if (Globals.getCookie("RoleId") == 6) {
+            $("#changepwd").attr({ style: "display:inline" });
+        } else {
+            $(".projecttemplate1").attr({ style: "display:none" });
+            $(".containerwarning1").attr({ style: "display:none" });
+        }
 
         jsonPar = {
             roleid: Globals.getCookie("RoleId")

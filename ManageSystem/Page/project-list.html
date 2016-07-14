@@ -141,54 +141,56 @@
 
                 <!-- products table-->
                 <!-- the script for the toggle all checkboxes from header is located in ../js/lib/theme.js -->
-                <div class="table-wrapper products-table section">
-                    <div class="row-fluid head">
-                        <div class="span12">
-                            <h4>项 目</h4>
-                        </div>
-                    </div>
-                
-                    <div class="row-fluid filter-block">
-                        <div class="pull-right">
-                            
-                            <div class="ui-select">
-                                <select id="selectStatusCode">
-                                    <option value="0">所有项目</option>
-                                    <option value="1">项目创建</option>
-                                    <option value="2">项目测试</option>
-                                    <option value="3">测试完成</option>
-                                    <option value="4">归还货架</option>
-                                    <option value="5">项目完成</option>
-                                </select>
+                <div>
+                    <div class="table-wrapper products-table section">
+                        <div class="row-fluid head">
+                            <div class="span12">
+                                <h4>项 目</h4>
                             </div>
-                            <a class="btn-flat success" id="serch">搜索</a>
-                            <a class="btn-flat success project2 create1 " id="btnNew">新建项目</a>
                         </div>
-                    </div>
 
-                    <div class="row-fluid" id="divProject">
-                        <table class="table table-hover" >
-                            <thead>
-                                <tr>
-                                    <th class="span2">
-                                        项目编号
-                                    </th>
-                                    <th class="span2">
-                                        <span class="line"></span>项目名
-                                    </th>
-                                    <th class="span2">
-                                        <span class="line"></span>状态
-                                    </th>
-                                    <th class="span2">
-                                        <span class="line"></span>项目工程师
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- row -->
-                                
-                            </tbody>
-                        </table>
+                        <div class="row-fluid filter-block">
+                            <div class="pull-right">
+
+                                <div class="ui-select">
+                                    <select id="selectStatusCode">
+                                        <option value="0">所有项目</option>
+                                        <option value="1">项目创建</option>
+                                        <option value="2">项目测试</option>
+                                        <option value="3">测试完成</option>
+                                        <option value="4">归还货架</option>
+                                        <option value="5">项目完成</option>
+                                    </select>
+                                </div>
+                                <a class="btn-flat success" id="serch">搜索</a>
+                                <a class="btn-flat success project2 create1 " id="btnNew">新建项目</a>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid" id="divProject">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="span2">
+                                            项目编号
+                                        </th>
+                                        <th class="span2">
+                                            <span class="line"></span>项目名
+                                        </th>
+                                        <th class="span2">
+                                            <span class="line"></span>状态
+                                        </th>
+                                        <th class="span2">
+                                            <span class="line"></span>项目工程师
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- row -->
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <!-- end products table -->
@@ -219,5 +221,6 @@
     <script src="../js/Command.js"></script>
     <script src="../js/module/projectModule/project.js"></script>
     <script src="../js/control/project-list.js"></script>
+   
 </body>
 </html>

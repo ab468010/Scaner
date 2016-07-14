@@ -1,4 +1,5 @@
 ﻿var page;
+var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -111,6 +112,7 @@ function Page(pa) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetRoomList",
+      
         contentType: "application/json; charset=utf-8",
        
         data: JSON.stringify(jsonPar),
@@ -124,7 +126,7 @@ function Page(pa) {
                 row.innerHTML = cont;
                 tbody.append(row);
             }
-     
+           
             $(".room2.delete1").click(function () {
                 if (confirm("确定删除？")) {
                     var jsonPara = {

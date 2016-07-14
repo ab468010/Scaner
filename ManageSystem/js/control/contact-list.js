@@ -3,7 +3,7 @@
 } else {
     page = $.getUrlParam("page");
 }
-
+var roleid = Globals.getCookie("RoleId");
 $(function () {
   
     $("#myModal .modal-body").load("child/edit-contact.html");
@@ -77,6 +77,7 @@ function Page(pa) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "Selectcontact",
+        async: false,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonPar),
         success: function (data) {
@@ -84,12 +85,39 @@ function Page(pa) {
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var cont = "<td name='contactid' style='display:none'>" + s[i].Contactid + "</td><td>" + s[i].Name + "</td><td>" + s[i].Description + "</td><td>" + s[i].Customername +
-                    " <ul class='actions'><li class='last'><a class='contact2 edit1'href='#myModal' data-toggle='modal'>编辑</a>  <a class='contact2 delete1' >删除</a></li></ul>" + "</td>";
+                    " <ul class='actions'><li class='last'><a class='contact2 edit1'style='display:none' href='#myModal' data-toggle='modal'>编辑</a>  <a class='contact2 delete1'style='display:none' >删除</a></li></ul>" + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
             }
+            json = {
+                roleid: roleid
+            };
+            $.ajax({
+                type: "post",
+                contentType: "application/json; charset=utf-8",
+                //async: false,
+                url: Globals.ServiceUrl + "GetRolePrivilegeList",
+                data: JSON.stringify(jsonPar),
+                success: function (data) {
+                    var s = JSON.parse(data.d);
 
+                    for (var i in s) {
+                        if (s[i].CanDelete == true) {
+                            $("." + s[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                        }
+                        if (s[i].CanCreate == true) {
+                            $("." + s[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                        }
+                        if (s[i].CanWrite == true) {
+                            $("." + s[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                        }
+                        if (s[i].CanRead == true) {
+                            $("." + s[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+                        }
+                    }
+                }
+            });
             $(".delete1").click(function () {
                 if (confirm("确定删除？")) {
                     var jsonPara = {
@@ -118,7 +146,7 @@ function Page(pa) {
                 $.ajax({
                     type: "post",
                     contentType: "application/json; charset=utf-8",
-                    async: false,
+                   //async: false,
                     url: Globals.ServiceUrl + "Scontactid",
                     data: JSON.stringify(jsonPa),
                     success: function (data) {

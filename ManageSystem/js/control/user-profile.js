@@ -66,6 +66,7 @@ var id = $.getUrlParam("id");
                                 $("#Description").text(s.Description);
                                 $("#role option").attr("selected", false);
                                 $("#role option[value=" + s.RoleId + "]").attr("selected", true);
+                                $("#role").val(s.RoleId);
                                 $('#role').selectpicker('refresh');
                                 $("#name").val(s.Name);
                                 $("#username").val(s.Username);

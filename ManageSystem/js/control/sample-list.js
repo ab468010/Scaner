@@ -1,5 +1,6 @@
 ﻿var sampleJs, sampleVar;
 var page;
+var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -93,6 +94,7 @@ function Page(number) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetSamplePageList",
+      
         contentType: "application/json; charset=utf-8",
         data:JSON.stringify(jsonPara),
         success: function (data) {
@@ -100,7 +102,8 @@ function Page(number) {
             var tbody = $(".table tbody").empty();
 
             for (i in sampleList) {
-                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) + "<ul class='actions'><li class='last'><a  class='sample2 read1'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) +
+                    "<ul class='actions'><li class='last'><a  class='sample2 read1'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
 
@@ -109,12 +112,11 @@ function Page(number) {
             $(".sample2.read1").click(function () {
                 location.href = "sample-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
             });
-        
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest.status);
-            alert(XMLHttpRequest.readyState);
-            alert(textStatus);
+            json = {
+                roleid: roleid
+            };
+           
         }
+      
     });
 }

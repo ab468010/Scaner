@@ -1,5 +1,6 @@
 ﻿var containerJs, containerVar;
 var page;
+var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -94,6 +95,7 @@ function Page(number) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetContainerPageList",
+      
         contentType: "application/json; charset=utf-8",
         data:JSON.stringify(jsonPara),
         success: function (data) {
@@ -113,6 +115,7 @@ function Page(number) {
 
                 tbody.append(row);
             }
+            
             $("#divContainer table tbody tr").dblclick(function () {
                 location.href = "container-profile.html?id=" + $(this).find("[name='Id']").text();
             });

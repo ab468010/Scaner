@@ -101,16 +101,19 @@ function initConfig() {
                             $("#txtSampleCode").val(s.SampleCode);
 
                             $("#sltProject option").attr("selected", false);
+                        
                             $("#sltProject option[value=" + s.ProjectId + "]").attr("selected", true);
+                            $("#sltProject").val(s.ProjectId);
                             $('#sltProject').selectpicker('refresh');
 
                             $("#sltContainer option").attr("selected", false);
                             $("#sltContainer option[value=" + s.ContainerId + "]").attr("selected", true);
+                            $("#sltContainer").val(s.ContainerId);
                             $('#sltContainer').selectpicker('refresh');
 
                             $("#sltSampleClass option").attr("selected", false);
                             $("#sltSampleClass option[value=" + s.SampleClass + "]").attr("selected", true);
-
+                            $("#sltSampleClass").val(s.SampleClass);
                             $("#textDescription").val(s.Description);
                             
                          
@@ -122,12 +125,15 @@ function initConfig() {
 
                             $("#child_sltProject option").attr("selected", false);
                             $("#child_sltProject option[value=" + s.ProjectId + "]").attr("selected", true);
+                            $("#child_sltProject ").val(s.ProjectId);
 
                             $("#child_sltContainer option").attr("selected", false);
                             $("#child_sltContainer option[value=" + s.ContainerId + "]").attr("selected", true);
+                            $("#child_sltContainer").val(s.ContainerId);
 
                             $("#child_sltSampleClass option").attr("selected", false);
                             $("#child_sltSampleClass option[value=" + s.SampleClass + "]").attr("selected", true);
+                            $("#child_sltSampleClass").val(s.SampleClass);
 
                             $("#child_textDescription").val(s.Description);
                             $('#child_sltProject').selectpicker('refresh');
@@ -178,10 +184,10 @@ function initConfig() {
                             alert(textStatus);
                         }
                     });
-                } else {
-                    alert("样品无法删除");
-                    return false;
-                }
+                } 
+            } else {
+                alert("样品无法删除");
+                return false;
             }
           
         });
