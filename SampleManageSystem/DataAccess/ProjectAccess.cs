@@ -715,7 +715,8 @@ namespace DataAccess
       
         public IList<Project> GetAllProjectList(int Page)
         {
-            string sqlStr = @"SELECT project.projectid, project.projectno, 
+            string sqlStr = @"SELECT project.projectid, project.projectno,project.description,
+                               
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
@@ -741,8 +742,8 @@ namespace DataAccess
                     project.EngineerIdName = rdr["EngineerIdName"].ToString();
                     project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     project.StateCode = Convert.ToInt32(rdr["statecode"]);
-         
-                 
+                    project.Description = rdr["description"].ToString();
+                  
                     project.CustomerId = Convert.ToInt32(rdr["customerid"]);
                     project.CustomerIdName = rdr["CustomerIdName"].ToString();
                     projectList.Add(project);
@@ -936,7 +937,8 @@ namespace DataAccess
 
         public IList<Project> GetProjectList()
         {
-            string sqlStr = @"SELECT project.projectid, project.projectno, 
+            string sqlStr = @"SELECT project.projectid, project.projectno, coalesce(project.starttime,'1900-1-1') starttime,coalesce(project.starttime,'1900-1-1') endtime,project.description, 
+                                project.createdby,project.createdon,project.modifiedby,project.modifiedon,
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
                                 FROM dbo.project project
@@ -958,8 +960,12 @@ namespace DataAccess
                     project.EngineerIdName = rdr["EngineerIdName"].ToString();
                     project.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     project.StateCode = Convert.ToInt32(rdr["statecode"]);
-                    
-                   
+                    project.Description = rdr["description"].ToString();
+                    project.CreatedBy = Convert.ToInt32(rdr["createdby"]);
+                    project.CreatedOn = Convert.ToDateTime(rdr["createdon"]);
+                    project.ModifiedBy = Convert.ToInt32(rdr["modifiedby"]);
+                    project.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"]);
+
                     project.CustomerId = Convert.ToInt32(rdr["customerid"]);
                     project.CustomerIdName = rdr["CustomerIdName"].ToString();
                     projectList.Add(project);
@@ -970,15 +976,16 @@ namespace DataAccess
         public int CreateProject(Project project)
         {
             string sqlStr = @"Insert into dbo.Project ( projectno, name, engineerid,customerid, 
-            description, statuscode, statecode,createdby,createdon) values(@ProjectNo,@Name,@EngineerId,@Customerid,@Description,1,1,@createdby,now()) returning projectid";
+            description, statuscode, statecode,createdby,createdon,modifiedby,modifiedon) values(@ProjectNo,@Name,@EngineerId,@Customerid,@Description,1,1,@createdby,now(),@modifiedby,now()) returning projectid";
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("@ProjectNo",project.ProjectNo),
                 new NpgsqlParameter("@Name",project.Name),
                 new NpgsqlParameter("@EngineerId",project.EngineerId),
-             
+                new NpgsqlParameter("@modifiedby",project.CreatedBy),
                 new NpgsqlParameter("@CustomerId",project.CustomerId),
                 new NpgsqlParameter("@Description",project.Description),
-                new NpgsqlParameter("@createdby",project.CreatedBy)
+                new NpgsqlParameter("@createdby",project.CreatedBy),
+                new NpgsqlParameter("@modifiedby",project.CreatedBy)
             };
 
             int projectid = (int)(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters));
@@ -992,13 +999,13 @@ namespace DataAccess
         }
         public bool Update(Project project)
         {
-            string st = "update dbo.project set name=@name,projectno=@projectno,engineerid=@engineerid,description=@description where projectid=@projectid";
+            string st = "update dbo.project set name=@name,projectno=@projectno,engineerid=@engineerid,description=@description,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",project.Name),
                 new NpgsqlParameter("@projectno",project.ProjectNo),
                 new NpgsqlParameter("@engineerid",project.EngineerId),
-               
+               new NpgsqlParameter("@modifiedby",project.ModifiedBy),
                 new NpgsqlParameter("@description",project.Description),
                 new NpgsqlParameter("@projectid",project.ProjectId)
             };

@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Page/child/edit-project.html" />
 var projectJs, projectVar;
 var id = $.getUrlParam("projectId");
-
+var systemuserid = Globals.getCookie("SystemUserId");
 
 function initConfig() {
     //初始化模块JS
@@ -29,7 +29,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetUserByRole",
-             
+                // async: false,
                 data: JSON.stringify(jsonP),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -37,12 +37,47 @@ function initConfig() {
                     var option = $("#projectengineer").empty();
                     for (var i in s) {
                         option.append($("<option>").val(s[i].SystemUserId).text(s[i].Name));
-                       
+
                     }
                     option.append($("<option>").val(-1).text("Nothing selected"));
                     $('#projectengineer').selectpicker('refresh');
                 }
-            })
+            });
+            $.ajax({
+                type: "post",
+                url: Globals.ServiceUrl + "SelectRoom",
+                // async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var s = JSON.parse(data.d);
+                    option = $("#roomid").empty();
+                    for (var i in s) {
+                        option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
+                    }
+                    $('#roomid').selectpicker('refresh');
+                }, error: function (xhr) {
+                    alert(xhr);
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: Globals.ServiceUrl + "GetTesterList",
+                //async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var result = JSON.parse(data.d);
+                    var list = $("#tester1").empty();
+                    var list1 = $("#tester2").empty();
+                    for (var i in result) {
+                        list.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+                        list1.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+
+                    }
+
+                    $('#tester1').selectpicker('refresh');
+                    $('#tester2').selectpicker('refresh');
+                }
+            });
           var  jsonPara = {
                 projectId: id
             };
@@ -50,6 +85,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetProject",
+                
                 data: JSON.stringify(jsonPara),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -57,8 +93,7 @@ function initConfig() {
                  
                     var project = JSON.parse(data.d);
 
-                    $("#projectengineer option").attr("selected", false);
-                   
+                    $("#projectengineer option").attr("selected", false);                  
                     $("#projectengineer option[val=" + project.EngineerId + "]").attr("selected", true);
                      $("#projectengineer").val(project.EngineerId);
                     $('#projectengineer').selectpicker('refresh');
@@ -85,13 +120,14 @@ function initConfig() {
                     $("#statuscode").val(projectJs.bulidstatus(project.StatusCode));
                  
 
-                    $("#description").val(project.Description);
+                    $("#pdescription").text(project.Description);
 
 
                 }
            
             });
         });
+   
         var jsonPar = {
             projectId:id
         }
@@ -105,15 +141,13 @@ function initConfig() {
                 var s = JSON.parse(data.d);
                 var tbody = $(".table tbody").empty();
                 for (var i in s) {
-                    var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
+                    var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName +"</td><td>"+s[i].Tester1IdName+"</td><td>"+s[i].Tester2IdName+"</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
                         + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
                         + "</td><td name='taskid' style='display:none'>" + s[i].TaskId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
-                    //if ($("#projectstatuscode").val ()< 3) {
-                    //  $(".actions").attr({style:"display:inline"})
-                    //}
+                 
                 }
 
                 $(".task2.delete1").click(function () {
@@ -161,7 +195,19 @@ function initConfig() {
                             data: JSON.stringify(json),
                             success: function (data) {
                                 var sh = JSON.parse(data.d);
+                                $('#tester1 .selectpicker').selectpicker('refresh');
+                                $("#tester1 option").attr("selected", false)
+                                $("#tester1 option[val=" + sh.Tester1 + "]").attr("selected", true);
+                                $("#tester1").val(sh.Tester1);
+                                $('#tester1').selectpicker('refresh');
+
+                                $('#tester2 .selectpicker').selectpicker('refresh');
+                                $("#tester2 option").attr("selected", false)
+                                $("#tester2 option[val=" + sh.Tester2 + "]").attr("selected", true);
+                                $("#tester2").val(sh.Tester1);
+                                $('#tester2').selectpicker('refresh');
                                 $("#name").val(sh.Name);
+                              
                                 $("#projectid").val(sh.ProjectName);
                                 $("#description").val(sh.Description);
                                 $("#roomid").val(sh.RoomName);
@@ -178,9 +224,6 @@ function initConfig() {
                         alert("项目无法编辑");
                         return false;
                     }
-
-
-
                 })
 
             }, error: function (xhr) {
@@ -232,7 +275,8 @@ function initConfig() {
                     projectNo: $("#projectno").val(),
                     testerId: $("#testengineer").val(),
                     engineerId: $("#projectengineer").val(),
-                    description: $("#description").val(),
+                    description: $("#pdescription").text(),
+                    ModifiedBy:systemuserid
                 }
             }
             $.ajax({
@@ -258,10 +302,14 @@ function initConfig() {
             var jsonPara = {
                 task: {
                     name: $("#name").val(),
-                    description: $("#description").val(),
+                    description: $("#description").text(),
                     taskid: $("#taskid").val(),
                     estimatedstart: $("#estimatedstart").val(),
-                    estimatedend: $("#estimatedend").val()
+                    estimatedend: $("#estimatedend").val(),
+                    Tester1: $("#tester1").val(),
+                    Tester2: $("#tester2").val(),
+                    roomid:$("#roomid").val(),
+                    ModifiedBy:systemuserid
                 }
             }
             $.ajax({

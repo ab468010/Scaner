@@ -59,7 +59,7 @@ namespace Model
         public DateTime? ActualStart { get; set; }
         public DateTime? ActualEnd { get; set; }
         public int StatusCode { get; set; }
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }

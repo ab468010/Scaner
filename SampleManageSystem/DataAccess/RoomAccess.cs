@@ -42,12 +42,13 @@ namespace DataAccess
         }
         public bool CreateRoom(Room room)
         {
-            string st = "insert into dbo.room (name,roomcode,createdby,createdon) values(@name,@roomcode,@createdby,now())";
+            string st = "insert into dbo.room (name,roomcode,createdby,createdon,modifiedby,modifiedon) values(@name,@roomcode,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",room.Name),
                 new NpgsqlParameter("@roomcode",room.RoomCode),
-                new NpgsqlParameter("@createdby",room.CreatedBy)
+                new NpgsqlParameter("@createdby",room.CreatedBy),
+                new NpgsqlParameter("@modifiedby",room.CreatedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -128,7 +129,7 @@ namespace DataAccess
 
         public IList<Room> GetRoomList()
         {
-            string sqlStr = @"SELECT roomid, name,roomcode
+            string sqlStr = @"SELECT roomid, name,roomcode,createdon,createdby,modifiedon,modifiedby
                                 FROM dbo.room";
 
 
@@ -142,6 +143,10 @@ namespace DataAccess
                     room.RoomId = Convert.ToInt32(rdr["roomid"]);
                     room.Name = rdr["name"].ToString();
                     room.RoomCode = rdr["roomcode"].ToString();
+                    room.ModifiedBy = Convert.ToInt32(rdr["modifiedby"]);
+                    room.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"]);
+                    room.CreatedBy = Convert.ToInt32(rdr["createdby"]);
+                    room.CreatedOn = Convert.ToDateTime(rdr["createdon"]);
                     roomList.Add(room);
                     //roomList.Add(new Room(Convert.ToInt32(rdr["roomid"]),
                     //    rdr["name"].ToString(), rdr["size"].ToString(), rdr["roomcode"].ToString(), Convert.ToInt32(rdr["statuscode"])
@@ -174,12 +179,13 @@ namespace DataAccess
         }
         public bool Update(Room room)
         {
-            string st = "update dbo.room set name = @name ,roomcode=@roomcode where roomid = @roomid";
+            string st = "update dbo.room set name = @name ,roomcode=@roomcode,modifiedby=@modifiedby,modifiedon=now() where roomid = @roomid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@roomid",room.RoomId),
                 new NpgsqlParameter("@name",room.Name),
-                new NpgsqlParameter("@roomcode",room.RoomCode)
+                new NpgsqlParameter("@roomcode",room.RoomCode),
+                new NpgsqlParameter("@modifiedby ",room.UserId)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

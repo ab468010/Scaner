@@ -243,8 +243,12 @@ namespace DataAccess
         public IList<Task> GetTaskList()
         {
             IList<Task> tasklist = new List<Task>();
-            string sqlStr = @"select taskid,ta.name,COALESCE(ta.projectid,-1) projectid,pr.name projectname,COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
+            string sqlStr = @"select taskid,ta.name,COALESCE(ta.projectid,-1) projectid,pr.name projectname,ta.description,ta.tester1,ta.tester2,ta.createdby,ta.createdon,ta.modifiedby,
+                              ta.modifiedon,tester1.name tester1idname,tester2.name tester2idname,
+                              COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
                                 from dbo.task ta
+                                left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                                left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
                                 left join dbo.project pr on ta.projectid = pr.projectid
                                 left join dbo.room ro on ta.roomid = ro.roomid";
 
@@ -262,6 +266,15 @@ namespace DataAccess
                     task.EstimatedEnd = Convert.ToDateTime(rdr["estimatedend"]);
                     task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);
                     task.ActualEnd = Convert.ToDateTime(rdr["actualend"]);
+                    task.CreatedOn = Convert.ToDateTime(rdr["createdon"]);
+                    task.CreatedBy = Convert.ToInt32(rdr["createdby"]);
+                    task.ModifiedBy = Convert.ToInt32(rdr["modifiedby"]);
+                    task.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"]);
+                    task.Description = rdr["description"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.Tester1 = Convert.ToInt32(rdr["tester1"]);
+                    task.Tester2 = Convert.ToInt32(rdr["tester2"]);
                     tasklist.Add(task);
                 }
             }
@@ -271,8 +284,12 @@ namespace DataAccess
         public IList<Task> GetTaskListByProjectId(int projectId)
         {
             IList<Task> tasklist =new List<Task>();
-            string st = @"select taskid,ta.name taskname,COALESCE(ta.projectid,-1) projectid,pr.name projectname,COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
-                                from dbo.task ta
+            string st = @"select taskid,ta.name taskname,COALESCE(ta.projectid,-1) projectid,ta.description,pr.name projectname,
+                                 ta.modifiedon,tester1.name tester1idname,tester2.name tester2idname,ta.tester1,ta,tester2,
+                                 COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
+                                 from dbo.task ta
+                                 left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                                left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
                                 left join dbo.project pr on ta.projectid = pr.projectid
                                 left join dbo.room ro on ta.roomid = ro.roomid
                                      where  ta.projectid=@projectid";
@@ -293,6 +310,11 @@ namespace DataAccess
                     task.EstimatedEnd = Convert.ToDateTime(rdr["estimatedend"]);
                     task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);
                     task.ActualEnd = Convert.ToDateTime(rdr["actualend"]);
+                    task.Description = rdr["description"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.Tester1 = Convert.ToInt32(rdr["tester1"]);
+                    task.Tester2 = Convert.ToInt32(rdr["tester2"]);
                     tasklist.Add(task);
                 }
             }
@@ -323,9 +345,13 @@ namespace DataAccess
         public Task GetModel(int taskid)
         {
             Task task = null;
-            string st = @"select taskid,ta.name taskname,ta.roomid roomid,pr.name projectname,ta.projectid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,
+            string st = @"select taskid,ta.name taskname,ta.roomid roomid,pr.name projectname,ta.projectid,ro.name roomname,
+                          ta.tester1,ta.tester2,tester1.name tester1idname,tester2.name tester2idname, 
+                        COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,
                         COALESCE(actualend,'1900-1-1') actualend,ta.description description 
                         from dbo.task ta 
+                        left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                        left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
                         left join dbo.project pr on ta.projectid=pr.projectid
                         left join dbo.room ro on ta.roomid=ro.roomid
                         where taskid=@taskid";
@@ -349,6 +375,10 @@ namespace DataAccess
                     task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);
                     task.ActualEnd = Convert.ToDateTime(rdr["actualend"]);
                     task.Description = rdr["description"].ToString();
+                    task.Tester1 = Convert.ToInt32(rdr["tester1"]);
+                    task.Tester2 = Convert.ToInt32(rdr["tester2"]);
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
                 }
             }
             return task;
@@ -390,7 +420,7 @@ namespace DataAccess
         }
          public bool Create(Task task)
         {
-            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description,tester1,tester2,createdby,createdon) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now())";
+            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description,tester1,tester2,createdby,createdon,modifiedby,modifiedon) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",task.Name),
@@ -401,7 +431,8 @@ namespace DataAccess
                 new NpgsqlParameter("@description",task.Description),
                 new NpgsqlParameter("@tester1",task.Tester1),
                 new NpgsqlParameter("@tester2",task.Tester2),
-                new NpgsqlParameter("@createdby",task.CreatedBy)
+                new NpgsqlParameter("@createdby",task.CreatedBy),
+                new NpgsqlParameter("@modifiedby",task.CreatedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -434,14 +465,19 @@ namespace DataAccess
         }
          public   bool Update(Task task)
         {
-            string st = "update dbo.task set name=@name,estimatedstart=@estimatedstart,estimatedend=@estimatedend,description=@description where taskid=@taskid";
+            string st = @"update dbo.task set name=@name,estimatedstart=@estimatedstart,estimatedend=@estimatedend,description=@description,modifiedby=@modifiedby,modifiedon=now(),
+                          tester1=@tester1,tester2=@tester2,  roomid=@roomid where taskid=@taskid";
             NpgsqlParameter[] pa = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",task.Name),
                 new NpgsqlParameter("@estimatedstart",task.EstimatedStart),
                 new NpgsqlParameter("@estimatedend",task.EstimatedEnd),
                 new NpgsqlParameter("@description",task.Description),
-                new NpgsqlParameter("@taskid",task.TaskId)
+                new NpgsqlParameter("@taskid",task.TaskId),
+                new NpgsqlParameter("@modifiedby",task.ModifiedBy),
+                new NpgsqlParameter("@tester1",task.Tester1),
+                 new NpgsqlParameter("@tester2",task.Tester2),
+                new NpgsqlParameter("@roomid",task.RoomId)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, pa) > 0)
             {

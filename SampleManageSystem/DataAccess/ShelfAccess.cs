@@ -27,12 +27,20 @@ namespace DataAccess
         public IList<Shelf> GetShelfList()
         {
             IList<Shelf> shelfList = new List<Shelf>();
-            string sqlStr = "select shelfid,name,shelfcode,description from dbo.shelf";
+            string sqlStr = "select shelfid,name,shelfcode,description,createdby,createdon,modifiedby,modifiedon from dbo.shelf";
             using (NpgsqlDataReader drt = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr))
             {
                 while (drt.Read())
                 {
-                    shelfList.Add(new Shelf(drt.GetInt32(0), drt.GetString(1), drt.GetString(2), drt.GetString(3)));
+                    Shelf shelf = new Shelf();
+                    shelf.ShelfId = Convert.ToInt32(drt["shelfid"]);
+                    shelf.Name = drt["name"].ToString();
+                    shelf.ShelfCode = drt["shelfcode"].ToString();
+                    shelf.Description = drt["description"].ToString();
+                    shelf.CreatedBy = Convert.ToInt32(drt["createdby"]);
+                    shelf.CreatedOn = Convert.ToDateTime(drt["createdon"]);
+                    shelf.ModifiedBy = Convert.ToInt32(drt["modifiedby"]);
+                    shelf.ModifiedOn = Convert.ToDateTime(drt["modifiedon"]);
                 }
             }
             return shelfList;
@@ -79,13 +87,14 @@ namespace DataAccess
         }
         public bool Create(Shelf shelf)
         {
-           string st = "insert into dbo.shelf (name,shelfcode,description,createdby,createdon) values(@name,@shelfcode,@description,@createdby,now())";
+           string st = "insert into dbo.shelf (name,shelfcode,description,createdby,createdon,modifiedby,modifiedon) values(@name,@shelfcode,@description,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[] 
             {
                 new NpgsqlParameter("@name",shelf.Name),
                 new NpgsqlParameter("@shelfcode",shelf.ShelfCode),
                 new NpgsqlParameter("@description",shelf.Description),
-                new NpgsqlParameter("@createdby",shelf.CreatedBy)
+                new NpgsqlParameter("@createdby",shelf.CreatedBy),
+                new NpgsqlParameter("@modifiedby",shelf.CreatedBy)
             };
            if(NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -102,13 +111,14 @@ namespace DataAccess
         }
         public bool Update(Shelf shelf)
         {
-            string st = "update dbo.shelf set name=@name,shelfcode=@shelfcode,description=@description where shelfid=@shelfid";
+            string st = "update dbo.shelf set name=@name,shelfcode=@shelfcode,description=@description,modifiedby=@modifiedby,modifiedon=now() where shelfid=@shelfid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",shelf.Name),
                 new NpgsqlParameter("@shelfcode",shelf.ShelfCode),
                 new NpgsqlParameter("@description",shelf.Description),
-                new NpgsqlParameter("@shelfid",shelf.ShelfId)
+                new NpgsqlParameter("@shelfid",shelf.ShelfId),
+                new NpgsqlParameter("@modifiedby",shelf.ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

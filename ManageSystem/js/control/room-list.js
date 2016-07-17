@@ -1,5 +1,6 @@
 ﻿var page;
 var roleid = Globals.getCookie("RoleId");
+var SystemUserId = Globals.getCookie("SystemUserId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -73,7 +74,8 @@ function room() {
                     room: {
                         roomid: $("#roomid").val(),
                         name: $("#txtName").val(),
-                        roomcode: Globals.trim($("#roomcode").val())
+                        roomcode: Globals.trim($("#roomcode").val()),
+                        UserId:SystemUserId
                     }
                 }
                 $.ajax({

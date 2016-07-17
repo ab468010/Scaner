@@ -87,7 +87,7 @@ function Page(p) {
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var cont = "<td>" + s[i].RoleName + "</td><td>" + s[i].Description
-                + "<ul class='actions'><li class='last'><a class='role2 edit1'style='display:none'>编辑</a> <a class='role2 delete1'>删除</a></li></ul>" + "</td><td name='roleid'>" + s[i].RoleId + "</td>"
+                + "<ul class='actions'><li class='last'><a class='role2 edit1'>编辑</a> <a class='role2 delete1'>删除</a></li></ul>" + "</td><td name='roleid'style='display:none'>" + s[i].RoleId + "</td>"
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);

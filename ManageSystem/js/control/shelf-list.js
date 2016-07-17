@@ -1,4 +1,5 @@
 ﻿var page;
+var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
@@ -114,6 +115,7 @@ function Page(page) {
                         $("#shelfcode").val(sh.ShelfCode);
                         $("#description").val(sh.Description);
                         $("#shelfid").val(sh.ShelfId);
+
                     }, error: function (xhr) {
                         alert(xhr);
                     }
@@ -126,7 +128,8 @@ function Page(page) {
                             shelfid: $("#shelfid").val(),
                             name: $("#shelfname").val(),
                             shelfcode: Globals.trim($("#shelfcode").val()),
-                            description: $("#description").val()
+                            description: $("#description").val(),
+                            ModifiedBy:systemuserid
                         }
                     }
                     $.ajax({
