@@ -16,10 +16,10 @@
             <input class="span5" type="text" id="projectid" readonly/>
         </div>
     
-        <div class="span5 field-box">
+        <div class="span5 field-box"style="width:95%">
             <label>预计开始时间:</label> 
                 <div id="divEstimatedStart" class="input-append date">
-                    <input type="text" class="span5"id="estimatedstart"style="width:423px"disabled/>
+                    <input type="text" style="width:423px;" id="estimatedstart"  disabled/>
                     <span class="add-on">
                         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                     </span>
@@ -29,15 +29,25 @@
         <div class="span5 field-box">
             <label>预计结束时间:</label>
             <div id="divEstimatedEnd" class="input-append date">
-                <input type="text" class="span5" id="estimatedend" style="width:423px"disabled />
+                <input type="text" style="width:423px;" id="estimatedend"disabled />
                 <span class="add-on">
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                 </span>
             </div>
         </div>
-    <div class="span5 field-box" style="width:470px">
+    <div class="span5 field-box"style="width:91.7%" >
+    
+            <label>接收者:</label>
+            <select id="tester1" class="selectpicker form-control" data-live-search="true" data-size="6" title="请选择接收者"></select>
+        
+    </div>
+    <div class="span5 field-box"style="width:91.7%" >      
+            <label>完成者:</label>
+            <select id="tester2" class="selectpicker form-control" data-live-search="true" data-size="6" title="请选择完成者"></select>   
+    </div>
+    <div class="span5 field-box" style="width:91.7%" >
         <label>场 地:</label>
-        <select id="roomid" class="selectpicker form-control" data-live-search="true" data-size="6" title="请选择场地"></select>
+        <select id="roomid"class="selectpicker form-control" data-live-search="true" data-size="6" title="请选择场地"></select>
     </div>
         <div class="span5 field-box">
             <label>描 述:</label>

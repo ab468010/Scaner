@@ -8,6 +8,23 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
+        public bool  UpdateContainerModifiedBy(int containerId, int modifiedBy)
+        {
+            string sqlStr = "update dbo.container set modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@modifiedby",modifiedBy),
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool ExistsSample(int containerId)
         {
             string sqlStr = "select count(1) from dbo.sample where containerid=@containerid";
@@ -246,7 +263,8 @@ namespace DataAccess
         {
             string sqlStr = @"SELECT sampleid, sample.name, COALESCE(sample.shelfid,-1) shelfid, shelf.Name ShelfIdName,
 				                COALESCE(sample.containerid,-1) containerid,container.Name ContainerIdName, samplecode, sampleclass,
-				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName
+				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,shelf.createdby screatedby,
+                                shelf.createdon screatedon,shelf.modifiedby smodifiedby,shelf.modifiedon smodifiedon
                                 FROM dbo.sample sample
                                 Left Join dbo.Shelf shelf On sample.shelfid = shelf.shelfid
                                 Left Join dbo.container container On sample.containerid = container.containerid
@@ -270,6 +288,10 @@ namespace DataAccess
                     sample.ShelfIdName = rdr["ShelfIdName"].ToString();
                     sample.ContainerIdName = rdr["ContainerIdName"].ToString();
                     sample.ProjectIdName = rdr["ProjectIdName"].ToString();
+                    sample.ModifiedBy = Convert.ToInt32(rdr["smodifiedby"]);
+                    sample.ModifiedOn = Convert.ToDateTime(rdr["smodifiedon"]);
+                    sample.CreatedBy = Convert.ToInt32(rdr["screatedby"]);
+                    sample.CreatedOn = Convert.ToDateTime(rdr["screatedon"]);
                     sampleList.Add(sample);
                 }
             }
@@ -318,14 +340,15 @@ namespace DataAccess
 
         public bool Create(Model.Sample sample)
         {
-            string sqlStr = "insert into dbo.sample (name,samplecode,sampleclass,description,createdby,createdon) values(@name,@samplecode,@sampleclass,@description,@createdby,now())";
+            string sqlStr = "insert into dbo.sample (name,samplecode,sampleclass,description,createdby,createdon,modifiedby,modifiedon) values(@name,@samplecode,@sampleclass,@description,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",sample.Name),
                 new NpgsqlParameter("@samplecode",sample.SampleCode),
                 new NpgsqlParameter("@sampleclass",sample.SampleClass),
                 new NpgsqlParameter("@description",sample.Description),
-                new NpgsqlParameter("@createdby",sample.CreatedBy)
+                new NpgsqlParameter("@createdby",sample.CreatedBy),
+                new NpgsqlParameter("@modifiedby",sample.CreatedBy)
             };
 
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
@@ -367,7 +390,9 @@ namespace DataAccess
                                     containerid = @ContainerId,
                                     samplecode = @SampleCode,
                                     sampleclass = @SampleClass,
-                                    description = @Description
+                                    description = @Description,
+                                    modifiedby=@modifiedby,
+                                    modifiedon=now()
                                 Where sampleid = @SampleId";
 
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -379,7 +404,8 @@ namespace DataAccess
                 new NpgsqlParameter("@ShelfId",(object)sample.ShelfId??DBNull.Value),
                 new NpgsqlParameter("@ContainerId",(object)sample.ContainerId??DBNull.Value),
                 new NpgsqlParameter("@ProjectId",(object)sample.ProjectId??DBNull.Value),
-                new NpgsqlParameter("@Description",sample.Description)
+                new NpgsqlParameter("@Description",sample.Description),
+                new NpgsqlParameter("@modifiedby",sample.ModifiedBy)
             };
 
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)

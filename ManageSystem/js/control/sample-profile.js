@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Page/child/edit-sample.html" />
 var sampleJs, sampleVar;
 var id = $.getUrlParam("id");
-
+var systemuserid = Globals.getCookie("SystemUserId");
 function initConfig() {
     //初始化模块JS
     sampleJs = new Globals.sample();
@@ -201,7 +201,8 @@ function initConfig() {
                         ProjectId: $("#child_sltProject").val() == -1 ? null : $("#child_sltProject").val(),
                         ContainerId: $("#child_sltContainer").val() == -1 ? null : $("#child_sltContainer").val(),
                         SampleClass: $("#child_sltSampleClass").val() == -1 ? null : $("#child_sltSampleClass").val(),
-                        Description: $("#child_textDescription").val()
+                        Description: $("#child_textDescription").val(),
+                        ModifiedBy:systemuserid
                     }
                 }
 

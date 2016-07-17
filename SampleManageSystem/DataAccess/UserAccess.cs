@@ -146,7 +146,8 @@ namespace DataAccess
         public IList<User> GetUserList()
         {
             IList<User> userList = new List<User>();
-            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,sy.roleid,ro.name roleidname,usercode,password from dbo.SystemUser sy left join dbo.role ro
+            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,sy.roleid,ro.name roleidname,usercode,password,description,statecode,
+                             createdby,createdon,modifiedby,modifiedon from dbo.SystemUser sy left join dbo.role ro
                               on  sy.roleid=ro.roleid and statecode=1 ";
 
 
@@ -163,7 +164,12 @@ namespace DataAccess
                     user.RoleId = Convert.ToInt32(rdr["roleid"]);
                     user.RoleIdName = rdr["roleidname"] == DBNull.Value ? "" : rdr["roleidname"].ToString();
                     user.UserCode = rdr["usercode"] == DBNull.Value ? "" : rdr["usercode"].ToString();
-                    user.Email = rdr["email"] == DBNull.Value ? "" : rdr["email"].ToString();
+                    user.Email = rdr["email"] == DBNull.Value ? "" :rdr["email"].ToString();
+                    user.Description = rdr["description"] == DBNull.Value ? "" : rdr["description"].ToString();
+                    user.CreatedBy = Convert.ToInt32(rdr["createdby"]);
+                    user.CreatedOn = Convert.ToDateTime(rdr["createdon"]);
+                    user.ModifiedBy = Convert.ToInt32(rdr["modifiedby"]);
+                    user.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"]);
                     userList.Add(user);
                 }
             }
@@ -217,8 +223,8 @@ namespace DataAccess
         public bool Create(User user)
         {
             //if (Authorization)
-            string sqlStr = @"Insert Into dbo.SystemUser(Name,Username,Password,StateCode,RoleId,UserCode,Email,Description,createdby,createdon) 
-                                Values(@Name,@Username,@Password,@StateCode,@RoleId,@UserCode,@Email,@Description,@createdby,now())";
+            string sqlStr = @"Insert Into dbo.SystemUser(Name,Username,Password,StateCode,RoleId,UserCode,Email,Description,createdby,createdon,modifiedby,modifiedon) 
+                                Values(@Name,@Username,@Password,@StateCode,@RoleId,@UserCode,@Email,@Description,@createdby,now(),@modifiedby,now())";
 
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[] 
             {
@@ -230,7 +236,8 @@ namespace DataAccess
                 new NpgsqlParameter("@UserCode",user.UserCode),
                 new NpgsqlParameter("@Email",user.Email),
                 new NpgsqlParameter("@Description",user.Description),
-                new NpgsqlParameter("@createdby",user.CreatedBy)
+                new NpgsqlParameter("@createdby",user.CreatedBy),
+                new NpgsqlParameter("@modifiedby",user.CreatedBy)
             };
 
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters) > 0)
@@ -244,7 +251,7 @@ namespace DataAccess
         }
         public bool Update(User user)
         {
-            string st = "update dbo.systemuser set name=@name,usercode=@usercode,roleid=@roleid,email=@email,description=@description where systemuserid=@systemuserid";
+            string st = "update dbo.systemuser set name=@name,usercode=@usercode,roleid=@roleid,email=@email,description=@description,modifiedby=@modifiedby,modifiedon=now() where systemuserid=@systemuserid";
 
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
@@ -253,7 +260,8 @@ namespace DataAccess
                 new NpgsqlParameter("@UserCode",user.UserCode),
                 new NpgsqlParameter("@Email",user.Email),
                 new NpgsqlParameter("@Description",user.Description),
-                new NpgsqlParameter("@systemuserid",user.SystemUserId)
+                new NpgsqlParameter("@systemuserid",user.SystemUserId),
+                new NpgsqlParameter("@modifiedby",user.ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

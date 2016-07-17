@@ -13,12 +13,13 @@ function newroom() {
                         name: $("#name").val(),
                         roomcode: Globals.trim($("#roomcode").val()),
                         CreatedBy: createdby
+
                     }
                 }
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "CreateRoom",
-                    async: false,
+                    //async: false,
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(jsonPar),
                     success: function (data) {

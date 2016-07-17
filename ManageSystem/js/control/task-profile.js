@@ -1,12 +1,10 @@
 ﻿var statucode = $.getUrlParam("projectstatuscode");
 var id = $.getUrlParam("taskid");
+var systemuserid = Globals.getCookie("SystemUserId");
 function taskprofile() {
     $("#myModal .modal-body").load("child/edit-task.html");
     $("#myModal2 .modal-body").load("child/edit-tasksample.html");
-    if (statucode < 3) {
-        $(".task2.delete1").attr({ style: "display:inline" });
-        $(".task2.edit1").attr({ style: "display:inline" });
-    }
+ 
     (function () {
         $("#login").click(function () {
             if (confirm("确定注销？")) {
@@ -16,7 +14,8 @@ function taskprofile() {
         $(".sample2.create1").click(function () {
             var jsonPar = {
                 taskid: id,
-                projectid:$("#projectid_hidden").val()
+                projectid: $("#projectid_hidden").val(),
+                
             }
             $.ajax({
                 type: "post",
@@ -39,7 +38,8 @@ function taskprofile() {
         $("#savechange2").click(function () {
             var jsonPara = {
                 taskid: id,
-                sampleid:$("#edit_samplename").val()
+                sampleid: $("#edit_samplename").val(),
+             
             }
             $.ajax({
                 type: "post",
@@ -62,7 +62,7 @@ function taskprofile() {
         $.ajax({
             type: "post",
             url: Globals.ServiceUrl + "SelectRoom",
-            
+           // async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 var s = JSON.parse(data.d);
@@ -75,47 +75,90 @@ function taskprofile() {
                 alert(xhr);
             }
         });
+        $.ajax({
+            type: "post",
+            url: Globals.ServiceUrl + "GetTesterList",
+            //async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var result = JSON.parse(data.d);
+                var list = $("#tester1").empty();
+                var list1 = $("#tester2").empty();
+                for (var i in result) {
+                    list.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+                    list1.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
+
+                }
+            
+                $('#tester1').selectpicker('refresh');
+                $('#tester2').selectpicker('refresh');
+            }
+        });
         var jsonPa = {
             taskid:id
         }          
-            $.ajax({
-                type: "post",
-                url: Globals.ServiceUrl + "SelectTaskId",
+        $.ajax({
+            type: "post",
+            url: Globals.ServiceUrl + "SelectTaskId",
+           // async: false,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(jsonPa),
+            success: function (data) {
+                var sh = JSON.parse(data.d);
            
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(jsonPa),
-                success: function (data) {
-                    var sh = JSON.parse(data.d);
-                    $("#roomid option").attr("selected", false)
-                    $("#roomid option[val=" + sh.RoomId + "]").attr("selected", true);
-                    $("#roomid").val(sh.RoomId);
-                    $('#roomid').selectpicker('refresh');
+                $('#roomid .selectpicker').selectpicker('refresh');
+                $("#roomid option").attr("selected", false)
+                $("#roomid option[val=" + sh.RoomId + "]").attr("selected", true);
+                $("#roomid").val(sh.RoomId);
+                $('#roomid ').selectpicker('refresh');
 
-                    $("#projectid_hidden").val(sh.ProjectId);
-                    $("#name").val(sh.Name);
-                    $("#projectid").val(sh.ProjectName);
-                    $("#description").val(sh.Description);               
-                    $("#taskid").val(sh.TaskId);
-                    $("#estimatedstart").val(Globals.datetime_is_null(sh.EstimatedStart) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedStart));
-                    $("#estimatedend").val(Globals.datetime_is_null(sh.EstimatedEnd) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedEnd));
-                    $("#tleName").text(sh.Name);
-                    $("#ProjectId").text(sh.ProjectName);
-                    $("#RoomId").text(sh.RoomName);
-                    $("#pDescription").text(sh.Description);
-                    $("#Estimatedstart").text(Globals.datetime_is_null(sh.EstimatedStart));
-                    $("#Estimatedend").text(Globals.datetime_is_null(sh.EstimatedEnd));
+                $('#tester1 .selectpicker').selectpicker('refresh');
+                $("#tester1 option").attr("selected", false)
+                $("#tester1 option[val=" + sh.Tester1 + "]").attr("selected", true);
+                $("#tester1").val(sh.Tester1);
+                $('#tester1 ').selectpicker('refresh');
 
-               
+                $('#tester2 .selectpicker').selectpicker('refresh');
+                $("#tester2 option").attr("selected", false)
+                $("#tester2 option[val=" + sh.Tester2+ "]").attr("selected", true);
+                $("#tester2").val(sh.Tester2);
+                $('#tester2 ').selectpicker('refresh');
 
-                    if (Globals.datetime_is_null(sh.ActualStart)!== "空") {
-                        $("#roomid").attr("disabled", "disabled");
-                    } 
+                $("#Tester1").text(sh.Tester1IdName);
+                $("#Tester2").text(sh.Tester2IdName);
+                $("#projectid_hidden").val(sh.ProjectId);
+                $("#name").val(sh.Name);
+                $("#projectid").val(sh.ProjectName);
+                $("#description").val(sh.Description);
+                $("#taskid").val(sh.TaskId);
+                $("#estimatedstart").val(Globals.datetime_is_null(sh.EstimatedStart) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedStart));
+                $("#estimatedend").val(Globals.datetime_is_null(sh.EstimatedEnd) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedEnd));
+                $("#tleName").text(sh.Name);
+                $("#ProjectId").text(sh.ProjectName);
+                $("#RoomId").text(sh.RoomName);
+                $("#pDescription").text(sh.Description);
+                $("#Estimatedstart").text(Globals.datetime_is_null(sh.EstimatedStart));
+                $("#Estimatedend").text(Globals.datetime_is_null(sh.EstimatedEnd));
 
 
-                }, error: function (xhr) {
-                    alert(xhr);
+
+                if (Globals.datetime_is_null(sh.ActualStart) !== "空") {
+                    $("#roomid").attr("disabled", "disabled");
                 }
-            })
+
+
+            }, error: function (xhr) {
+                alert(xhr);
+            }
+        });
+        $(".task2.edit1").click(function () {
+            if (statucode > 2) {
+                alert("无法更改");
+                return false;
+            } else {
+                return true;
+            }
+        })
           
             $("#deletetask").click(function () {
                 if (statucode > 2) {
@@ -155,7 +198,11 @@ function taskprofile() {
                         description: $("#description").val(),
                         taskid: $("#taskid").val(),
                         estimatedstart: $("#estimatedstart").val(),
-                        estimatedend: $("#estimatedend").val()
+                        estimatedend: $("#estimatedend").val(),
+                        roomid: $("#roomid").val(),
+                        Tester1: $("#tester1").val(),
+                        Tester2:$("#tester2").val(),
+                        ModifiedBy:systemuserid
                     }
                 }
                 $.ajax({

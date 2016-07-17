@@ -650,10 +650,10 @@ public partial class handle_UserHandler : System.Web.UI.Page
     }
   
     [WebMethod]
-    public static string UpdateContainerId(int sampleId,int containerId)
+    public static string UpdateContainerId(int sampleId,int containerId,int modifiedBy)
     {
         SampleLogics sample = new SampleLogics();
-        return JsonConvert.SerializeObject(sample.UpdateContainerId(sampleId,containerId));
+        return JsonConvert.SerializeObject(sample.UpdateContainerId(sampleId,containerId,modifiedBy));
     }
 
     [WebMethod]

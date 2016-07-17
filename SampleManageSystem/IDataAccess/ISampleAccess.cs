@@ -24,5 +24,6 @@ namespace IDataAccess
         bool UpdateContainerStatusCode(Sample sample);
         bool UpdateContainerStatus(int containerId);
         bool ExistsSample(int containerId);
+        bool UpdateContainerModifiedBy(int containerId,int modifiedBy);
     }
 }

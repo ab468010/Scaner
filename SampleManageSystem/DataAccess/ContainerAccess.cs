@@ -235,7 +235,8 @@ namespace DataAccess
 
         public IList<Container> GetContainerList()
         {
-            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description
+            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description,
+                                      box.createdby bcreatedby,box.createdon bcreatedon,box.modifiedby bmodifiedby,box.modifiedon bmodifiedon
                                 FROM dbo.container box
                                 Left Join dbo.Project project on box.projectid = project.projectid";
 
@@ -255,6 +256,10 @@ namespace DataAccess
                     container.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     container.ProjectIdName = rdr["projectIdName"].ToString();
                     container.Description = rdr["Description"].ToString();
+                    container.CreatedBy = Convert.ToInt32(rdr["bcreatedby"]);
+                    container.CreatedOn = Convert.ToDateTime(rdr["bcreatedon"]);
+                    container.ModifiedBy = Convert.ToInt32(rdr["bmodifiedby"]);
+                    container.ModifiedOn = Convert.ToDateTime(rdr["bmodifiedon"]);
                     containerList.Add(container);
                 }
             }
@@ -264,13 +269,14 @@ namespace DataAccess
         public bool Create(Model.Container container)
         {
             string sqlStr = @"Insert into dbo.Container ( name, containercode, size,description, 
-             statuscode,createdby,createdon) values(@Name,@ContainerCode,@Size,@Description,1,@createdby,now())";
+             statuscode,createdby,createdon,modifiedby,modifiedon) values(@Name,@ContainerCode,@Size,@Description,1,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("@Name",container.Name),
                 new NpgsqlParameter("@ContainerCode",container.ContainerCode),
                 new NpgsqlParameter("@Size",container.Size),
                 new NpgsqlParameter("@Description",container.Description),
-                new NpgsqlParameter("@createdby",container.CreatedBy)
+                new NpgsqlParameter("@createdby",container.CreatedBy),
+                new NpgsqlParameter("@modifiedby",container.CreatedBy)
             };
 
             int createCount = NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters);
@@ -286,14 +292,17 @@ namespace DataAccess
         }
         public bool Update(Model.Container container)
         {
-            string sqlStr = @"update dbo.Container Set name = @Name,containercode = @ContainerCode, size = @Size,description = @Description 
+            string sqlStr = @"update dbo.Container Set name = @Name,containercode = @ContainerCode, size = @Size,description = @Description,
+                               modifiedby=@modifiedby,modifiedon=now()
                                Where ContainerId = @ContainerId";
             NpgsqlParameter[] commandParameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("@ContainerId",container.ContainerId), 
                 new NpgsqlParameter("@Name",container.Name),
                 new NpgsqlParameter("@ContainerCode",container.ContainerCode),
                 new NpgsqlParameter("@Size",container.Size),
-                new NpgsqlParameter("@Description",container.Description)
+                new NpgsqlParameter("@Description",container.Description),
+                new NpgsqlParameter("@modifiedby",container.ModifiedBy)
+
             };
 
             int createCount = NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters);

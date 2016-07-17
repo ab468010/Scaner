@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Page/child/edit-container.html" />
 var containerJs, containerVar;
 var id = $.getUrlParam("containerId");
-
+var SystemUserId = Globals.getCookie("SystemUserId");
 
 function initConfig() {
     //初始化模块JS
@@ -102,7 +102,8 @@ function initConfig() {
                             if (confirm("移除吗？")) {
                                 var jsonPar = {
                                     sampleId: $(this).parent().parent().parent().parent().find("[name='Id']").text(),
-                                    containerId:id
+                                    containerId: id,
+                                    modifiedBy:SystemUserId
                                 }
                                 $.ajax({
                                     type: "post",
@@ -139,7 +140,7 @@ function initConfig() {
                 containerId: id
             };
 
-            if (confirm("确认要删除该项目?")) {
+            if (confirm("确认要删除?")) {
                 $.ajax({
                     type: "post",
                     url: Globals.ServiceUrl + "DeleteContainer",
@@ -172,7 +173,8 @@ function initConfig() {
                         Name: $("#txtName").val(),
                         ContainerCode: Globals.trim($("#txtContainerCode").val()),
                         Size: $("#txtSize").val(),
-                        Description: $("#textDescription").val()
+                        Description: $("#textDescription").val(),
+                        ModifiedBy: SystemUserId
                     }
                 }
 

@@ -102,6 +102,8 @@ namespace Logics
                 task.RoomId = template.RoomId;
                 task.ProjectId = projectId;
                 task.Description = template.Description;
+                task.CreatedBy = project.CreatedBy;
+               
                 taskLogics.CreateTask(task);
             }
             return projectId;

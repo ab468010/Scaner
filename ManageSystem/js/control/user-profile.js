@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Page/child/edit-user.html" />
 var userJs, userVar;
 var id = $.getUrlParam("id");
-
+var SystemUserId = Globals.getCookie("SystemUserId");
     function initConfig() {
         //初始化模块JS
         userJs = new Globals.user();
@@ -124,6 +124,7 @@ var id = $.getUrlParam("id");
                         email: $("#email").val(),
                         description: $("#description").val(),
                         systemuserid: $("#systemuserid").val(),
+                        ModifiedBy:SystemUserId
                     }
                 }
 

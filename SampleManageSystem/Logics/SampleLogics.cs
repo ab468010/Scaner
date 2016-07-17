@@ -45,7 +45,7 @@ namespace Logics
             _Dal.DeleteTaskSample(sampleId);
             return _Dal.Delete(sampleId);
         }
-        public bool UpdateContainerId(int sampleId,int containerId)
+        public bool UpdateContainerId(int sampleId,int containerId, int modifiedBy)
         {
             bool boo= _Dal.UpdateContainerId(sampleId,containerId);
             if (_Dal.ExistsSample(containerId))
@@ -55,6 +55,7 @@ namespace Logics
             else
             {
                 _Dal.UpdateContainerStatus(containerId);
+                _Dal.UpdateContainerModifiedBy(containerId, modifiedBy);
                 return boo;
             }
         }
