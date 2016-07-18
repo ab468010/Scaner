@@ -1,4 +1,5 @@
 ﻿var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
@@ -93,12 +94,26 @@ function Page(page) {
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var cont = "<td>" + s[i].Name + "</td><td>" + s[i].ShelfCode + "</td><td>" + s[i].Description +
-                    " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='shelf2 edit1'>编辑</a> <a class='shelf2 delete1'>删除</a></li></ul>" + "</td><td style='display:none' name='shelfid'>" + s[i].ShelfId + "</td>";
+                    " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='shelf2 edit1'style='display:none'>编辑</a> <a class='shelf2 delete1'style='display:none'>删除</a></li></ul>" + "</td><td style='display:none' name='shelfid'>" + s[i].ShelfId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
-            }
-          
+            };
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".edit1").click(function () {
                 var jsonPara = {
                     shelfid: $(this).parent().parent().parent().parent().find("[name='shelfid']").text()

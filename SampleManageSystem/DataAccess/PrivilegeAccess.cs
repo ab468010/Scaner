@@ -12,7 +12,7 @@ namespace DataAccess
         {
             IList<Privilege> privilegelist = new List<Privilege>();
             string st = @"select pr.privilegeid,pr.moduleid,pr.name,canread,cancreate,candelete,canwrite,canmanage,mo.name modulename,mo.tablename 
-                       from dbo.privilege pr inner join dbo.module mo on pr.moduleid=mo.moduleid
+                       from dbo.privilege pr left join dbo.module mo on pr.moduleid=mo.moduleid
                        Left Join dbo.roleprivilege rp on pr.privilegeId = rp.privilegeId
                        Where rp.roleid = @roleid";
 

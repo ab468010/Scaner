@@ -1,5 +1,6 @@
 ﻿//登陆查询用户
 //$("."+s[i].Tablename).attr("display","none")
+var s = JSON.parse(Globals.getCookie("privilege"));
 function existcookie()
 {
     var de='delete1';
@@ -28,48 +29,44 @@ function existcookie()
         $(".privilege1").attr({ style: "display:none" });
         $(".room1").attr({ style: "display:none" });
      
-        $(".project2.read1").attr({ style: "display:none" });
-        $(".sample2.read1").attr({ style: "display:none" });
-        $(".container2.read1").attr({ style: "display:none" });
-        $(".task2.task1").attr({ style: "display:none" });
-        $(".customer2.read1").attr({ style: "display:none" });
 
-        $(".project2.edit1").attr({ style: "display:none" });
-        $(".task2.edit1").attr({ style: "display:none" });
-        $(".sample2.edit1").attr({ style: "display:none" });
-        $(".customer2.edit1").attr({ style: "display:none" });
-        $(".contact2.edit1").attr({ style: "display:none" });
-        $(".container2.edit1").attr({ style: "display:none" });
-        $(".systemuser2.edit1").attr({ style: "display:none" });
-        $(".role2.edit1").attr({ style: "display:none" });
-        $(".shelf2.edit1").attr({ style: "display:none" });
-        $(".privilege2.edit1").attr({ style: "display:none" });
-        $(".room2.edit1").attr({ style: "display:none" });
+
+        //$(".project2.edit1").attr({ style: "display:none" });
+        //$(".task2.edit1").attr({ style: "display:none" });
+        //$(".sample2.edit1").attr({ style: "display:none" });
+        //$(".customer2.edit1").attr({ style: "display:none" });
+        //$(".contact2.edit1").attr({ style: "display:none" });
+        //$(".container2.edit1").attr({ style: "display:none" });
+        //$(".systemuser2.edit1").attr({ style: "display:none" });
+        //$(".role2.edit1").attr({ style: "display:none" });
+        //$(".shelf2.edit1").attr({ style: "display:none" });
+        //$(".privilege2.edit1").attr({ style: "display:none" });
+        //$(".room2.edit1").attr({ style: "display:none" });
       
 
-        $(".project2.create1").attr({ style: "display:none" });
-        $(".task2.create1").attr({ style: "display:none" });
-        $(".sample2.create1").attr({ style: "display:none" });
-        $(".customer2.create1").attr({ style: "display:none" });
-        $(".contact2.create1").attr({ style: "display:none" });
-        $(".container2.create1").attr({ style: "display:none" });
-        $(".systemuser2.create1").attr({ style: "display:none" });
-        $(".role2.create1").attr({ style: "display:none" });
-        $(".shelf2.create1").attr({ style: "display:none" });
-        $(".privilege2.create1").attr({ style: "display:none" });
-        $(".room2.create1").attr({ style: "display:none" });
+        //$(".project2.create1").attr({ style: "display:none" });
+        //$(".task2.create1").attr({ style: "display:none" });
+        //$(".sample2.create1").attr({ style: "display:none" });
+        //$(".customer2.create1").attr({ style: "display:none" });
+        //$(".contact2.create1").attr({ style: "display:none" });
+        //$(".container2.create1").attr({ style: "display:none" });
+        //$(".systemuser2.create1").attr({ style: "display:none" });
+        //$(".role2.create1").attr({ style: "display:none" });
+        //$(".shelf2.create1").attr({ style: "display:none" });
+        //$(".privilege2.create1").attr({ style: "display:none" });
+        //$(".room2.create1").attr({ style: "display:none" });
 
-        $(".project2.delete1").attr({ style: "display:none" });
-        $(".task2.delete1").attr({ style: "display:none" });
-        $(".sample2.delete1").attr({ style: "display:none" });
-        $(".customer2.delete1").attr({ style: "display:none" });
-        $(".contact2.delete1").attr({ style: "display:none" });
-        $(".container2.delete1").attr({ style: "display:none" });
-        $(".systemuser2.delete1").attr({ style: "display:none" });
-        $(".role2.delete1").attr({ style: "display:none" });
-        $(".shelf2.delete1").attr({ style: "display:none" });
-        $(".privilege2.delete1").attr({ style: "display:none" });
-        $(".room2.delete1").attr({ style: "display:none" });
+        //$(".project2.delete1").attr({ style: "display:none" });
+        //$(".task2.delete1").attr({ style: "display:none" });
+        //$(".sample2.delete1").attr({ style: "display:none" });
+        //$(".customer2.delete1").attr({ style: "display:none" });
+        //$(".contact2.delete1").attr({ style: "display:none" });
+        //$(".container2.delete1").attr({ style: "display:none" });
+        //$(".systemuser2.delete1").attr({ style: "display:none" });
+        //$(".role2.delete1").attr({ style: "display:none" });
+        //$(".shelf2.delete1").attr({ style: "display:none" });
+        //$(".privilege2.delete1").attr({ style: "display:none" });
+        //$(".room2.delete1").attr({ style: "display:none" });
 
         if (Globals.getCookie("RoleId") == 6) {
             $("#changepwd").attr({ style: "display:inline" });
@@ -78,17 +75,7 @@ function existcookie()
             $(".containerwarning1").attr({ style: "display:none" });
         }
 
-        jsonPar = {
-            roleid: Globals.getCookie("RoleId")
-        };
-        $.ajax({
-            type: "post",
-            contentType: "application/json; charset=utf-8",
-            url: Globals.ServiceUrl + "GetRolePrivilegeList",
-            data: JSON.stringify(jsonPar),
-            success: function (data) {
-                var s = JSON.parse(data.d);
-               
+           
                 for (var i in s) {
 
                     $("." + s[i].Tablename + 1).attr({ style: "display:inline" });
@@ -102,9 +89,7 @@ function existcookie()
                     if (s[i].CanWrite == true) {
                         $("." + s[i].Tablename + 2 + "." + ed).attr({ style: "display:inline" });
                     }
-                    if (s[i].CanRead == true) {
-                        $("." + s[i].Tablename + 2 + "." + rd).attr({ style: "display:inline" });
-                    }
+                   
                 }
 
 
@@ -113,7 +98,7 @@ function existcookie()
                     if ($(this).children("ul:first").attr("class") == "submenu")
                     {
                         $(this).children("ul:first").children("li").each(function () {
-                            if ($(this).css('display') == "inline") {
+                            if ($(this).css('display') != "none") {
                                 hideModel = false;
                             }
                         });
@@ -121,14 +106,8 @@ function existcookie()
                             $(this).css("display","none");
                         }
                     }
-                });
-
-
-
-            }, error: function (xhr) {
-                alert(xhr);
-            }
-        })
+                });            
+        
     }
 
 }

@@ -23,7 +23,7 @@ namespace Logics
         }
         public IList<Project> GetUProjectListByUser(int systemuserId, int roleId, int page)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                return _Dal.GetUProjectList(page);
             }else if(roleId==2){
@@ -48,7 +48,7 @@ namespace Logics
 
         public IList<Project> GetProjectListByUserId(int systemuserId,int roleId,int Page,int statusCode)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetAllProjectList(Page);
             }
@@ -130,7 +130,7 @@ namespace Logics
         }
         public long GetUProjectCount(int systemuserId,int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetAllUProjectCount();
             }else if(roleId==2){
@@ -143,7 +143,7 @@ namespace Logics
         }
          public IList<Project> GetDelayProjectList(int systemuserId,int roleId,int Page,int Limit)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetALLDelayProject(Page,Limit);
             }else if (roleId == 2)
@@ -161,7 +161,7 @@ namespace Logics
         }
         public long GetDelayProjectCount(int systemuserId, int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetDelayProjectCount();
             }
@@ -182,7 +182,7 @@ namespace Logics
         }
         public long GetProjectCount(int systemuserId,int roleId,int statusCode)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetAllProjectCount();
             }
@@ -202,7 +202,7 @@ namespace Logics
         }
         public IList<Project> GetFinishProjectList(int Page,int systemuserId,int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetAllFinishProjectList(Page);
             }else if (roleId == 2)
@@ -220,7 +220,7 @@ namespace Logics
         }
         public long GetFinishProjectCount(int systemuserId, int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetFinishProjectCount();
             }else if (roleId == 2)
@@ -239,7 +239,7 @@ namespace Logics
         }
         public IList<Project> GetProjectStatusCodeList(int systemuserId,int roleId,int Page, int statusCode)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetProjectStatusCodeList(Page, statusCode);
             }else if (roleId == 2)
@@ -257,7 +257,7 @@ namespace Logics
         }
         public long GetProjectStatusCodeCount(int systemuserId, int roleId, int statusCode)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetProjectStatusCodeCount(statusCode);
             }else if (roleId == 2)

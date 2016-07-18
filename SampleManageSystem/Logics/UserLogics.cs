@@ -22,15 +22,18 @@ namespace Logics
             }
         }
      
-        public bool CreateUser(User user)
+        public int CreateUser(User user)
         {
             if (_Dal.Exists(user))
             {
-                return false;
+                return 1;
+            }else if (_Dal.ExistsCode(user))
+            {
+                return 2;
             }
             else
             {
-                return _Dal.Create(user);
+                return _Dal.CreateU(user);
             }
             
         }

@@ -1,4 +1,6 @@
-﻿$(function () { 
+﻿var SystemUserId = Globals.getCookie("SystemUserId");
+
+$(function () {
     var id = Globals.trim($.getUrlParam("id"));
     $("#newprivilege").click(function () {
         location.href = "new-privilege.html?id=" + id;
@@ -145,7 +147,8 @@
             role: {
                 roleid: id,
                 rolename: $("#RotxtName").val(),
-                description: $("#Rodescription").val()
+                description: $("#Rodescription").val(),
+                ModifiedBy:SystemUserId
             }
         }
         $.ajax({

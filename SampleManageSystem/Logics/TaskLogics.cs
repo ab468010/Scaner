@@ -27,7 +27,7 @@ namespace Logics
         }
         public IList<Task> SelectTask(int number,int systemuserId,int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.SelectTask(number);
             }else if (roleId == 2)
@@ -75,7 +75,7 @@ namespace Logics
         }
         public long GetDelayTaskCount(int systemuserId, int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetDelayTaskCount();
             }else if (roleId == 2)
@@ -99,7 +99,7 @@ namespace Logics
     
         public IList<Task> GetDelayTaskList(int systemuserId,int roleId,int Page)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal. GetAllDelayTask(Page);
             }else if (roleId == 2)
@@ -117,7 +117,7 @@ namespace Logics
         }
         public long GetUTaskCount(int systemuserId,int roleId)
         {
-            if (roleId == 6)
+            if (roleId == 6||roleId==18)
             {
                 return _Dal.GetAllUTaskCount();
             }else if (roleId == 2)

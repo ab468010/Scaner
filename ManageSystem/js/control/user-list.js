@@ -1,5 +1,6 @@
 ﻿var userJs, userVar;
 var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
@@ -95,7 +96,7 @@ function Page(p) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetUserListA",
-        async: false,
+        //async: false,
         data:JSON.stringify(jsonPar),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -104,12 +105,26 @@ function Page(p) {
 
             for (i in userList) {
                 var content = "<td>" + userList[i].Name + "</td><td>" + userList[i].Username + "</td><td style='display:none' name='Id'>" + userList[i].SystemUserId + "</td><td>" +
-                    userList[i].RoleIdName + "</td><td>" + userList[i].Email + "<ul class='actions'><li class='last'><a class='systemuser2 read1'>详情</a>  <a class='systemuser2 delete1' >删除</a></li></ul>" + "</td>";
+                    userList[i].RoleIdName + "</td><td>" + userList[i].Email + "<ul class='actions'><li class='last'><a class='systemuser2 read1'style='display:none'>详情</a>  <a class='systemuser2 delete1' style='display:none' >删除</a></li></ul>" + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
                 tbody.append(row);
             }
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
 
+                }
+            };
          
 
             $(".read1").click(function () {

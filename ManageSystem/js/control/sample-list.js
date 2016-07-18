@@ -6,6 +6,7 @@ if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
 } else {
     page = $.getUrlParam("page");
 }
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 function initConfig() {
     //初始化模块JS
     sampleJs = new Globals.sample();
@@ -103,12 +104,27 @@ function Page(number) {
 
             for (i in sampleList) {
                 var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) +
-                    "<ul class='actions'><li class='last'><a  class='sample2 read1'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                    "<ul class='actions'><li class='last'><a  class='sample2 read1'style='display:none'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
 
                 tbody.append(row);
             }
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".sample2.read1").click(function () {
                 location.href = "sample-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
             });

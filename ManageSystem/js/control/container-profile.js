@@ -2,7 +2,7 @@
 var containerJs, containerVar;
 var id = $.getUrlParam("containerId");
 var SystemUserId = Globals.getCookie("SystemUserId");
-
+var privilege = JSON.parse(Globals.getCookie("privilege"))
 function initConfig() {
     //初始化模块JS
     containerJs = new Globals.container();
@@ -76,7 +76,7 @@ function initConfig() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetSampleListByContainerId",
-                async: false,
+                //async: false,
                 data: JSON.stringify(jsonPara),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -84,7 +84,7 @@ function initConfig() {
                     var tbody = $(".table tbody").empty();
 
                     for (i in sampleList) {
-                        var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].SampleCode + "<ul class='actions samplelist' ><li class='last'><a class='delete1 sample2'>移除</a></li></ul></td>" +
+                        var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].SampleCode + "<ul class='actions samplelist' ><li class='last'><a class='delete1 sample2'style='display:none'>移除</a></li></ul></td>" +
                                      "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td><td name='projectstatuscode'style='display:none'>"+sampleList[i].ProjectStatusCode+"</td>";
                       
                         var row = document.createElement("tr");
@@ -92,7 +92,21 @@ function initConfig() {
 
                         tbody.append(row);
                     }
-                
+                    for (var i in privilege) {
+                        if (privilege[i].CanDelete == true) {
+                            $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                        }
+                        if (privilege[i].CanCreate == true) {
+                            $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                        }
+                        if (privilege[i].CanWrite == true) {
+                            $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                        }
+                        if (privilege[i].CanRead == true) {
+                            $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                        }
+                    };
                     $(".delete1.sample2").click(function () {
                         var s = $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text();
                         if(s>2){

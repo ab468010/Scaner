@@ -46,19 +46,29 @@ function initConfig() {
                         document.cookie = "RoleId=" + user.RoleId;
                         document.cookie = "Num=" + "1";
                         document.cookie = "expirse=" + exp.toGMTString();
-                        location.href = "index.html";
+                       
                     }
-                    else
-                    {
-                        alert("没有该用户");
+                    else {
+                        alert("用户名或密码错误");
                         $("#txtPassword").val("");
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                    };
+                    jsonPar = {
+                        roleid: user.RoleId
+                    };
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json; charset=utf-8",
+                        url: Globals.ServiceUrl + "GetRolePrivilegeList",
+                        data: JSON.stringify(jsonPar),
+                        success: function (data) {
+        
+                            document.cookie = "privilege=" + data.d;
+                            location.href = "index.html";
+                        
+                        }
+                    })
                 }
+             
             });
         });
     })();

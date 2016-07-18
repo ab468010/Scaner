@@ -1,6 +1,7 @@
 ﻿var statucode = $.getUrlParam("projectstatuscode");
 var id = $.getUrlParam("taskid");
 var systemuserid = Globals.getCookie("SystemUserId");
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 function taskprofile() {
     $("#myModal .modal-body").load("child/edit-task.html");
     $("#myModal2 .modal-body").load("child/edit-tasksample.html");
@@ -240,15 +241,30 @@ function taskprofile() {
                 for (var i in sampleList) {
                     var sampleclass = "";
                     if (sampleList[i].SampleClass == 1) {
-                         sampleclass = "样品";
+                        sampleclass = "样品";
                     } else {
-                         sampleclass="附件";
+                        sampleclass = "附件";
                     }
-                    var cont = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleclass + "<ul class='actions'><li class='last'><a class='sample2 delete1'>删除</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                    var cont = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleclass + "<ul class='actions'><li class='last'><a class='sample2 delete1'style='display:none'>删除</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
                 }
+                for (var i in privilege) {
+                    if (privilege[i].CanDelete == true) {
+                        $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanCreate == true) {
+                        $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanWrite == true) {
+                        $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanRead == true) {
+                        $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                    }
+                };
                 $(".sample2.edit1").click(function () {
                     if (statucode > 2) {
                         alert("无法编辑");

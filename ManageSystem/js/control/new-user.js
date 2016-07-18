@@ -60,18 +60,19 @@ function initConfig() {
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 var s = JSON.parse(data.d);
-                                if (s) {
+                                if (s==3) {
                                     alert("创建成功");
                                     location.href = "user-list.html";
-                                }
-                                else {
+                                }else if(s==1){
                                     alert("用户名已存在");
+                                } else if (s == 2) {
+                                    alert("条码已存在");
+                                } else {
+                                    alert("创建失败");
                                 }
-                            },
-                            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.status);
-                                alert(XMLHttpRequest.readyState);
-                                alert(textStatus);
+            
+                            }, error: function (xhr) {
+                                alert(xhr);
                             }
                         });
                     } else {

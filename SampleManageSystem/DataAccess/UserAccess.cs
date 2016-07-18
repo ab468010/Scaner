@@ -11,6 +11,46 @@ namespace DataAccess
 {
     public class UserAccess:IDataAccess.IUserAccess
     {
+        public int CreateU(User user)
+        {
+            string sqlStr = @"Insert Into dbo.SystemUser(Name,Username,Password,StateCode,RoleId,UserCode,Email,Description,createdby,createdon,modifiedby,modifiedon) 
+                                Values(@Name,@Username,@Password,@StateCode,@RoleId,@UserCode,@Email,@Description,@createdby,now(),@modifiedby,now())";
+
+            NpgsqlParameter[] commandParameters = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@name",user.Name),
+                new NpgsqlParameter("@Username",user.Username),
+                new NpgsqlParameter("@Password",user.Password),
+                new NpgsqlParameter("@StateCode",1),
+                new NpgsqlParameter("@RoleId",user.RoleId),
+                new NpgsqlParameter("@UserCode",user.UserCode),
+                new NpgsqlParameter("@Email",user.Email),
+                new NpgsqlParameter("@Description",user.Description),
+                new NpgsqlParameter("@createdby",user.CreatedBy),
+                new NpgsqlParameter("@modifiedby",user.CreatedBy)
+            };
+
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, commandParameters) > 0)
+                return 3;
+            else
+                return 4;
+        }
+        public bool  ExistsCode(User user)
+        {
+            string st = "select count(1) from dbo.systemuser where usercode=@usercode";
+            NpgsqlParameter[] pa = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@usercode",user.UserCode)
+            };
+            if ((long)NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st,pa) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public IList<User> GetUserByRole(string rolename)
         {
             IList<User> userlist = new List<User>();

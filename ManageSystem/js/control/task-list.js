@@ -1,6 +1,7 @@
 ﻿var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
@@ -93,14 +94,28 @@ function Page(p) {
                 var astart = Globals.datetime_is_null(s[i].ActualStart);
                 var aend = Globals.datetime_is_null(s[i].ActualEnd);
                 var con = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].RoomName + "</td><td>"+s[i].Tester1IdName+"</td><td>"+s[i].Tester2IdName+"</td><td>" + estart +
-                    "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 read1'>详情</a> <a class='task2 delete1'>删除</a></li></ul>" +
+                    "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 read1'style='display:none'>详情</a> <a class='task2 delete1'style='display:none'>删除</a></li></ul>" +
                     "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td><td name='projectstatuscode'style='display:none'>"+s[i].ProjectStatusCode+"</td>"
                 var row = document.createElement("tr");
                 row.innerHTML = con;
                 tbody.append(row)
             }
 
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
 
+                }
+            };
 
 
             $(".task2.read1").click(function () {

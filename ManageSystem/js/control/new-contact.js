@@ -1,4 +1,5 @@
 ﻿var id = $.getUrlParam("id");
+var createdby = Globals.getCookie("SystemUserId");
 var address;
 $(function () {
  

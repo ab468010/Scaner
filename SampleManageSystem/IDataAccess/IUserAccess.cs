@@ -12,7 +12,8 @@ namespace IDataAccess
         /// <returns></returns>
         bool Exists(User user);
 
-
+        bool ExistsCode(User user);
+       int CreateU(User user);
         /// <summary>
         /// 根据账户名密码获得用户
         /// </summary>

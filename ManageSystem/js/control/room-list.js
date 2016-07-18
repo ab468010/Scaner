@@ -1,4 +1,5 @@
 ﻿var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 var SystemUserId = Globals.getCookie("SystemUserId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
@@ -122,13 +123,27 @@ function Page(pa) {
             var s = JSON.parse(data.d);
             var tbody = $(".table tbody").empty();
             for (var i in s) {
-                var cont = "<td name='roomid' style='display:none'>" + s[i].RoomId + "</td><td>" + s[i].Name + "</td><td>" + s[i].RoomCode + 
-                    " <ul class='actions'><li class='last'><a class='room2 edit1' href='#myModal' data-toggle='modal'>编辑</a>  <a class='room2 delete1' >删除</a></li></ul>" + "</td>";
+                var cont = "<td name='roomid' style='display:none'>" + s[i].RoomId + "</td><td>" + s[i].Name + "</td><td>" + s[i].RoomCode +
+                    " <ul class='actions'><li class='last'><a class='room2 edit1'style='display:none' href='#myModal' data-toggle='modal'>编辑</a>  <a class='room2 delete1'style='display:none' >删除</a></li></ul>" + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
-            }
-           
+            };
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".room2.delete1").click(function () {
                 if (confirm("确定删除？")) {
                     var jsonPara = {

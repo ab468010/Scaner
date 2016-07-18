@@ -1,5 +1,6 @@
 ﻿var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var page;
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
@@ -99,8 +100,8 @@ function Page(number) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 edit1"  href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
-                                    '<li class="last"><a  class="project2 delete1 ">删除</a></li>' +
+                                    '<li><a class="project2 edit1"style="display:none"  href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
+                                    '<li class="last"><a  class="project2 delete1"style="display:none">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +
                         '</tr>';
@@ -110,6 +111,21 @@ function Page(number) {
 
                 tbody.append(row);
             }
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".project2.delete1").click(function () {
                 if (confirm("确定删除?")) {
                     var jsonPar = {

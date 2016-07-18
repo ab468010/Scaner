@@ -3,6 +3,7 @@
 } else {
     page = $.getUrlParam("page");
 }
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 $(function () {
   
@@ -77,7 +78,7 @@ function Page(pa) {
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "Selectcontact",
-        async: false,
+        //async: false,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonPar),
         success: function (data) {
@@ -90,34 +91,21 @@ function Page(pa) {
                 row.innerHTML = cont;
                 tbody.append(row);
             }
-            json = {
-                roleid: roleid
-            };
-            $.ajax({
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                //async: false,
-                url: Globals.ServiceUrl + "GetRolePrivilegeList",
-                data: JSON.stringify(jsonPar),
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-
-                    for (var i in s) {
-                        if (s[i].CanDelete == true) {
-                            $("." + s[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
-                        }
-                        if (s[i].CanCreate == true) {
-                            $("." + s[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
-                        }
-                        if (s[i].CanWrite == true) {
-                            $("." + s[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
-                        }
-                        if (s[i].CanRead == true) {
-                            $("." + s[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
-                        }
-                    }
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
                 }
-            });
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".delete1").click(function () {
                 if (confirm("确定删除？")) {
                     var jsonPara = {

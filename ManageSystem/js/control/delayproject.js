@@ -8,8 +8,14 @@ if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = $.getUrlParam("page");
 }
 function finishProject() {
+
     projectJs = new Globals.project();
     (function () {
+        $("#login").click(function () {
+            if (confirm("确定注销？")) {
+                location.href = "login.html";
+            }
+        });
         var jsonPar = {
             systemuserId: SystemUserId,
             roleId: roleid,

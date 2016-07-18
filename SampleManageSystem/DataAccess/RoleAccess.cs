@@ -98,12 +98,13 @@ namespace DataAccess
         }
         public bool Update(Role role)
         {
-            string st = "update dbo.role set name=@name,description=@description where roleid=@roleid";
+            string st = "update dbo.role set name=@name,description=@description,modifiedby=@modifiedby,modifiedon=now() where roleid=@roleid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",role.RoleName),
                 new NpgsqlParameter("@description",role.Description),
-                new NpgsqlParameter("@roleid",role.RoleId)
+                new NpgsqlParameter("@roleid",role.RoleId),
+                new NpgsqlParameter("@modifiedby",role.ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

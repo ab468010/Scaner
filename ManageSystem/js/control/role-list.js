@@ -1,4 +1,5 @@
 ﻿var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefinedd) {
     page = 1;
@@ -87,12 +88,26 @@ function Page(p) {
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var cont = "<td>" + s[i].RoleName + "</td><td>" + s[i].Description
-                + "<ul class='actions'><li class='last'><a class='role2 edit1'>编辑</a> <a class='role2 delete1'>删除</a></li></ul>" + "</td><td name='roleid'style='display:none'>" + s[i].RoleId + "</td>"
+                + "<ul class='actions'><li class='last'><a class='role2 edit1'style='display:none'>详情</a> <a class='role2 delete1'style='display:none'>删除</a></li></ul>" + "</td><td name='roleid'style='display:none'>" + s[i].RoleId + "</td>"
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);
             }
-          
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".edit1").click(function () {
                 location.href = "role-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='roleid']").text()
             })

@@ -1,5 +1,6 @@
 ﻿var containerJs, containerVar;
 var page;
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
@@ -104,18 +105,32 @@ function Page(number) {
             for (i in containerList) {
                 var content = '<tr><td><a href="#">' + containerList[i].Name + '</a></td><td>' + containerList[i].ContainerCode + '</td><td>' + containerList[i].Size +
                                 '<ul class="actions">' +
-                                    '<li><a class="container2 read1" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">详情</a></li>' +
-                                    '<li class="last"><a href="#" class="container2 delete1">删除</a></li>' +
+                                    '<li><a class="container2 read1"style="display:none" href="container-profile.html?containerId=' + containerList[i].ContainerId + '">详情</a></li>' +
+                                    '<li class="last"><a href="#" class="container2 delete1" style="display:none">删除</a></li>' +
                                 '</ul>' +
-                            '</td>' + "<td style='display:none' name='Id'>" + containerList[i].ContainerId + "</td><td name='projectstatuscode'style='display:none'>" +containerList[i].ProjectStatusCode+"</td>"
-                        '</tr>';
+                            '</td>' + "<td style='display:none' name='Id'>" + containerList[i].ContainerId + "</td><td name='projectstatuscode'style='display:none'>" + containerList[i].ProjectStatusCode + "</td>"
+                '</tr>';
 
                 var row = document.createElement("tr");
                 row.innerHTML = content;
 
                 tbody.append(row);
-            }
-            
+            };
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $("#divContainer table tbody tr").dblclick(function () {
                 location.href = "container-profile.html?id=" + $(this).find("[name='Id']").text();
             });

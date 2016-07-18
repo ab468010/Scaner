@@ -1,5 +1,6 @@
 ﻿var projectJs, projectVar;
 var SystemUserId = Globals.getCookie("SystemUserId");
+var privilege =JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 var page;
 var GetCount;
@@ -34,11 +35,11 @@ function initConfig() {
             }
         });
         $(document).ready(function () {
-
+           
             $("#selectStatusCode option").attr("selected", false);
             $("#selectStatusCode").val(val);
-
             $("#selectStatusCode option[val='" + val + "']").attr("selected", true);
+           
             if ($("#selectStatusCode").val() == 0) {
                 GetCount = "GetProjectCount";
                 GetList = "GetProjectListByUserId";
@@ -70,7 +71,7 @@ function initConfig() {
                 }
             });
             Page((page - 1) * 10);
-           
+      
             $("#serch").click(function () {
                 location.href = "project-list.html?page=" + "1" + "&statusCode=" + $("#selectStatusCode").val();
             })
@@ -147,8 +148,8 @@ function Page(pa) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 read1" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
-                                    '<li class="last"><a  class="project2 delete1 ">删除</a></li>' +
+                                    '<li><a class="project2 read1"style="display:none" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
+                                    '<li class="last"><a  class="project2 delete1"style="display:none">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +
                         '</tr>';
@@ -157,7 +158,22 @@ function Page(pa) {
                 row.innerHTML = content;
 
                 tbody.append(row);
-            }
+            };
+            for (var i in privilege) {
+                if (privilege[i].CanDelete == true) {
+                    $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanCreate == true) {
+                    $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanWrite == true) {
+                    $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                }
+                if (privilege[i].CanRead == true) {
+                    $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
+
+                }
+            };
             $(".project2.delete1").click(function () {
                 if (confirm("确定删除?")) {
                     var jsonPar = {

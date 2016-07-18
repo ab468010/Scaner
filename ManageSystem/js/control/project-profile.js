@@ -2,7 +2,7 @@
 var projectJs, projectVar;
 var id = $.getUrlParam("projectId");
 var systemuserid = Globals.getCookie("SystemUserId");
-
+var privilege = JSON.parse(Globals.getCookie("privilege"));
 function initConfig() {
     //初始化模块JS
     projectJs = new Globals.project();
@@ -149,7 +149,21 @@ function initConfig() {
                     tbody.append(row);
                  
                 }
+                for (var i in privilege) {
+                    if (privilege[i].CanDelete == true) {
+                        $("." + privilege[i].Tablename + 2 + ".delete1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanCreate == true) {
+                        $("." + privilege[i].Tablename + 2 + ".create1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanWrite == true) {
+                        $("." + privilege[i].Tablename + 2 + ".edit1").attr({ style: "display:inline" });
+                    }
+                    if (privilege[i].CanRead == true) {
+                        $("." + privilege[i].Tablename + 2 + ".read1").attr({ style: "display:inline" });
 
+                    }
+                };
                 $(".task2.delete1").click(function () {
                     if ($("#projectstatuscode").val() < 3) {
                         if (confirm("删除吗？")) {
