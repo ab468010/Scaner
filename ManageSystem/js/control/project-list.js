@@ -200,9 +200,10 @@ function Page(pa) {
 
             });
           
-        }
+        }, error: function (xhr) {
+            alert(xhr);
 
-     
+        }
     });
   
 }
