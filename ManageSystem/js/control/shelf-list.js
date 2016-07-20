@@ -94,7 +94,7 @@ function Page(page) {
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var cont = "<td>" + s[i].Name + "</td><td>" + s[i].ShelfCode + "</td><td>" + s[i].Description +
-                    " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='shelf2 edit1'style='display:none'>编辑</a> <a class='shelf2 delete1'style='display:none'>删除</a></li></ul>" + "</td><td style='display:none' name='shelfid'>" + s[i].ShelfId + "</td>";
+             " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='shelf2 edit1'style='display:none'>编辑</a> <a class='shelf2 delete1'style='display:none'>删除</a></li></ul>" + "</td><td style='display:none' name='shelfid'>" + s[i].ShelfId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = cont;
                 tbody.append(row);

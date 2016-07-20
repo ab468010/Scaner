@@ -25,5 +25,11 @@ namespace IDataAccess
         bool UpdateContainerStatus(int containerId);
         bool ExistsSample(int containerId);
         bool UpdateContainerModifiedBy(int containerId,int modifiedBy);
+        bool UpdateSampleProjectId(int sampleId, int projectId,int systemuserId);
+        bool ExistsSampleId(int sampleId);
+        bool UpdateTaskSample(int sampleId, int taskId);
+        bool CreateTaskSample(int sampleId, int taskId);
+        bool UpdateShelfId(int sampleId, int shelfId);
+        bool UpdateSampleContainerId(int sampleId, int containerId);
     }
 }

@@ -98,12 +98,14 @@ function index() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetUTaskCount",
+                async: false,
                 data:JSON.stringify(jsonPar),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var s = JSON.parse(data.d);
                     var maxNum = s;
                     var minNum = 0;
+                    $("#Hidden1").val(s);
                     $(".knob").knob({
                         width: "120",
                         max: maxNum,
@@ -114,6 +116,7 @@ function index() {
                         bgColor: "#d4ecfd",
                         "readOnly": true
                     });
+                  
                 }
          
             })
@@ -121,10 +124,12 @@ function index() {
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "GetUProjectCount",
+                async: false,
                 data: JSON.stringify(jsonPar),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var s = JSON.parse(data.d);
+                    $("#Hidden2").val(s);
                     var maxNumP = s;
                     var minNumP = 0;
                     $(".knobP").knob({
@@ -160,15 +165,23 @@ function index() {
                 contentType: "application/json;charset=utf-8",
                 data:JSON.stringify(jsonPar),
                 success: function (data) {
-                    var s = JSON.parse(data.d);                  
+                    var s = JSON.parse(data.d);
+                    var c;
                     var page = Math.ceil(s / 5);
                     if (page == 0) {
                         page=1
                     }
+                    if ($("#Hidden2").val() == 0) {
+                        c = 0 + "%";
+                    } else {
+                        c = Math.round((s / $("#Hidden2").val()) * 100) + "%";
+                    }
+                    
                     $("#PageNop").text(1);
                     $("#totalPageNop").text(page);
                     $("#delayproject").text(s);
                     $("#uproject").val(s).trigger('change');
+                    $("#uproject").val(c);
 
                 }, error: function (xhr) {
                     alert(xhr);
@@ -211,15 +224,22 @@ function index() {
                 data: JSON.stringify(jsonPar),
                 success: function (data) {
                     var s = JSON.parse(data.d);
-                  
+                    var c;
                     var page = Math.ceil(s / 5);
                     if (page == 0) {
                         page=1
                     }
                     $("#PageNo").text(1);
                     $("#totalPageNo").text(page);
-                    var count = s
-                    $("#utask").val(count).trigger('change');
+                    if ($("#Hidden1").val() == 0) {
+                        c = 0 + "%";
+                    } else {
+                        c = Math.round(s * 100 / $("#Hidden1").val()) + "%";
+                    }
+                   
+                    
+                    $("#utask").val(s).trigger('change');
+                    $("#utask").val(c)
                 }
             })
         Page(0)

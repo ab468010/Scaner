@@ -24,6 +24,6 @@ namespace IDataAccess
         long GetSmallContainer();
         IList<Container> GetUseContainerList(int Page);
 
-
+        bool UpdateContainerProjectId(int containerId, int projectId);
     }
 }

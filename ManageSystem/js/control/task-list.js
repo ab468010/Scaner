@@ -93,7 +93,8 @@ function Page(p) {
 
                 var astart = Globals.datetime_is_null(s[i].ActualStart);
                 var aend = Globals.datetime_is_null(s[i].ActualEnd);
-                var con = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].RoomName + "</td><td>"+s[i].Tester1IdName+"</td><td>"+s[i].Tester2IdName+"</td><td>" + estart +
+                var con = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].RoomName + "</td><td>" + s[i].Tester1IdName + "</td><td>" + s[i].Tester2IdName + "</td><td>" + estart +
+                    "</td><td name='tester1'style='display:none'>"+s[i].Tester1+"</td><td name='tester2'style='display:none'>"+s[i].Tester2+"</td><td name='roomid'style='display:none'>"+s[i].RoomId+
                     "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 read1'style='display:none'>详情</a> <a class='task2 delete1'style='display:none'>删除</a></li></ul>" +
                     "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td><td name='projectstatuscode'style='display:none'>"+s[i].ProjectStatusCode+"</td>"
                 var row = document.createElement("tr");
@@ -121,7 +122,10 @@ function Page(p) {
             $(".task2.read1").click(function () {
                 
                 location.href = "task-profile.html?taskid=" + $(this).parent().parent().parent().parent().find("[name='taskid']").text() + "&projectstatuscode=" +
-                    $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text();
+                    $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text()
+                + "&tester1=" + $(this).parent().parent().parent().parent().find("[name='tester1']").text()
+                + "&tester2=" + $(this).parent().parent().parent().parent().find("[name='tester2']").text()
+                + "&roomid=" + $(this).parent().parent().parent().parent().find("[name='roomid']").text();
                 })
       
            

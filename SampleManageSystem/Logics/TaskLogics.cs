@@ -65,9 +65,21 @@ namespace Logics
         {
             return _Dal.GetTaskCount();
         }
-        public IList<Task> GetTaskListByProjectId(int projectId)
+        public IList<Task> GetTaskListByProjectId(int projectId,int roleId,int systemuserId)
         {
-            return _Dal.GetTaskListByProjectId(projectId);
+            if (roleId == 6 || roleId == 18 || roleId == 2)
+            {
+                return _Dal.GetTaskListByProjectId(projectId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetTaskListByProjectIdTesterId(projectId, systemuserId);
+            }
+            else
+            {
+                IList<Task> taskList = new List<Task>();
+                return taskList;
+            }
+           
         }
         public IList<Task> GetTaskList()
         {

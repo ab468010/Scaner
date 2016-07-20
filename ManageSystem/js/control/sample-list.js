@@ -103,7 +103,9 @@ function Page(number) {
             var tbody = $(".table tbody").empty();
 
             for (i in sampleList) {
-                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleJs.getSampleClassText(sampleList[i].SampleClass) +
+                var content = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ProjectIdName + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td style='display:none'name='projectid'>"
+                                 +sampleList[i].ProjectId+"</td><td style='display:none'name=containerid>"+sampleList[i].ContainerId+"</td><td>"
+                                   +sampleList[i].ShelfIdName+"</td><ta>"+ sampleJs.getSampleClassText(sampleList[i].SampleClass) +
                     "<ul class='actions'><li class='last'><a  class='sample2 read1'style='display:none'>详情</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
@@ -126,7 +128,9 @@ function Page(number) {
                 }
             };
             $(".sample2.read1").click(function () {
-                location.href = "sample-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
+                location.href = "sample-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text()
+                + "&projectId=" + $(this).parent().parent().parent().parent().find("[name='projectid']").text()
+                + "&containerId=" + $(this).parent().parent().parent().parent().find("[name='containerid']").text()
             });
             json = {
                 roleid: roleid

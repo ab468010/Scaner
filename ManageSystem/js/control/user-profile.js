@@ -1,6 +1,7 @@
 ﻿/// <reference path="../../Page/child/edit-user.html" />
 var userJs, userVar;
 var id = $.getUrlParam("id");
+var roleid = $.getUrlParam("roleId");
 var SystemUserId = Globals.getCookie("SystemUserId");
     function initConfig() {
         //初始化模块JS
@@ -22,7 +23,7 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                     }
                 });
                 $("#changepwd").click(function () {
-                    location.href = "changepwd-list.html?id=" + id;
+                    location.href = "changeuserpwd.html?id=" + id;
                 })
                 $.ajax({
                     type: "post",
@@ -35,6 +36,10 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                         for (var i in s) {
                             option.append($("<option>").val(s[i].RoleId).text(s[i].RoleName))
                         }
+                        $('#role').selectpicker('refresh');
+                        $("#role option").attr("selected", false);
+                        $("#role option[value=" + roleid + "]").attr("selected", true);
+                        $("#role").val(roleid);
                         $('#role').selectpicker('refresh');
                     }, error: function (xhr) {
                         alert(xhr);
@@ -64,10 +69,7 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                                 $("#rolename").val(s.RoleIdName);
                                 $("#Email").val(s.Email);
                                 $("#Description").text(s.Description);
-                                $("#role option").attr("selected", false);
-                                $("#role option[value=" + s.RoleId + "]").attr("selected", true);
-                                $("#role").val(s.RoleId);
-                                $('#role').selectpicker('refresh');
+                           
                                 $("#name").val(s.Name);
                                 $("#username").val(s.Username);
                                 $("#usercode").val(s.UserCode);

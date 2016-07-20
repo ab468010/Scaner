@@ -11,6 +11,7 @@ namespace IDataAccess
         long GetTaskCount();
         bool ExistsSample(int taskid);
         IList<Task> GetTaskListByProjectId(int projectId);
+        IList<Task> GetTaskListByProjectIdTesterId(int projectId, int systemuserId);
         IList<Task> GetTaskList();
         long GetDelayTaskCount();
        
@@ -23,9 +24,10 @@ namespace IDataAccess
         IList<Task> GetDelayTaskByTester(int systemuserId,int Page);
         long GetAllUTaskCount();
         long GetUTaskByEngineerId(int systemuserId);
-         long GetUTaskByTesterId(int systemuserId);
+        long GetUTaskByTesterId(int systemuserId);
         long GetDelayTaskCountByEngineerId(int systemuserId);
-       long GetDelayTaskCountByTesterId(int systemuserId);
+        long GetDelayTaskCountByTesterId(int systemuserId);
+        
     }
 
 }

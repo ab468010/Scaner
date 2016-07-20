@@ -8,6 +8,23 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
+        public bool UpdateContainerProjectId(int containerId, int projectId)
+        {
+            string st = "update dbo.container set projectid=@projectid where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public IList<Container> GetUseContainerList(int Page)
         {
             string st = "select containerid,name,size,containercode,statuscode from dbo.container where statuscode=2 order by createdon desc limit 10 offset @page";

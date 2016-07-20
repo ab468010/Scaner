@@ -86,5 +86,29 @@ namespace Logics
             }
             return Update(sample);
         }
+        public bool UpdateSampleProjectId(int sampleId,int projectId,int systemuserId)
+        {
+            return _Dal.UpdateSampleProjectId(sampleId, projectId,systemuserId);
+        }
+        public bool UpdateTaskSample(int sampleId,int taskId)
+        {
+            if (_Dal.ExistsSampleId(sampleId))
+            {
+                return _Dal.UpdateTaskSample(sampleId, taskId);
+            }
+            else
+            {
+                return _Dal.CreateTaskSample(sampleId, taskId);
+            }
+        }
+        public bool UpdateShelfId(int sampleId, int shelfId)
+        {
+            return _Dal.UpdateShelfId(sampleId, shelfId);
+        }
+        public bool UpdateSampleContainerId(int sampleId, int containerId)
+        {
+
+            return _Dal.UpdateSampleContainerId(sampleId, containerId);
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace DataAccess
                     shelf.CreatedOn = Convert.ToDateTime(drt["createdon"]);
                     shelf.ModifiedBy = Convert.ToInt32(drt["modifiedby"]);
                     shelf.ModifiedOn = Convert.ToDateTime(drt["modifiedon"]);
+                    shelfList.Add(shelf);
                 }
             }
             return shelfList;

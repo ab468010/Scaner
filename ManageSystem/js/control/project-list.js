@@ -145,10 +145,11 @@ function Page(pa) {
             var tbody = $("#divProject table tbody").empty();
 
             for (i in projectList) {
-                var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
+                var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td><td style="display:none"name="engineerid">' +
+                               projectList[i].EngineerId+'</td>'+
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 read1"style="display:none" href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
+                                    '<li><a class="project2 read1"style="display:none">详情</a></li>' +
                                     '<li class="last"><a  class="project2 delete1"style="display:none">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +
@@ -174,6 +175,10 @@ function Page(pa) {
 
                 }
             };
+            $(".project2.read1").click(function () {
+                location.href = "project-profile.html?projectId=" + $(this).parent().parent().parent().parent().find("[name='projectid']").text()
+                + "&engineerId=" + $(this).parent().parent().parent().parent().find("[name='engineerid']").text()
+            })
             $(".project2.delete1").click(function () {
                 if (confirm("确定删除?")) {
                     var jsonPar = {

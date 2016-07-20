@@ -15,6 +15,7 @@ namespace Model
             this.Description = description;
         }
         public int ShelfId { get; set; }
+     
         public string Name { get; set; }
         public string ShelfCode { get; set; }
         public string Description { get; set; }

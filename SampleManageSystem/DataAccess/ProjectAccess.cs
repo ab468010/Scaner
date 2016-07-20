@@ -8,12 +8,13 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
-        public bool UpdateContainerCode(int ContainerId)
+        public bool UpdateContainerCode(int ContainerId,int ModifiedBy)
         {
-            string st = "update dbo.container set statuscode=1 where containerid=@containerid";
+            string st = "update dbo.container set statuscode=1,modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@containerid",ContainerId)
+                new NpgsqlParameter("@containerid",ContainerId),
+                new NpgsqlParameter("@modifiedby",ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -617,13 +618,14 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
             return count;
         }
-        public bool UpdateSampleContainer(int projectId)
+        public bool UpdateSampleContainer(int projectId,int ModifiedBy)
         {
-            string sqlStr = "update  dbo.sample set containerid=@null where projectid=@projectid";
+            string sqlStr = "update  dbo.sample set containerid=@null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId),
-                new NpgsqlParameter("@null",DBNull.Value)
+                new NpgsqlParameter("@null",DBNull.Value),
+                new NpgsqlParameter("@modifiedby",ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
             {
@@ -634,13 +636,14 @@ namespace DataAccess
                 return false;
             }
         }
-        public IList<Container> UpdateContainerProjectId(int projectId)
+        public IList<Container> UpdateContainerProjectId(int projectId,int ModifiedBy)
         { IList<Container> containerList = new List<Container>();
-            string sqlStr = "update  dbo.container set projectid=@null where projectid=@projectid returning containerid";
+            string sqlStr = "update  dbo.container set projectid=@null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid returning containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId),
-                new NpgsqlParameter("@null",DBNull.Value)
+                new NpgsqlParameter("@null",DBNull.Value),
+                new NpgsqlParameter("@modifiedby",ModifiedBy)
             };
          using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
             {
@@ -680,9 +683,9 @@ namespace DataAccess
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                     
+                                left join dbo.task ta on ta.projectid=project.projectid
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                   where testerid=@testerid order by project.createdon desc limit 10 offset @page";
+                                   where ta.tester1=@testerid or ta.tester2=@testerid order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@testerid",systemuserId),
@@ -751,12 +754,13 @@ namespace DataAccess
             }
             return projectList;
         }
-        public bool UpdateProjectStatusCode(int projectId)
+        public bool UpdateProjectStatusCode(int projectId,int ModifiedBy)
         {
-            string st = " update dbo.project set statuscode=5 where projectid=@projectid";
+            string st = " update dbo.project set statuscode=5,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@projectid",projectId)
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@modifiedby",ModifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -940,11 +944,13 @@ namespace DataAccess
             string sqlStr = @"SELECT project.projectid, project.projectno, coalesce(project.starttime,'1900-1-1') starttime,coalesce(project.starttime,'1900-1-1') endtime,project.description, 
                                 project.createdby,project.createdon,project.modifiedby,project.modifiedon,
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
-                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName
+                                COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,cname.name createdbyname,mname.name modifiedbyname
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                
-                                Left Join dbo.Customer customer On project.customerid = customer.customerid";
+                                left join dbo.systemuser cname on project.createdby=cname.systemuserid
+                                left join dbo.systemuser mname on project.modifiedby=mname.systemuserid
+                                Left Join dbo.Customer customer On project.customerid = customer.customerid
+                                where project.statuscode<=3";
 
             IList<Project> projectList = new List<Project>();
 
@@ -965,7 +971,8 @@ namespace DataAccess
                     project.CreatedOn = Convert.ToDateTime(rdr["createdon"]);
                     project.ModifiedBy = Convert.ToInt32(rdr["modifiedby"]);
                     project.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"]);
-
+                    project.CreatedByName = rdr["createdbyname"].ToString();
+                    project.ModifiedByName = rdr["modifiedbyname"].ToString();
                     project.CustomerId = Convert.ToInt32(rdr["customerid"]);
                     project.CustomerIdName = rdr["CustomerIdName"].ToString();
                     projectList.Add(project);

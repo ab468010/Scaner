@@ -104,7 +104,7 @@ function Page(p) {
             var tbody = $("#divUserList table tbody").empty();
 
             for (i in userList) {
-                var content = "<td>" + userList[i].Name + "</td><td>" + userList[i].Username + "</td><td style='display:none' name='Id'>" + userList[i].SystemUserId + "</td><td>" +
+                var content = "<td>" + userList[i].Name + "</td><td>" + userList[i].Username + "</td><td style='display:none' name='Id'>" + userList[i].SystemUserId + "</td><td style='display:none'name='roleid'>" +userList[i].RoleId+"</td><td>"+
                     userList[i].RoleIdName + "</td><td>" + userList[i].Email + "<ul class='actions'><li class='last'><a class='systemuser2 read1'style='display:none'>详情</a>  <a class='systemuser2 delete1' style='display:none' >删除</a></li></ul>" + "</td>";
                 var row = document.createElement("tr");
                 row.innerHTML = content;
@@ -128,7 +128,8 @@ function Page(p) {
          
 
             $(".read1").click(function () {
-                location.href = "user-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text();
+                location.href = "user-profile.html?id=" + $(this).parent().parent().parent().parent().find("[name='Id']").text()
+                + "&roleId=" + $(this).parent().parent().parent().parent().find("[name='roleid']").text()
             })
 
             $(".delete1").click(function () {

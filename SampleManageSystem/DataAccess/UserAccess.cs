@@ -186,8 +186,8 @@ namespace DataAccess
         public IList<User> GetUserList()
         {
             IList<User> userList = new List<User>();
-            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,sy.roleid,ro.name roleidname,usercode,password,description,statecode,
-                             createdby,createdon,modifiedby,modifiedon from dbo.SystemUser sy left join dbo.role ro
+            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,sy.roleid,ro.name roleidname,usercode,password,sy.description,statecode,
+                             sy.createdby,sy.createdon,sy.modifiedby,sy.modifiedon from dbo.SystemUser sy left join dbo.role ro
                               on  sy.roleid=ro.roleid and statecode=1 ";
 
 
@@ -219,7 +219,7 @@ namespace DataAccess
         public IList<User> GetUserListA(int number)
         {
             IList<User> userList = new List<User>();
-            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,ro.name roleidname,usercode from dbo.SystemUser sy left join dbo.role ro
+            string sqlStr = @"Select SystemUserId,sy.Name,Username,email,sy.roleid,ro.name roleidname,usercode from dbo.SystemUser sy left join dbo.role ro
                               on  sy.roleid=ro.roleid and statecode=1 order by sy.createdon desc limit 10 offset @number";
            
             NpgsqlParameter[] par = new NpgsqlParameter[]
@@ -230,7 +230,15 @@ namespace DataAccess
             {
                 while (rdr.Read())
                 {
-                    userList.Add(new User(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2),rdr.IsDBNull(3)?" ": rdr.GetString(3),rdr.GetString(4), rdr.IsDBNull(5) ? "" : rdr.GetString(5)));
+                    User user = new User();
+                    user.SystemUserId = Convert.ToInt32(rdr["SystemUserId"]);
+                    user.Name = rdr["Name"].ToString();
+                    user.Username = rdr["Username"].ToString();
+                    user.Email = rdr["email"].ToString();
+                    user.RoleId = Convert.ToInt32(rdr["roleid"]);
+                    user.RoleIdName = rdr["roleidname"].ToString();
+                    user.UserCode = rdr["usercode"].ToString();
+                    userList.Add(user);
                 }
             }
             return userList;

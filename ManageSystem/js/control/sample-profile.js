@@ -1,6 +1,8 @@
 ﻿/// <reference path="../../Page/child/edit-sample.html" />
 var sampleJs, sampleVar;
 var id = $.getUrlParam("id");
+var projectid = $.getUrlParam("projectId");
+var containerid = $.getUrlParam("containerId");
 var systemuserid = Globals.getCookie("SystemUserId");
 function initConfig() {
     //初始化模块JS
@@ -37,17 +39,19 @@ function initConfig() {
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var s = JSON.parse(data.d);
-                    var option = $("#sltProject").empty();
+              
                     var child_option = $("#child_sltProject").empty();
 
                     for (var i in s) {
-                        option.append($("<option>").val(s[i].ProjectId).text(s[i].Name));
+     
                         child_option.append($("<option>").val(s[i].ProjectId).text(s[i].Name));
                     }
-                    option.append($("<option>").val(-1).text("Nothing Selected"));
-                    child_option.append($("<option>").val(-1).text("Nothing Selected"));
-
-                    $('#sltProject').selectpicker('refresh');
+                 
+                    child_option.append($("<option>").val(-1).text("Nothing Selected"));  
+                    $('#child_sltProject').selectpicker('refresh');
+                    $("#child_sltProject option").attr("selected", false);
+                    $("#child_sltProject option[value=" + projectid + "]").attr("selected", true);
+                    $("#child_sltProject ").val(projectid);
                     $('#child_sltProject').selectpicker('refresh');
                 }, error: function (xhr) {
                     alert(xhr);
@@ -61,18 +65,18 @@ function initConfig() {
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         var s = JSON.parse(data.d);
-                        var option = $("#sltContainer").empty();
                         var child_option = $("#child_sltContainer").empty();
 
                         for (var i in s) {
-                            option.append($("<option>").val(s[i].ContainerId).text(s[i].Name))
                             child_option.append($("<option>").val(s[i].ContainerId).text(s[i].Name))
                         }
-                        option.append($("<option>").val(-1).text("Nothing Selected"));
+ 
                         child_option.append($("<option>").val(-1).text("Nothing Selected"));
-                        $('#sltContainer').selectpicker('refresh');
                         $('#child_sltContainer').selectpicker('refresh');
-
+                        $("#child_sltContainer option").attr("selected", false);
+                        $("#child_sltContainer option[value=" + containerid + "]").attr("selected", true);
+                        $("#child_sltContainer").val(containerid);
+                        $('#child_sltContainer').selectpicker('refresh');
                     }, error: function (xhr) {
                         alert(xhr);
                     }
@@ -100,20 +104,14 @@ function initConfig() {
                             $("#txtName").val(s.Name);
                             $("#txtSampleCode").val(s.SampleCode);
 
-                            $("#sltProject option").attr("selected", false);
-                        
-                            $("#sltProject option[value=" + s.ProjectId + "]").attr("selected", true);
-                            $("#sltProject").val(s.ProjectId);
-                            $('#sltProject').selectpicker('refresh');
+                            $("#sltProject").val(s.ProjectIdName);
 
-                            $("#sltContainer option").attr("selected", false);
-                            $("#sltContainer option[value=" + s.ContainerId + "]").attr("selected", true);
-                            $("#sltContainer").val(s.ContainerId);
-                            $('#sltContainer').selectpicker('refresh');
+                            $("#sltContainer").val(s.ContainerIdName);
+   
+                            $("#txtShelf").val(s.ShelfIdName);
+   
+                            $("#sltSampleClass").val(sampleJs.getSampleClassText(s.SampleClass));
 
-                            $("#sltSampleClass option").attr("selected", false);
-                            $("#sltSampleClass option[value=" + s.SampleClass + "]").attr("selected", true);
-                            $("#sltSampleClass").val(s.SampleClass);
                             $("#textDescription").val(s.Description);
                             
                          
@@ -123,13 +121,9 @@ function initConfig() {
                             $("#child_txtName").val(s.Name);
                             $("#child_txtSampleCode").val(s.SampleCode);
 
-                            $("#child_sltProject option").attr("selected", false);
-                            $("#child_sltProject option[value=" + s.ProjectId + "]").attr("selected", true);
-                            $("#child_sltProject ").val(s.ProjectId);
+                  
 
-                            $("#child_sltContainer option").attr("selected", false);
-                            $("#child_sltContainer option[value=" + s.ContainerId + "]").attr("selected", true);
-                            $("#child_sltContainer").val(s.ContainerId);
+                         
 
                             $("#child_sltSampleClass option").attr("selected", false);
                             $("#child_sltSampleClass option[value=" + s.SampleClass + "]").attr("selected", true);

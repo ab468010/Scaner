@@ -1,5 +1,6 @@
 ﻿using Logics;
 using Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,40 @@ namespace SystemService
             return xmlDoc;
         }
 
-
-
+        [WebMethod]
+        public int[] usx(int[] a)
+        {
+            return a;
+        }
+        [WebMethod]
+        public bool UpdateSampleContainerId(int[] sampleIds, int containerId)
+        {
+            SampleLogics sampleLogics = new SampleLogics();
+            int[] sampleIdList = sampleIds;
+            foreach (int sampleId in sampleIdList)
+            {
+                return sampleLogics.UpdateSampleContainerId(sampleIdList[sampleId], containerId);
+            }
+            return true;
+        }
+        [WebMethod]
+        public bool UpdateSampleProjectId(int sampleId, int projectId, int systemuserId)
+        {
+            SampleLogics sampleLogics = new SampleLogics();
+            return sampleLogics.UpdateSampleProjectId(sampleId, projectId, systemuserId);
+        }
+        [WebMethod]
+        public bool UpdateTaskSample(int sampleId, int taskId)
+        {
+            SampleLogics sampleLogics = new SampleLogics();
+            return sampleLogics.UpdateTaskSample(sampleId, taskId);
+        }
+        [WebMethod]
+        public bool UpdateShelfId(int sampleId, int shelfId)
+        {
+            SampleLogics sampleLogics = new SampleLogics();
+            return sampleLogics.UpdateShelfId(sampleId, shelfId);
+        }
         /// <summary>
         /// 获得状态为'创建项目'、'项目测试'、'测试完成'的项目列表
         /// </summary>
@@ -40,7 +73,7 @@ namespace SystemService
         public XmlDocument GetProjectList()
         {
             ProjectLogics projectLogics = new ProjectLogics();
-            IList<Project> projectList = projectLogics.GetNotFinishedProjectList();
+            IList<Project> projectList = projectLogics.GetProjectList();
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.InnerXml = Xml<Project>.EntityToXml(projectList);
@@ -66,7 +99,12 @@ namespace SystemService
             return containerLogics.UpdateContainerProject(containerId, projectId);
         }
 
-
+        [WebMethod]
+         public bool UpdateContainerProjectId(int containerId, int projectId)
+        {
+            ContainerLogics containerLogics = new ContainerLogics();
+            return containerLogics.UpdateContainerProjectId(containerId, projectId);
+        }
         [WebMethod]
         public XmlDocument GetContainerList()
         {

@@ -95,5 +95,9 @@ namespace Logics
         {
             return _Dal.GetUseContainerList(Page);
         }
+       public bool UpdateContainerProjectId(int containerId, int projectId)
+        {
+            return _Dal.UpdateContainerProjectId(containerId, projectId);
+        }
     }
 }

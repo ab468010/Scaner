@@ -1,5 +1,8 @@
 ﻿var statucode = $.getUrlParam("projectstatuscode");
 var id = $.getUrlParam("taskid");
+var tester1 = $.getUrlParam("tester1");
+var tester2 = $.getUrlParam("tester2");
+var roomid = $.getUrlParam("roomid");
 var systemuserid = Globals.getCookie("SystemUserId");
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 function taskprofile() {
@@ -72,6 +75,10 @@ function taskprofile() {
                     option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
                 }
                 $('#roomid').selectpicker('refresh');
+                $("#roomid option").attr("selected", false)
+                $("#roomid option[val=" + roomid + "]").attr("selected", true);
+                $("#roomid").val(roomid);
+                $('#roomid ').selectpicker('refresh');
             }, error: function (xhr) {
                 alert(xhr);
             }
@@ -92,7 +99,16 @@ function taskprofile() {
                 }
             
                 $('#tester1').selectpicker('refresh');
+                $("#tester1 option").attr("selected", false)
+                $("#tester1 option[val=" + tester1 + "]").attr("selected", true);
+                $("#tester1").val(tester1);
+                $('#tester1 ').selectpicker('refresh');
+
                 $('#tester2').selectpicker('refresh');
+                $("#tester2 option").attr("selected", false)
+                $("#tester2 option[val=" + tester2+ "]").attr("selected", true);
+                $("#tester2").val(tester2);
+                $('#tester2 ').selectpicker('refresh');
             }
         });
         var jsonPa = {
@@ -107,17 +123,9 @@ function taskprofile() {
             success: function (data) {
                 var sh = JSON.parse(data.d);
            
-                $('#roomid .selectpicker').selectpicker('refresh');
-                $("#roomid option").attr("selected", false)
-                $("#roomid option[val=" + sh.RoomId + "]").attr("selected", true);
-                $("#roomid").val(sh.RoomId);
-                $('#roomid ').selectpicker('refresh');
+            
+            
 
-                $('#tester1 .selectpicker').selectpicker('refresh');
-                $("#tester1 option").attr("selected", false)
-                $("#tester1 option[val=" + sh.Tester1 + "]").attr("selected", true);
-                $("#tester1").val(sh.Tester1);
-                $('#tester1 ').selectpicker('refresh');
 
                 $('#tester2 .selectpicker').selectpicker('refresh');
                 $("#tester2 option").attr("selected", false)
@@ -221,7 +229,7 @@ function taskprofile() {
                             alert("更新失败");
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请选择测试工程师");
                     }
                 })
             } else {
@@ -245,7 +253,7 @@ function taskprofile() {
                     } else {
                         sampleclass = "附件";
                     }
-                    var cont = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleclass + "<ul class='actions'><li class='last'><a class='sample2 delete1'style='display:none'>删除</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
+                    var cont = "<td>" + sampleList[i].Name + "</td><td>" + sampleList[i].ContainerIdName + "</td><td>" + sampleList[i].SampleCode + "</td><td>" + sampleclass + "<ul class='actions'><li class='last'><a class='sample2 delete1'style='display:none'>移除</a></li></ul></td>" + "<td style='display:none' name='Id'>" + sampleList[i].SampleId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
                     tbody.append(row);
@@ -294,8 +302,6 @@ function taskprofile() {
                                     } else {
                                         alert("删除失败");
                                     }
-                                }, error: function (xhr) {
-                                    alert(xhr);
                                 }
                             })
                         }

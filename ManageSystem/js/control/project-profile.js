@@ -1,12 +1,15 @@
 ﻿/// <reference path="../../Page/child/edit-project.html" />
 var projectJs, projectVar;
+var roleid = Globals.getCookie("RoleId");
 var id = $.getUrlParam("projectId");
+var engineerid = $.getUrlParam("engineerId");
 var systemuserid = Globals.getCookie("SystemUserId");
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 function initConfig() {
     //初始化模块JS
     projectJs = new Globals.project();
-
+    $("#myModal .modal-body").load("child/edit-project.html");
+    $("#myModal1 .modal-body").load("child/edit-task.html");
     //页面变量
     projectVar = {
 
@@ -16,8 +19,7 @@ function initConfig() {
 
         
         $(document).ready(function () {
-            $("#myModal .modal-body").load("child/edit-project.html");
-            $("#myModal1 .modal-body").load("child/edit-task.html");
+           
             $("#login").click(function () {
                 if (confirm("确定注销？")) {
                     location.href = "login.html";
@@ -39,10 +41,17 @@ function initConfig() {
                         option.append($("<option>").val(s[i].SystemUserId).text(s[i].Name));
 
                     }
-                    option.append($("<option>").val(-1).text("Nothing selected"));
+                    option.append($("<option>").val(-1).text("Nothing selected"));                    
+                    $('#projectengineer').selectpicker('refresh');
+
+                    $("#projectengineer option").attr("selected", false);
+                    $("#projectengineer option[val=" + engineerid + "]").attr("selected", true);
+                    $("#projectengineer").val(engineerid);
                     $('#projectengineer').selectpicker('refresh');
                 }
+
             });
+         
             $.ajax({
                 type: "post",
                 url: Globals.ServiceUrl + "SelectRoom",
@@ -92,11 +101,11 @@ function initConfig() {
                 success: function (data) {
                  
                     var project = JSON.parse(data.d);
-
-                    $("#projectengineer option").attr("selected", false);                  
-                    $("#projectengineer option[val=" + project.EngineerId + "]").attr("selected", true);
-                     $("#projectengineer").val(project.EngineerId);
-                    $('#projectengineer').selectpicker('refresh');
+                    //$('#projectengineer .selectpicker').selectpicker('refresh');
+                    //$("#projectengineer option").attr("selected", false);                  
+                    //$("#projectengineer option[val=" + project.EngineerId + "]").attr("selected", true);
+                    // $("#projectengineer").val(project.EngineerId);
+                    //$('#projectengineer').selectpicker('refresh');
 
 
                     $("#projectstatuscode").val(project.StatusCode);
@@ -129,7 +138,9 @@ function initConfig() {
         });
    
         var jsonPar = {
-            projectId:id
+            projectId: id,
+            roleId: roleid,
+            systemuserId:systemuserid
         }
         $.ajax({
             type: "post",
@@ -141,7 +152,8 @@ function initConfig() {
                 var s = JSON.parse(data.d);
                 var tbody = $(".table tbody").empty();
                 for (var i in s) {
-                    var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName +"</td><td>"+s[i].Tester1IdName+"</td><td>"+s[i].Tester2IdName+"</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
+                    var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName + "</td><td style='display:none'name='roomid'>" + s[i].RoomId +"</td><td style='display:none'name='tester1'>"+s[i].Tester1+"</td><td style='display:none'name='tester2'>"+s[i].Tester2+
+                        "</td><td>" + s[i].Tester1IdName + "</td><td>" + s[i].Tester2IdName + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
                         + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
                         + "</td><td name='taskid' style='display:none'>" + s[i].TaskId + "</td>";
                     var row = document.createElement("tr");
@@ -198,7 +210,24 @@ function initConfig() {
                 });
                 $(".task2.edit1").click(function () {
                     if ($("#projectstatuscode").val() < 3) {
+                        var roomid = $(this).parent().parent().parent().parent().find("[name=roomid]").text();
+                        var tester1 = $(this).parent().parent().parent().parent().find("[name=tester1]").text();
+                        var tester2 = $(this).parent().parent().parent().parent().find("[name=tester2]").text();
+                        $("#tester1 option").attr("selected", false)
+                        $("#tester1 option[val=" + tester1 + "]").attr("selected", true);
+                        $("#tester1").val(tester1);
+                        $('#tester1').selectpicker('refresh');
 
+
+                        $("#tester2 option").attr("selected", false)
+                        $("#tester2 option[val=" + tester2 + "]").attr("selected", true);
+                        $("#tester2").val(tester2);
+                        $('#tester2').selectpicker('refresh');
+
+                        $("#roomid option").attr("selected", false)
+                        $("#roomid option[val=" + roomid + "]").attr("selected", true);
+                        $("#roomid").val(roomid);
+                        $('#roomid').selectpicker('refresh');
                         var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
@@ -209,22 +238,16 @@ function initConfig() {
                             data: JSON.stringify(json),
                             success: function (data) {
                                 var sh = JSON.parse(data.d);
-                                $('#tester1 .selectpicker').selectpicker('refresh');
-                                $("#tester1 option").attr("selected", false)
-                                $("#tester1 option[val=" + sh.Tester1 + "]").attr("selected", true);
-                                $("#tester1").val(sh.Tester1);
-                                $('#tester1').selectpicker('refresh');
+                       
+                                
+                         
 
-                                $('#tester2 .selectpicker').selectpicker('refresh');
-                                $("#tester2 option").attr("selected", false)
-                                $("#tester2 option[val=" + sh.Tester2 + "]").attr("selected", true);
-                                $("#tester2").val(sh.Tester1);
-                                $('#tester2').selectpicker('refresh');
+                    
                                 $("#name").val(sh.Name);
                               
                                 $("#projectid").val(sh.ProjectName);
                                 $("#description").val(sh.Description);
-                                $("#roomid").val(sh.RoomName);
+                            
                                 $("#taskid").val(sh.TaskId);
                                 $("#estimatedstart").val(Globals.datetime_is_null(sh.EstimatedStart) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedStart));
                                 $("#estimatedend").val(Globals.datetime_is_null(sh.EstimatedEnd) == "空" ? "" : Globals.datetime_is_null(sh.EstimatedEnd));
@@ -348,7 +371,8 @@ function initConfig() {
 
         $("#givecustomer").click(function () {         
             var jsonPara = {
-                projectId: id
+                projectId: id,
+                ModifiedBy:systemuserid
             }
             $.ajax({
                 type: "post",

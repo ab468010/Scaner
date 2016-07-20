@@ -8,6 +8,108 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
+        public bool UpdateSampleContainerId(int sampleId, int containerId)
+        {
+            string st = "update dbo.sample set containerid=@containerid where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@sampleid",sampleId),
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateShelfId(int sampleId, int shelfId)
+        {
+            string st = "update dbo.sample set shelfid=@shelfid where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@shelfid",shelfId),
+                new NpgsqlParameter("@sampleid",sampleId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool CreateTaskSample(int sampleId, int taskId)
+        {
+            string st = "insert into dbo.tasksample(taskid,sampleid) values(@taskid,@sampleid)";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+           {
+                new NpgsqlParameter("@taskid",taskId),
+                new NpgsqlParameter("@sampleid",sampleId)
+           };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateTaskSample(int sampleId, int taskId)
+        {
+            string st = "update dbo.tasksample set taskid=@taskid where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@taskid",taskId),
+                new NpgsqlParameter("@sampleid",sampleId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool ExistsSampleId(int sampleId)
+        {
+            string st = "select count(1) from dbo.tasksample where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@sampleid",sampleId)
+            };
+            if ((long)NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateSampleProjectId(int sampleId, int projectId,int systemuserId)
+        {
+            string st = "update dbo.sample set projectid=@projectid,modifiedby=@modifiedby,modifiedon=now() where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@sampleid",sampleId),
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool  UpdateContainerModifiedBy(int containerId, int modifiedBy)
         {
             string sqlStr = "update dbo.container set modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
@@ -263,8 +365,8 @@ namespace DataAccess
         {
             string sqlStr = @"SELECT sampleid, sample.name, COALESCE(sample.shelfid,-1) shelfid, shelf.Name ShelfIdName,
 				                COALESCE(sample.containerid,-1) containerid,container.Name ContainerIdName, samplecode, sampleclass,
-				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,shelf.createdby screatedby,
-                                shelf.createdon screatedon,shelf.modifiedby smodifiedby,shelf.modifiedon smodifiedon
+				                COALESCE(sample.projectid,-1) projectid,project.Name ProjectIdName,sample.createdby screatedby,
+                                sample.createdon screatedon,sample.modifiedby smodifiedby,sample.modifiedon smodifiedon
                                 FROM dbo.sample sample
                                 Left Join dbo.Shelf shelf On sample.shelfid = shelf.shelfid
                                 Left Join dbo.container container On sample.containerid = container.containerid
