@@ -359,7 +359,9 @@ namespace DataAccess
                          left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                          where exists(
                          select 1 from dbo.task task
-                         where now() > estimatedend and actualend is null and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1  )";
+                         where now() > estimatedend  and actualend is null
+                        and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1)
+                       and endtime is null";
             NpgsqlParameter[] par = new NpgsqlParameter[]
            {
                 new NpgsqlParameter("@systemuserid",systemuserId)
@@ -369,10 +371,11 @@ namespace DataAccess
         }
         public long GetDelayProjectCountByEngineerId(int systemuserId)
         {
-            string st = @"select count(1) from dbo.project pr left join dbo.task ta
-                         on pr.projectid = ta.projectid
-                         left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
-                         where now() > estimatedend and actualend is null and pr.engineerid=@engineerid";
+            string st = @"select count(1) from dbo.project pr 
+                         where exists(
+                         select 1 from dbo.task task
+                         where now() > estimatedend and actualend is null and pr.projectid = task.projectid limit 1)
+                         and endtime is null and pr.engineerid=@engineerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@engineerid",systemuserId)
@@ -382,8 +385,11 @@ namespace DataAccess
         }
         public long GetDelayProjectCount()
         {
-            string st = @"select count(distinct projectid) from dbo.task
-                          where now() > estimatedend  and actualend is null and projectid is not null";
+            string st = @" select count(1) from dbo.project pr 
+                         where exists(
+                         select 1 from dbo.task task
+                         where now() > estimatedend and actualend is null and pr.projectid = task.projectid limit 1)
+                         and endtime is null";
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st));
             return count;
         }
@@ -394,7 +400,8 @@ namespace DataAccess
                          left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                          where exists(
                          select 1 from dbo.task task
-                         where now() > estimatedend and actualend is null and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1) limit @limit offset @page";
+                         where now() > estimatedend and actualend is null and(tester1=@systemuserid or tester2=@systemuserid) and pr.projectid = task.projectid limit 1) 
+                         and pr.endtime is null limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
          {
@@ -420,10 +427,10 @@ namespace DataAccess
         }
         public IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr left join dbo.task ta
-                         on pr.projectid = ta.projectid
-                         left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
-                         where now() > estimatedend and actualend is null and pr.engineerid=@engineerid limit @limit offset @page";
+            string st = @" select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr
+                        left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
+                        where exists( select 1 from dbo.task ta where pr.projectid = ta.projectid and ta.actualend is null and estimatedend < now() )
+                        and pr.endtime is null and pr.engineerid=@engineerid limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
@@ -448,10 +455,10 @@ namespace DataAccess
         }
         public IList<Project> GetALLDelayProject(int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr left join dbo.task ta
-                        on pr.projectid = ta.projectid
-                       left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
-                        where now() > estimatedend and actualend is null limit @limit offset @page";
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr
+                        left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
+                        where exists( select 1 from dbo.task ta where pr.projectid = ta.projectid and ta.actualend is null and estimatedend < now() )
+                        and pr.endtime is null limit @limit offset @page";
             IList<Project> projectList = new List<Project>();
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
