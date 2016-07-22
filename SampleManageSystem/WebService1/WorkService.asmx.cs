@@ -37,33 +37,66 @@ namespace SystemService
             return a;
         }
         [WebMethod]
-        public bool UpdateSampleContainerId(int[] sampleIds, int containerId)
+        public bool UpdateSampleContainerId(int[] sampleIds, int containerId,int systemuserId)
         {
             SampleLogics sampleLogics = new SampleLogics();
             int[] sampleIdList = sampleIds;
             foreach (int sampleId in sampleIdList)
             {
-                return sampleLogics.UpdateSampleContainerId(sampleIdList[sampleId], containerId);
+                if (!sampleLogics.UpdateSampleContainerId(sampleId, containerId,systemuserId))
+                    return false;
             }
             return true;
         }
         [WebMethod]
-        public bool UpdateSampleProjectId(int sampleId, int projectId, int systemuserId)
+        public bool UpdateSampleProjectId(int[] sampleIds, int projectId, int systemuserId)
         {
             SampleLogics sampleLogics = new SampleLogics();
-            return sampleLogics.UpdateSampleProjectId(sampleId, projectId, systemuserId);
+            int[] sampleIdList = sampleIds;
+            foreach(int sampleId in sampleIdList)
+            {
+                if (!sampleLogics.UpdateSampleProjectId(sampleId, projectId, systemuserId))
+                    return false;
+            }
+            return true;
         }
         [WebMethod]
-        public bool UpdateTaskSample(int sampleId, int taskId)
+        public bool UpdateTaskSample(int[] sampleIds, int taskId)
         {
             SampleLogics sampleLogics = new SampleLogics();
-            return sampleLogics.UpdateTaskSample(sampleId, taskId);
+            int[] sampleIdList = sampleIds;
+            foreach (int sampleId in sampleIdList)
+            {
+                if (!sampleLogics.UpdateTaskSample(sampleId, taskId))
+                    return false;
+            }
+            return true;
         }
         [WebMethod]
-        public bool UpdateShelfId(int sampleId, int shelfId)
+        public bool UpdateShelfId(int[] sampleIds, int shelfId, int systemuserId)
         {
             SampleLogics sampleLogics = new SampleLogics();
-            return sampleLogics.UpdateShelfId(sampleId, shelfId);
+            int[] sampleIdList = sampleIds;
+            foreach(int sampleId in sampleIdList)
+            {
+                if(!sampleLogics.UpdateShelfId(sampleId, shelfId,systemuserId))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        [WebMethod]
+        public bool UpdateTaskActualEnd(int taskid,int systemuserId)
+        {
+            TaskLogics task = new TaskLogics();
+            return task.UpdateTaskActualEnd(taskid, systemuserId);
+        }
+        [WebMethod]
+        public bool UpdateProjectEndtime(int projectId,int systemuserId)
+        {
+            ProjectLogics project = new ProjectLogics();
+            return project.UpdateProjectEndtime(projectId, systemuserId);
         }
         /// <summary>
         /// 获得状态为'创建项目'、'项目测试'、'测试完成'的项目列表
@@ -100,10 +133,19 @@ namespace SystemService
         }
 
         [WebMethod]
-         public bool UpdateContainerProjectId(int containerId, int projectId)
+         public bool UpdateContainerProjectId(int[] containerIds, int projectId, int systemuserId)
         {
             ContainerLogics containerLogics = new ContainerLogics();
-            return containerLogics.UpdateContainerProjectId(containerId, projectId);
+            int[] containerIdList = containerIds;
+            foreach(int containerId in containerIdList)
+            {
+                if (!containerLogics.UpdateContainerProjectId(containerId, projectId, systemuserId))
+                {
+                    return false;
+                }
+            
+            } 
+            return true;
         }
         [WebMethod]
         public XmlDocument GetContainerList()

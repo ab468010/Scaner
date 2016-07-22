@@ -1,4 +1,8 @@
-﻿var createdby = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var createdby = Globals.getCookie("SystemUserId");
 
 $(function () {
 
@@ -32,13 +36,16 @@ $(function () {
                         location.href = "sample-list.html";
                     } else {
                         alert("条码已存在");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
             alert("样品名和条码不能为空");
+            return false;
         }
       
     })

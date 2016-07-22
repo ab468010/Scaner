@@ -1,4 +1,8 @@
-﻿var projectJs, projectVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var projectJs, projectVar;
 var SystemUserId = Globals.getCookie("SystemUserId");
 var privilege =JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
@@ -196,9 +200,11 @@ function Page(pa) {
                                 window.location.reload();
                             } else {
                                 alert("请先删除任务");
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     })
                 }
@@ -206,8 +212,8 @@ function Page(pa) {
             });
           
         }, error: function (xhr) {
-            alert(xhr);
-
+             alert("请联系管理员");
+             return false;
         }
     });
   

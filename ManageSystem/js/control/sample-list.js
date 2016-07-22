@@ -1,4 +1,8 @@
-﻿var sampleJs, sampleVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var sampleJs, sampleVar;
 var page;
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
@@ -40,7 +44,8 @@ function initConfig() {
                     $("#PageNo").text(page);
                     $("#totalPageNo").text(pa);
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
             Page((page-1)*10);

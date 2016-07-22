@@ -1,4 +1,8 @@
-﻿$(function () {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+$(function () {
     $("#login").click(function () {
         if (confirm("确定注销？")) {
             location.href = "login.html";
@@ -27,10 +31,12 @@
                         alert("添加成功");
                         location.href="customer-list.html"
                     } else {
-                        alert("添加失败")
+                        alert("添加失败");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         }

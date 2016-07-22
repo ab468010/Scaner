@@ -1,4 +1,8 @@
-﻿if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -28,7 +32,8 @@ function config() {
                 $("#PageNo").text(page);
                 $("#totalPageNo").text(pa);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         });
        
@@ -133,9 +138,11 @@ function Page(num) {
                                 window.location.reload();
                             } else {
                                 alert("请先删除联系人")
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                             alert("请联系管理员");
+                             return false;
                         }
                     })
                 }

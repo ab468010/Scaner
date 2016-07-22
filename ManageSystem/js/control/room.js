@@ -11,7 +11,7 @@
                 $("#PageNo").text(1);
                 $("#totalPageNo").text(page);
             }, error: function (xhr) {
-                alert(xhr);
+                 alert("请联系管理员");
             }
         })
         Page(0);
@@ -113,7 +113,7 @@ function Page(page) {
                         $("#roomcode").val(s.RoomCode);
 
                     }, error: function (xhr) {
-                        alert(xhr);
+                         alert("请联系管理员");
                     }
                 })
             })
@@ -135,13 +135,13 @@ function Page(page) {
                         alert("更新成功");
                         window.location.reload();
                     }, error: function (xhr) {
-                        alert(xhr);
+                         alert("请联系管理员");
                     }
                 })
             })
 
         }, error: function (xhr) {
-            alert(xhr);
+             alert("请联系管理员");
         }
     })
 

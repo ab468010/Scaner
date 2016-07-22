@@ -1,4 +1,8 @@
-﻿function projecttemplate() {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+function projecttemplate() {
     (function () {
         $("#myModal .modal-body").load("child/edit-projecttemplate.html");
         $("#login").click(function () {
@@ -19,7 +23,8 @@
                 }
                 $('#editRoomId').selectpicker('refresh');
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
         $.ajax({
@@ -54,9 +59,11 @@
                                 window.location.reload();
                             } else {
                                 alert("删除失败");
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     })
                 });
@@ -82,12 +89,14 @@
                         },
                         error: function (xhr)
                         {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     })
                 })
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
             
         })
@@ -115,13 +124,16 @@
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             } else {
-                alert("任务名不能空")
+                alert("任务名不能空");
+                return false;
             }
   
         })

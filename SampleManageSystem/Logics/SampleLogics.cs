@@ -92,23 +92,24 @@ namespace Logics
         }
         public bool UpdateTaskSample(int sampleId,int taskId)
         {
-            if (_Dal.ExistsSampleId(sampleId))
+            if (_Dal.ExistsSampleId(sampleId,taskId))
             {
-                return _Dal.UpdateTaskSample(sampleId, taskId);
+                return true;
             }
             else
             {
                 return _Dal.CreateTaskSample(sampleId, taskId);
             }
         }
-        public bool UpdateShelfId(int sampleId, int shelfId)
+        public bool UpdateShelfId(int sampleId, int shelfId, int systemuserId)
         {
-            return _Dal.UpdateShelfId(sampleId, shelfId);
+            return _Dal.UpdateShelfId(sampleId, shelfId,systemuserId);
         }
-        public bool UpdateSampleContainerId(int sampleId, int containerId)
+        public bool UpdateSampleContainerId(int sampleId, int containerId, int systemuserId)
         {
-
-            return _Dal.UpdateSampleContainerId(sampleId, containerId);
+                    _Dal.UpdContainerStatus(containerId);
+            return _Dal.UpdateSampleContainerId(sampleId, containerId,systemuserId);
+                   
         }
     }
 }

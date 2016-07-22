@@ -1,4 +1,8 @@
-﻿var systemuserid = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 var page;
@@ -28,7 +32,8 @@ function uproject() {
                 $("#PageNo").text(page);
                 $("#totalPageNo").text(p);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         });
         $("#login").click(function () {
@@ -100,7 +105,7 @@ function Page(number) {
                 var content = '<tr><td><a href="#" class="no">' + projectList[i].ProjectNo + '</a></td><td class="name">' + projectList[i].Name + '</td><td>' + projectJs.bulidstatus(projectList[i].StatusCode) + '</td><td name="projectid" style="display:none">' + projectList[i].ProjectId + '</td>' +
                             '<td>' + projectList[i].EngineerIdName +
                                 '<ul class="actions">' +
-                                    '<li><a class="project2 edit1"style="display:none"  href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
+                                    '<li><a class="project2 read1"style="display:none"  href="project-profile.html?projectId=' + projectList[i].ProjectId + '">详情</a></li>' +
                                     '<li class="last"><a  class="project2 delete1"style="display:none">删除</a></li>' +
                                 '</ul>' +
                             '</td>' +
@@ -143,9 +148,11 @@ function Page(number) {
                                 window.location.reload();
                             } else {
                                 alert("请先删除任务");
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     })
                 }

@@ -1,4 +1,8 @@
-﻿function warning() {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+function warning() {
     (function () {
         $("#login").click(function () {
             if (confirm("确定注销？")) {
@@ -20,7 +24,8 @@
                 $("#smallcontainer").val(s.SmallContainer);
                 $("#id").val(s.ContainerId)
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
      
@@ -43,7 +48,8 @@
                 var s = JSON.parse(data.d);
                 $("#smallcount").val(s);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
 
         })
@@ -71,7 +77,8 @@
                         alert("创建失败")
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         })

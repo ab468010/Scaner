@@ -1,4 +1,8 @@
-﻿var page;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var page;
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 var SystemUserId = Globals.getCookie("SystemUserId");
@@ -29,7 +33,8 @@ function room() {
                 $("#PageNo").text(page);
                 $("#totalPageNo").text(pa);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
         Page((page-1)*10);
@@ -91,14 +96,17 @@ function room() {
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
 
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             } else {
                 alert("场地和条码不能为空");
+                return false;
             }
 
         })
@@ -160,7 +168,7 @@ function Page(pa) {
                             if (s) {
                                 alert("删除成功")
                                 window.location.reload();
-                            } else { alert("请先删除对应任务") }
+                            } else { alert("请先删除对应任务"); return false; }
                         }
                     })
                 }
@@ -184,13 +192,15 @@ function Page(pa) {
                         $("#roomcode").val(s.RoomCode);
 
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             })
 
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
 

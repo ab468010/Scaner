@@ -1,4 +1,8 @@
 ﻿/// <reference path="../../Page/child/edit-sample.html" />
+if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
 var sampleJs, sampleVar;
 var id = $.getUrlParam("id");
 var projectid = $.getUrlParam("projectId");
@@ -54,7 +58,8 @@ function initConfig() {
                     $("#child_sltProject ").val(projectid);
                     $('#child_sltProject').selectpicker('refresh');
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
 
@@ -78,7 +83,8 @@ function initConfig() {
                         $("#child_sltContainer").val(containerid);
                         $('#child_sltContainer').selectpicker('refresh');
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 });
         
@@ -136,7 +142,8 @@ function initConfig() {
                         }
 
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 });
             } else {
@@ -171,6 +178,7 @@ function initConfig() {
                             }
                             else
                                 alert("删除失败");
+                            return false;
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             alert(XMLHttpRequest.status);
@@ -212,13 +220,16 @@ function initConfig() {
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             } else {
                 alert("样品名和条码不能为空");
+                return false;
             }
       
         });

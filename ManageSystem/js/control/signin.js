@@ -21,7 +21,7 @@ function log() {
                         location.href = "user-list.html"
                     } else alert("用户名或密码错误")
                 }, error: function (xhr) {
-                    alert(xhr);
+                     alert("请联系管理员");
                 }
             })
         })

@@ -1,6 +1,7 @@
 ﻿//登陆查询用户
 //$("."+s[i].Tablename).attr("display","none")
-var s = JSON.parse(Globals.getCookie("privilege"));
+
+
 function existcookie()
 {
     var de='delete1';
@@ -10,12 +11,12 @@ function existcookie()
     var jsonPar;
     if ((Globals.getCookie("UserName") == "" || Globals.getCookie("UserName") == null) || Globals.getCookie("RoleId") == null || Globals.getCookie("RoleId") == "")
     {
-
-        location.href = "login.html";
         alert("请登录");
+        location.href = "login.html";
+       
     }
     else {
-        
+        var s = JSON.parse(Globals.getCookie("privilege"));
         $("#UserName").text(Globals.getCookie("UserName"));
         $(".project1").attr({ style: "display:none" });
         $(".task1").attr({ style: "display:none" });

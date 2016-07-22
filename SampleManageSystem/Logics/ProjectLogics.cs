@@ -273,5 +273,9 @@ namespace Logics
                 return a;
             }
         }
+        public bool UpdateProjectEndtime(int projectId, int systemuserId)
+        {
+            return _Dal.UpdateProjectEndtime(projectId, systemuserId);
+        }
     }
 }

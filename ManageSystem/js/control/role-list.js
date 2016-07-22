@@ -1,4 +1,8 @@
-﻿var page;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var page;
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
 if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefinedd) {
@@ -27,7 +31,8 @@ function rolelist() {
                 $("#PageNo").text(page);
                 $("#totalPageNo").text(pa);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
         Page((page-1)*10);
@@ -124,6 +129,7 @@ function Page(p) {
                         var s = JSON.parse(data.d);
                         if (s == 1) {
                             alert("系统角色不能删除");
+                            return false;
                         } else {
                             if (confirm("确定删除?")) {
                             
@@ -138,16 +144,19 @@ function Page(p) {
                                             alert("删除成功");
                                             location.href = "role-list.html";
                                         } else {
-                                            alert("请先删除用户")
+                                            alert("请先删除用户");
+                                            return false;
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                        alert("请联系管理员");
+                                        return false;
                                     }
                                 })
                             }     
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })             
             })

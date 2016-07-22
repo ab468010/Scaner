@@ -1,4 +1,8 @@
-﻿var SystemUserId = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var SystemUserId = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 var projectJs, projectVar;
 var page;
@@ -35,7 +39,8 @@ function finishProject() {
                 $("#PageNo").text(page);
                 $("#totalPageNo").text(pa);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
         Page((page-1)*10);
@@ -106,7 +111,8 @@ function Page(pa) {
                 tbody.append(row);
             }
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
 }

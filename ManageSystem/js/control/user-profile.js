@@ -1,4 +1,8 @@
 ﻿/// <reference path="../../Page/child/edit-user.html" />
+if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
 var userJs, userVar;
 var id = $.getUrlParam("id");
 var roleid = $.getUrlParam("roleId");
@@ -42,7 +46,8 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                         $("#role").val(roleid);
                         $('#role').selectpicker('refresh');
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 });
                 if (id != null && id != "") {           
@@ -79,7 +84,8 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                             }
                            
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     });
                 } else {
@@ -108,12 +114,13 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                             }
                             else
                                 alert("删除失败");
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert(XMLHttpRequest.status);
-                            alert(XMLHttpRequest.readyState);
-                            alert(textStatus);
+                            return false;
+                        }, error: function (xhr) {
+                            alert("请联系管理员");
+                            return false;
                         }
+                        
+                        
                     });
                 }
             });
@@ -142,9 +149,11 @@ var SystemUserId = Globals.getCookie("SystemUserId");
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             });

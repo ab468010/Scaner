@@ -1,4 +1,8 @@
-﻿var createdby = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var createdby = Globals.getCookie("SystemUserId");
 $(function () {
     $.ajax({
         type: "post",
@@ -36,7 +40,8 @@ $(function () {
             }
             $('#projectid').selectpicker('refresh');
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
     $.ajax({
@@ -51,7 +56,8 @@ $(function () {
             }
             $('#roomid').selectpicker('refresh');
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
     $("#btnSave").click(function () {
@@ -82,13 +88,16 @@ $(function () {
                         location.href = "task-list.html";
                     } else {
                         alert("创建失败");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
             alert("任务名和预计时间必填");
+            return false;
         }
      
     })

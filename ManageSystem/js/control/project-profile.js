@@ -1,4 +1,8 @@
 ﻿/// <reference path="../../Page/child/edit-project.html" />
+if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
 var projectJs, projectVar;
 var roleid = Globals.getCookie("RoleId");
 var id = $.getUrlParam("projectId");
@@ -65,7 +69,8 @@ function initConfig() {
                     }
                     $('#roomid').selectpicker('refresh');
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
             $.ajax({
@@ -154,7 +159,7 @@ function initConfig() {
                 for (var i in s) {
                     var cont = "<td>" + s[i].Name + "</td><td>" + s[i].RoomName + "</td><td style='display:none'name='roomid'>" + s[i].RoomId +"</td><td style='display:none'name='tester1'>"+s[i].Tester1+"</td><td style='display:none'name='tester2'>"+s[i].Tester2+
                         "</td><td>" + s[i].Tester1IdName + "</td><td>" + s[i].Tester2IdName + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedStart) + "</td><td>" + Globals.datetime_is_null(s[i].EstimatedEnd) + "</td><td>"
-                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'>编辑</a>  <a class='task2 delete1' >删除</a></li></ul>"
+                        + Globals.datetime_is_null(s[i].ActualStart) + "</td><td>" + Globals.datetime_is_null(s[i].ActualEnd) + "<ul class='actions'><li class='last'><a class='task2 edit1'href='#myModal1' data-toggle='modal'style='display:none'>编辑</a>  <a class='task2 delete1'style='display:none' >删除</a></li></ul>"
                         + "</td><td name='taskid' style='display:none'>" + s[i].TaskId + "</td>";
                     var row = document.createElement("tr");
                     row.innerHTML = cont;
@@ -194,9 +199,11 @@ function initConfig() {
                                         window.location.reload();
                                     } else {
                                         alert("请先删除样品");
+                                        return false;
                                     }
                                 }, error: function (xhr) {
-                                    alert(xhr);
+                                    alert("请联系管理员");
+                                    return false;
                                 }
                             })
                         }
@@ -254,7 +261,8 @@ function initConfig() {
 
 
                             }, error: function (xhr) {
-                                alert(xhr);
+                                alert("请联系管理员");
+                                return false;
                             }
                         })
                     } else {
@@ -264,7 +272,8 @@ function initConfig() {
                 })
 
             }, error: function (xhr) {
-                alert(xhr)
+                alert("请联系管理员");
+                return false;
             }
         });
         $(".project2.edit1").click(function () {
@@ -295,6 +304,7 @@ function initConfig() {
                             }
                             else
                                 alert("请先删除相关任务");
+                            return false;
                         }
 
                     });
@@ -329,9 +339,11 @@ function initConfig() {
                         window.location.reload();
                     } else {
                         alert("更新失败");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         });
@@ -362,9 +374,11 @@ function initConfig() {
                         window.location.reload();
                     } else {
                         alert("更新失败");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         })
@@ -387,6 +401,7 @@ function initConfig() {
                         window.location.reload()
                     } else {
                         alert("归还失败");
+                        return false;
                     }
 
                 }

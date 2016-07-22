@@ -54,5 +54,6 @@ namespace IDataAccess
         long GetProjectStatusCodeCountByTesterId(int systemuserId, int statusCode);
           bool   ExistsSample(int ContainerId);
         bool UpdateContainerCode(int ContainerId,int ModifiedBy);
+        bool UpdateProjectEndtime(int projectId, int systemuserId);
     }
 }

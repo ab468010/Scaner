@@ -12,7 +12,7 @@ $(function () {
             $("#PageNo").text(1);
             $("#totalPageNo").text(page);
         }, error: function (xhr) {
-            alert(xhr);
+             alert("请联系管理员");
         }
     })
     Page(0);
@@ -89,7 +89,7 @@ function Page(page) {
                         $("#description").val(sh.Description);
                         $("#shelfid").val(sh.ShelfId);
                     }, error: function (xhr) {
-                        alert(xhr);
+                         alert("请联系管理员");
                     }
                 })
             })
@@ -117,7 +117,7 @@ function Page(page) {
                             alert("更新失败");
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                         alert("请联系管理员");
                     }
                 })
             })
@@ -141,7 +141,7 @@ function Page(page) {
                                 alert("删除失败");
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                             alert("请联系管理员");
                         }
                     })
                 }

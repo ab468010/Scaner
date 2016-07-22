@@ -1,4 +1,8 @@
-﻿
+﻿if ( Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+
 function changepwd() {
   
     (function () {
@@ -35,21 +39,20 @@ function changepwd() {
                             }
                             else {
                                 alert("错误");
+                                return false;
                             }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert(XMLHttpRequest.status);
-                            alert(XMLHttpRequest.readyState);
-                            alert(textStatus);
                         }
+                    
                     });
                 } else {
                     alert("两次密码不一致");
                     $("#pwdPassword").val("");
                     $("#pwdAgain").val("");
+                    return false;
                 }
             } else {
                 alert("密码不能为空");
+                return false;
             }
      
 

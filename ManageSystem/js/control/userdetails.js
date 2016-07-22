@@ -1,4 +1,8 @@
-﻿var userJs, userVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var userJs, userVar;
 var action = $.getUrlParam("action");
 var id = $.getUrlParam("id");
 var invokeMethod = action == "Create" ? "CreateUser" : "0"
@@ -39,13 +43,13 @@ function initConfig() {
                     }
                     else {
                         alert("错误");
+                        return false;
                     }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                }, error: function (xhr) {
+                    alert("请联系管理员");
+                    return false;
                 }
+              
             });
         });
 

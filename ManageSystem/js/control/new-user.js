@@ -1,4 +1,8 @@
-﻿var userJs, userVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var userJs, userVar;
 var action = $.getUrlParam("action");
 var id = $.getUrlParam("id");
 var invokeMethod = action == "Create" ? "CreateUser" : "0"
@@ -31,7 +35,8 @@ function initConfig() {
                 }
                 $('#Role').selectpicker('refresh');
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
 
@@ -65,30 +70,36 @@ function initConfig() {
                                     location.href = "user-list.html";
                                 }else if(s==1){
                                     alert("用户名已存在");
+                                    return false;
                                 } else if (s == 2) {
                                     alert("条码已存在");
+                                    return false;
                                 } else {
                                     alert("创建失败");
+                                    return false;
                                 }
             
                             }, error: function (xhr) {
-                                alert(xhr);
+                                alert("请联系管理员");
+                                return false;
                             }
                         });
                     } else {
                         alert("两次密码不一致");
                         $("#pwdPassword").val("");
                         $("#pwdAgain").val("");
+                        return false;
                     }
                 } else {
                     alert("条码不能空");
+                    return false;
                 }
                
             } else {
-                alert("用户名不能为空")
+                alert("用户名不能为空");
+                return false;
             }
-           
-       
+                 
         });
 
 

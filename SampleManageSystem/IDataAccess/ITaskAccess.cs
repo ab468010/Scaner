@@ -27,7 +27,9 @@ namespace IDataAccess
         long GetUTaskByTesterId(int systemuserId);
         long GetDelayTaskCountByEngineerId(int systemuserId);
         long GetDelayTaskCountByTesterId(int systemuserId);
-        
+        bool UpdateTaskActualEnd(int taskid, int systemuserId);
+
+
     }
 
 }

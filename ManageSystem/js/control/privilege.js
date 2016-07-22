@@ -44,7 +44,7 @@
                     })
              
             }, error: function (xhr) {
-                alert(xhr);
+                 alert("请联系管理员");
             }
         })
       

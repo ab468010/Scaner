@@ -45,7 +45,7 @@ function privilegepr() {
                         location.href = "privilege.html";
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                     alert("请联系管理员");
                 }
             })
         }
@@ -100,7 +100,7 @@ function privilegepr() {
                         alert("更新失败");
                     }
                 }, error: function (xhr) {
-                    alert(xhr)
+                     alert("请联系管理员")
                 }
             })
         })

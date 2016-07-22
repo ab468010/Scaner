@@ -15,7 +15,7 @@ function config() {
                 $("#PageNo").text(1);
                 $("#totalPageNo").text(page);
             }, error: function (xhr) {
-                alert(xhr);
+                 alert("请联系管理员");
             }
         })
         $.ajax({
@@ -58,7 +58,7 @@ function config() {
                                     alert("请先删除联系人")
                                 }
                             }, error: function (xhr) {
-                                alert(xhr);
+                                 alert("请联系管理员");
                             }
                         })
                     }
@@ -118,7 +118,7 @@ function config() {
                                             alert("请先删除联系人")
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                         alert("请联系管理员");
                                     }
                                 })
                             }
@@ -179,7 +179,7 @@ function config() {
                                             alert("请先删除联系人")
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                         alert("请联系管理员");
                                     }
                                 })
                             }
@@ -240,7 +240,7 @@ function config() {
                                             alert("请先删除联系人")
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                         alert("请联系管理员");
                                     }
                                 })
                             }
@@ -295,7 +295,7 @@ function config() {
                                             alert("请先删除联系人")
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                         alert("请联系管理员");
                                     }
                                 })
                             }
@@ -357,7 +357,7 @@ function config() {
                                             alert("请先删除联系人")
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                         alert("请联系管理员");
                                     }
                                 })
                             }

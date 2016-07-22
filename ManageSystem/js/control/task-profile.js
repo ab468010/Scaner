@@ -1,4 +1,8 @@
-﻿var statucode = $.getUrlParam("projectstatuscode");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var statucode = $.getUrlParam("projectstatuscode");
 var id = $.getUrlParam("taskid");
 var tester1 = $.getUrlParam("tester1");
 var tester2 = $.getUrlParam("tester2");
@@ -15,29 +19,35 @@ function taskprofile() {
                 location.href = "login.html";
             }
         });
-        $(".sample2.create1").click(function () {
-            var jsonPar = {
-                taskid: id,
-                projectid: $("#projectid_hidden").val(),
-                
-            }
-            $.ajax({
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: Globals.ServiceUrl + "ExceptSampleList",
-                data:JSON.stringify(jsonPar),
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                   var option=$("#edit_samplename").empty()
-                    for (i in s) {
-                      option.append($("<option>").val(s[i].SampleId).text(s[i].Name))
+        $("#samplecreate").click(function () {
+            if (statucode > 2) {
+                alert("无法添加");
+            } else {
+                var jsonPar = {
+                    taskid: id,
+                    projectid: $("#projectid_hidden").val(),
 
-                    }
-                    $('#edit_samplename').selectpicker('refresh');
-                }, error: function (xhr) {
-                    alert(xhr);
                 }
-            })
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url: Globals.ServiceUrl + "ExceptSampleList",
+                    data: JSON.stringify(jsonPar),
+                    success: function (data) {
+                        var s = JSON.parse(data.d);
+                        var option = $("#edit_samplename").empty()
+                        for (i in s) {
+                            option.append($("<option>").val(s[i].SampleId).text(s[i].Name))
+
+                        }
+                        $('#edit_samplename').selectpicker('refresh');
+                    }, error: function (xhr) {
+                        alert("请联系管理员");
+                        return false;
+                    }
+                })
+            }
+          
         })
         $("#savechange2").click(function () {
             var jsonPara = {
@@ -57,9 +67,11 @@ function taskprofile() {
                         window.location.reload();
                     } else {
                         alert("添加失败");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         })
@@ -80,7 +92,8 @@ function taskprofile() {
                 $("#roomid").val(roomid);
                 $('#roomid ').selectpicker('refresh');
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         });
         $.ajax({
@@ -157,7 +170,8 @@ function taskprofile() {
 
 
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         });
         $(".task2.edit1").click(function () {
@@ -189,9 +203,11 @@ function taskprofile() {
                                     location.href = "task-list.html";
                                 } else {
                                     alert("请先删除样品");
+                                    return false;
                                 }
                             }, error: function (xhr) {
-                                alert(xhr);
+                                alert("请联系管理员");
+                                return false;
                             }
                         })
                     }
@@ -227,13 +243,16 @@ function taskprofile() {
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
                     }, error: function (xhr) {
                         alert("请选择测试工程师");
+                        return false;
                     }
                 })
             } else {
                 alert("任务名不能为空");
+                return false;
             }
           
         })
@@ -301,6 +320,7 @@ function taskprofile() {
                                         window.location.reload();
                                     } else {
                                         alert("删除失败");
+                                        return false;
                                     }
                                 }
                             })
@@ -309,7 +329,8 @@ function taskprofile() {
                 
                 })
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
             
         })

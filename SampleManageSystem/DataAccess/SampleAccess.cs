@@ -8,12 +8,11 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
-        public bool UpdateSampleContainerId(int sampleId, int containerId)
+        public bool  UpdContainerStatus(int containerId)
         {
-            string st = "update dbo.sample set containerid=@containerid where sampleid=@sampleid";
+            string st = "update dbo.container set statuscode=2 where containerid=@containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@sampleid",sampleId),
                 new NpgsqlParameter("@containerid",containerId)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
@@ -25,13 +24,32 @@ namespace DataAccess
                 return false;
             }
         }
-        public bool UpdateShelfId(int sampleId, int shelfId)
+        public bool UpdateSampleContainerId(int sampleId, int containerId, int systemuserId)
         {
-            string st = "update dbo.sample set shelfid=@shelfid where sampleid=@sampleid";
+            string st = "update dbo.sample set containerid=@containerid,modifiedon=now(),modifiedby=@modifiedby where sampleid=@sampleid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@sampleid",sampleId),
+                new NpgsqlParameter("@containerid",containerId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateShelfId(int sampleId, int shelfId, int systemuserId)
+        {
+            string st = "update dbo.sample set shelfid=@shelfid,modifiedby=@modifiedby,modifiedon=now() where sampleid=@sampleid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@shelfid",shelfId),
-                new NpgsqlParameter("@sampleid",sampleId)
+                new NpgsqlParameter("@sampleid",sampleId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {
@@ -59,29 +77,14 @@ namespace DataAccess
                 return false;
             }
         }
-        public bool UpdateTaskSample(int sampleId, int taskId)
+ 
+        public bool ExistsSampleId(int sampleId,int taskId)
         {
-            string st = "update dbo.tasksample set taskid=@taskid where sampleid=@sampleid";
+            string st = "select count(1) from dbo.tasksample where sampleid=@sampleid and taskid=@taskid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
-                new NpgsqlParameter("@taskid",taskId),
-                new NpgsqlParameter("@sampleid",sampleId)
-            };
-            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool ExistsSampleId(int sampleId)
-        {
-            string st = "select count(1) from dbo.tasksample where sampleid=@sampleid";
-            NpgsqlParameter[] par = new NpgsqlParameter[]
-            {
-                new NpgsqlParameter("@sampleid",sampleId)
+                new NpgsqlParameter("@sampleid",sampleId),
+                new NpgsqlParameter("@taskid",taskId)
             };
             if ((long)NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

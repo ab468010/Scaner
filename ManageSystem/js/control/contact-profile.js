@@ -1,4 +1,8 @@
-﻿$(function () {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+$(function () {
     var id = $.getUrlParam("id");
     $("#myModal .modal-body").load("child/edit-contact.html");
     if (id != null && id != "") {
@@ -23,7 +27,8 @@
                 }
                
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
     }
@@ -42,7 +47,7 @@
                             if (s == true) {
                                 alert("删除成功")
                                 window.location.reload();
-                            }else{alert("删除失败")}
+                            } else { alert("删除失败"); return false;}
                         }
                     })
         }
@@ -64,11 +69,13 @@
                     alert("更新成功");
                     window.location.reload();
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
             alert("姓名不能为空");
+            return false;
         }
      
     })

@@ -10,7 +10,8 @@ function initConfig() {
 
     (function () {
         $(".forgot").click(function () {
-            alert("请联系管理员")
+            alert("请联系管理员");
+            return false;
         })
         $(".login").click(function () {
             var _username = $("#txtUsername").val();
@@ -51,6 +52,7 @@ function initConfig() {
                     else {
                         alert("用户名或密码错误");
                         $("#txtPassword").val("");
+                        return false;
                     };
                     jsonPar = {
                         roleid: user.RoleId

@@ -1,4 +1,9 @@
-﻿var systemuserid = Globals.getCookie("SystemUserId");
+﻿if ( Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+
+var systemuserid = Globals.getCookie("SystemUserId");
 var roleid = Globals.getCookie("RoleId");
 var num = Globals.getCookie("Num");
 var jsonPar = {
@@ -49,7 +54,8 @@ function index() {
                     }
 
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
             $("#login").click(function () {
@@ -70,7 +76,8 @@ function index() {
                         $("#finishproject").text(s);                                 
 
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
         //进行中的项目
@@ -89,7 +96,8 @@ function index() {
                     $("#goingproject").text(s);
                    
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });   
        
@@ -154,7 +162,8 @@ function index() {
                     $("#usecontainer").text(s);
 
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
         //延误的项目
@@ -181,10 +190,12 @@ function index() {
                     $("#totalPageNop").text(page);
                     $("#delayproject").text(s);
                     $("#uproject").val(s).trigger('change');
+                    $("#uproject").css("font-size","24px");
                     $("#uproject").val(c);
 
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             });
             Pagep(0);
@@ -239,6 +250,7 @@ function index() {
                    
                     
                     $("#utask").val(s).trigger('change');
+                    $("#utask").css("font-size", "24px");
                     $("#utask").val(c)
                 }
             })
@@ -299,7 +311,8 @@ function Page(page) {
             }
 
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     });
 }
@@ -327,7 +340,8 @@ function Pagep(page) {
             }
 
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     });
 }

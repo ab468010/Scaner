@@ -33,12 +33,11 @@ function initConfig() {
 
                     $("#tleName").text(user.Name);
                     $("#spanUsername").text(user.Username);
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                }, error: function (xhr) {
+                    alert("请联系管理员");
+                    return false;
                 }
+            
             });
         });
 
@@ -61,12 +60,13 @@ function initConfig() {
                         }
                         else
                             alert("删除失败");
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status);
-                        alert(XMLHttpRequest.readyState);
-                        alert(textStatus);
+                        return false;
+                    }, error: function (xhr) {
+                        alert("请联系管理员");
+                        return false;
                     }
+                   
+                    
                 });
             }
         });

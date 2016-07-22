@@ -1,4 +1,8 @@
-﻿var createdby = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var createdby = Globals.getCookie("SystemUserId");
 $(function () {
     $("#login").click(function () {
         if (confirm("确定注销？")) {
@@ -29,13 +33,16 @@ $(function () {
                         location.href = "container-list.html";
                     } else {
                         alert("条码已存在");
+                        return false;
                     }
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
             alert("周转箱和条码不能空");
+            return false;
         }
  
     })

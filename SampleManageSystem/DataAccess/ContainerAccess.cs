@@ -8,13 +8,14 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
-        public bool UpdateContainerProjectId(int containerId, int projectId)
+        public bool UpdateContainerProjectId(int containerId, int projectId, int systemuserId)
         {
-            string st = "update dbo.container set projectid=@projectid where containerid=@containerid";
+            string st = "update dbo.container set projectid=@projectid,modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId),
-                new NpgsqlParameter("@containerid",containerId)
+                new NpgsqlParameter("@containerid",containerId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
             {

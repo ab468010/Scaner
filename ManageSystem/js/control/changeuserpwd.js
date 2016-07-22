@@ -1,4 +1,8 @@
-﻿var id = $.getUrlParam("id");
+﻿if (Globals.getCookie("RoleId")!=6) {
+    alert("你没有权限修改");
+    location.href = "login.html";
+}
+var id = $.getUrlParam("id");
 function changeuserpwd() {
     (function () {
         var jsonPa = {
@@ -14,7 +18,8 @@ function changeuserpwd() {
                 var s = JSON.parse(data.d);
                 $("#Username").val(s.Username);
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
         $("#btnSave").click(function () {
@@ -41,6 +46,7 @@ function changeuserpwd() {
                             }
                             else {
                                 alert("错误");
+                                return false;
                             }
                         }
                 
@@ -49,10 +55,11 @@ function changeuserpwd() {
                     alert("两次密码不一致");
                     $("#pwdPassword").val("");
                     $("#pwdAgain").val("");
+                    return false;
                 }
             } else {
                 alert("密码不能为空");
-
+                return false;
             }
 
 

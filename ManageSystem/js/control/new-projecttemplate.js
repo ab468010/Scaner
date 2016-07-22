@@ -1,4 +1,8 @@
-﻿function newprojecttempalet() {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+function newprojecttempalet() {
     (function () {
         $("#login").click(function () {
             if (confirm("确定注销？")) {
@@ -17,7 +21,8 @@
                     }
                     $('#roomid').selectpicker('refresh');
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
             $("#btnSave").click(function () {
@@ -41,14 +46,17 @@
                                 alert("添加成功")
                                 location.href = "projecttemplate-list.html";
                             } else {
-                                alert("添加失败")
+                                alert("添加失败");
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
                     })
                 } else {
                     alert("任务名不能为空");
+                    return false;
                 }
             })
     })()

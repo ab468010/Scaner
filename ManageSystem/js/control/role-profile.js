@@ -1,4 +1,8 @@
-﻿var SystemUserId = Globals.getCookie("SystemUserId");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var SystemUserId = Globals.getCookie("SystemUserId");
 
 $(function () {
     var id = Globals.trim($.getUrlParam("id"));
@@ -33,7 +37,8 @@ $(function () {
                     $("#Rodescription").val(s.Description);
                 }
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         });
     } else {
@@ -76,6 +81,7 @@ $(function () {
                                 window.location.reload();
                             } else {
                                 alert("删除失败");
+                                return false;
                             }
                         }
                     })
@@ -104,7 +110,8 @@ $(function () {
                         $("#CanManage1").prop("checked", s.CanManage);
                         $("#privilegeid1").val(s.PrivilegeId)
                     }, error: function (xhr) {
-                        alert(xhr)
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             })
@@ -136,9 +143,11 @@ $(function () {
                     window.location.reload();
                 } else {
                     alert("更新失败");
+                    return false;
                 }
             }, error: function (xhr) {
-                alert(xhr)
+                alert("请联系管理员");
+                return false;
             }
         })
     })
@@ -164,10 +173,12 @@ $(function () {
                     window.location.reload();
                 }
                 else {
-                    alert("修改失败")
+                    alert("修改失败");
+                    return false;
                 }
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
     });
@@ -185,6 +196,7 @@ $(function () {
                 var s = JSON.parse(data.d);
                 if (s == 1) {
                     alert("系统角色不能删除");
+                    return false;
                 } else {
                     if (confirm("确定删除?")) {
 
@@ -199,16 +211,19 @@ $(function () {
                                     alert("删除成功");
                                     location.href = "role-list.html";
                                 } else {
-                                    alert("请先删除用户")
+                                    alert("请先删除用户");
+                                    return false;
                                 }
                             }, error: function (xhr) {
-                                alert(xhr);
+                                alert("请联系管理员");
+                                return false;
                             }
                         })
                     }
                 }
             }, error: function (xhr) {
-                alert(xhr);
+                alert("请联系管理员");
+                return false;
             }
         })
 

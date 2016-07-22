@@ -1,4 +1,8 @@
-﻿var userJs, userVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var userJs, userVar;
 
 var createdby = Globals.getCookie("SystemUserId");
 function initConfig() {
@@ -47,11 +51,10 @@ function initConfig() {
 
                     }
                     $('#sltCustomer').selectpicker('refresh');
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                },error:function(xhr){
+
+                    alert("请联系管理员");
+                    return false;
                 }
             });
 
@@ -101,6 +104,7 @@ function initConfig() {
                         }
                         else {
                             alert("错误");
+                            return false;
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -111,6 +115,7 @@ function initConfig() {
                 });
             } else {
                 alert("项目编号项目名必填");
+                return false;
             }
            
         });

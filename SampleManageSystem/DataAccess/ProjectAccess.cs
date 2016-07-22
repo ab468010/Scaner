@@ -8,6 +8,23 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+        public bool UpdateProjectEndtime(int projectId, int systemuserId)
+        {
+            string st = "update dbo.project set endtime=now(),modifiedby=@modifiedby where projectid=@projectid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool UpdateContainerCode(int ContainerId,int ModifiedBy)
         {
             string st = "update dbo.container set statuscode=1,modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
@@ -396,7 +413,7 @@ namespace DataAccess
 
         public IList<Project> GetDelayProjectByTester(int systemuserId,int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr 
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.name username,pr.statuscode from dbo.project pr 
                          left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                          where exists(
                          select 1 from dbo.task task
@@ -427,7 +444,7 @@ namespace DataAccess
         }
         public IList<Project> GetDelayProjectByEngineerId(int systemuserId,int Page,int Limit)
         {
-            string st = @" select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr
+            string st = @" select pr.projectid,pr.projectno,pr.name,sy.name username,pr.statuscode from dbo.project pr
                         left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                         where exists( select 1 from dbo.task ta where pr.projectid = ta.projectid and ta.actualend is null and estimatedend < now() )
                         and pr.endtime is null and pr.engineerid=@engineerid limit @limit offset @page";
@@ -455,7 +472,7 @@ namespace DataAccess
         }
         public IList<Project> GetALLDelayProject(int Page,int Limit)
         {
-            string st = @"select pr.projectid,pr.projectno,pr.name,sy.username,pr.statuscode from dbo.project pr
+            string st = @"select pr.projectid,pr.projectno,pr.name,sy.name username,pr.statuscode from dbo.project pr
                         left join dbo.systemuser sy on sy.systemuserid = pr.engineerid
                         where exists( select 1 from dbo.task ta where pr.projectid = ta.projectid and ta.actualend is null and estimatedend < now() )
                         and pr.endtime is null limit @limit offset @page";
@@ -948,7 +965,7 @@ namespace DataAccess
 
         public IList<Project> GetProjectList()
         {
-            string sqlStr = @"SELECT project.projectid, project.projectno, coalesce(project.starttime,'1900-1-1') starttime,coalesce(project.starttime,'1900-1-1') endtime,project.description, 
+            string sqlStr = @"SELECT project.projectid, project.projectno, coalesce(project.starttime,'1900-1-1') starttime,coalesce(project.endtime,'1900-1-1') endtime,project.description, 
                                 project.createdby,project.createdon,project.modifiedby,project.modifiedon,
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,cname.name createdbyname,mname.name modifiedbyname
@@ -982,6 +999,8 @@ namespace DataAccess
                     project.ModifiedByName = rdr["modifiedbyname"].ToString();
                     project.CustomerId = Convert.ToInt32(rdr["customerid"]);
                     project.CustomerIdName = rdr["CustomerIdName"].ToString();
+                    project.StartTime = Convert.ToDateTime(rdr["starttime"]);
+                    project.EndTime = Convert.ToDateTime(rdr["endtime"]);
                     projectList.Add(project);
                 }
             }
@@ -995,7 +1014,7 @@ namespace DataAccess
                 new NpgsqlParameter("@ProjectNo",project.ProjectNo),
                 new NpgsqlParameter("@Name",project.Name),
                 new NpgsqlParameter("@EngineerId",project.EngineerId),
-                new NpgsqlParameter("@modifiedby",project.CreatedBy),
+           
                 new NpgsqlParameter("@CustomerId",project.CustomerId),
                 new NpgsqlParameter("@Description",project.Description),
                 new NpgsqlParameter("@createdby",project.CreatedBy),

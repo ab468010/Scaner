@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetUserList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetUserListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="usx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="usxResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usxResult" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSampleContainerId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sampleIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="containerId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSampleContainerIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateSampleContainerIdResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSampleProjectId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sampleIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSampleProjectIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateSampleProjectIdResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTaskSample">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sampleIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="taskId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTaskSampleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateTaskSampleResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateShelfId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sampleIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="shelfId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateShelfIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateShelfIdResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTaskActualEnd">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="taskid" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTaskActualEndResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateTaskActualEndResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateProjectEndtime">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateProjectEndtimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateProjectEndtimeResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateProjectStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateProjectStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateProjectStatusResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContainerProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="containerId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContainerProjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateContainerProjectResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContainerProjectId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="containerIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="systemuserId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateContainerProjectIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateContainerProjectIdResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetContainerList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetContainerListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetContainerListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSampleList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSampleListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSampleListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRoomList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetRoomListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRoomListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShelfList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetShelfListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetShelfListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaskListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetUserListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserList" />
+  </wsdl:message>
+  <wsdl:message name="GetUserListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserListResponse" />
+  </wsdl:message>
+  <wsdl:message name="usxSoapIn">
+    <wsdl:part name="parameters" element="tns:usx" />
+  </wsdl:message>
+  <wsdl:message name="usxSoapOut">
+    <wsdl:part name="parameters" element="tns:usxResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSampleContainerIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateSampleContainerId" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSampleContainerIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateSampleContainerIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSampleProjectIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateSampleProjectId" />
+  </wsdl:message>
+  <wsdl:message name="UpdateSampleProjectIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateSampleProjectIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskSampleSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateTaskSample" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskSampleSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateTaskSampleResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateShelfIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateShelfId" />
+  </wsdl:message>
+  <wsdl:message name="UpdateShelfIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateShelfIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskActualEndSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateTaskActualEnd" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskActualEndSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateTaskActualEndResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateProjectEndtimeSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateProjectEndtime" />
+  </wsdl:message>
+  <wsdl:message name="UpdateProjectEndtimeSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateProjectEndtimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectList" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectListResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateProjectStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateProjectStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateProjectStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateProjectStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContainerProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateContainerProject" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContainerProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateContainerProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContainerProjectIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateContainerProjectId" />
+  </wsdl:message>
+  <wsdl:message name="UpdateContainerProjectIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateContainerProjectIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetContainerListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetContainerList" />
+  </wsdl:message>
+  <wsdl:message name="GetContainerListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetContainerListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSampleList" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSampleListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRoomList" />
+  </wsdl:message>
+  <wsdl:message name="GetRoomListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRoomListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetShelfListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetShelfList" />
+  </wsdl:message>
+  <wsdl:message name="GetShelfListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetShelfListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskList" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WorkServiceSoap">
+    <wsdl:operation name="GetUserList">
+      <wsdl:input message="tns:GetUserListSoapIn" />
+      <wsdl:output message="tns:GetUserListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="usx">
+      <wsdl:input message="tns:usxSoapIn" />
+      <wsdl:output message="tns:usxSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleContainerId">
+      <wsdl:input message="tns:UpdateSampleContainerIdSoapIn" />
+      <wsdl:output message="tns:UpdateSampleContainerIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleProjectId">
+      <wsdl:input message="tns:UpdateSampleProjectIdSoapIn" />
+      <wsdl:output message="tns:UpdateSampleProjectIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskSample">
+      <wsdl:input message="tns:UpdateTaskSampleSoapIn" />
+      <wsdl:output message="tns:UpdateTaskSampleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateShelfId">
+      <wsdl:input message="tns:UpdateShelfIdSoapIn" />
+      <wsdl:output message="tns:UpdateShelfIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskActualEnd">
+      <wsdl:input message="tns:UpdateTaskActualEndSoapIn" />
+      <wsdl:output message="tns:UpdateTaskActualEndSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectEndtime">
+      <wsdl:input message="tns:UpdateProjectEndtimeSoapIn" />
+      <wsdl:output message="tns:UpdateProjectEndtimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectList">
+      <wsdl:input message="tns:GetProjectListSoapIn" />
+      <wsdl:output message="tns:GetProjectListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectStatus">
+      <wsdl:input message="tns:UpdateProjectStatusSoapIn" />
+      <wsdl:output message="tns:UpdateProjectStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProject">
+      <wsdl:input message="tns:UpdateContainerProjectSoapIn" />
+      <wsdl:output message="tns:UpdateContainerProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProjectId">
+      <wsdl:input message="tns:UpdateContainerProjectIdSoapIn" />
+      <wsdl:output message="tns:UpdateContainerProjectIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContainerList">
+      <wsdl:input message="tns:GetContainerListSoapIn" />
+      <wsdl:output message="tns:GetContainerListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <wsdl:input message="tns:GetSampleListSoapIn" />
+      <wsdl:output message="tns:GetSampleListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomList">
+      <wsdl:input message="tns:GetRoomListSoapIn" />
+      <wsdl:output message="tns:GetRoomListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetShelfList">
+      <wsdl:input message="tns:GetShelfListSoapIn" />
+      <wsdl:output message="tns:GetShelfListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskList">
+      <wsdl:input message="tns:GetTaskListSoapIn" />
+      <wsdl:output message="tns:GetTaskListSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WorkServiceSoap" type="tns:WorkServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUserList">
+      <soap:operation soapAction="http://tempuri.org/GetUserList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="usx">
+      <soap:operation soapAction="http://tempuri.org/usx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleContainerId">
+      <soap:operation soapAction="http://tempuri.org/UpdateSampleContainerId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleProjectId">
+      <soap:operation soapAction="http://tempuri.org/UpdateSampleProjectId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskSample">
+      <soap:operation soapAction="http://tempuri.org/UpdateTaskSample" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateShelfId">
+      <soap:operation soapAction="http://tempuri.org/UpdateShelfId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskActualEnd">
+      <soap:operation soapAction="http://tempuri.org/UpdateTaskActualEnd" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectEndtime">
+      <soap:operation soapAction="http://tempuri.org/UpdateProjectEndtime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectList">
+      <soap:operation soapAction="http://tempuri.org/GetProjectList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectStatus">
+      <soap:operation soapAction="http://tempuri.org/UpdateProjectStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProject">
+      <soap:operation soapAction="http://tempuri.org/UpdateContainerProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProjectId">
+      <soap:operation soapAction="http://tempuri.org/UpdateContainerProjectId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContainerList">
+      <soap:operation soapAction="http://tempuri.org/GetContainerList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <soap:operation soapAction="http://tempuri.org/GetSampleList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomList">
+      <soap:operation soapAction="http://tempuri.org/GetRoomList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShelfList">
+      <soap:operation soapAction="http://tempuri.org/GetShelfList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskList">
+      <soap:operation soapAction="http://tempuri.org/GetTaskList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WorkServiceSoap12" type="tns:WorkServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUserList">
+      <soap12:operation soapAction="http://tempuri.org/GetUserList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="usx">
+      <soap12:operation soapAction="http://tempuri.org/usx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleContainerId">
+      <soap12:operation soapAction="http://tempuri.org/UpdateSampleContainerId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSampleProjectId">
+      <soap12:operation soapAction="http://tempuri.org/UpdateSampleProjectId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskSample">
+      <soap12:operation soapAction="http://tempuri.org/UpdateTaskSample" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateShelfId">
+      <soap12:operation soapAction="http://tempuri.org/UpdateShelfId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskActualEnd">
+      <soap12:operation soapAction="http://tempuri.org/UpdateTaskActualEnd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectEndtime">
+      <soap12:operation soapAction="http://tempuri.org/UpdateProjectEndtime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectList">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateProjectStatus">
+      <soap12:operation soapAction="http://tempuri.org/UpdateProjectStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProject">
+      <soap12:operation soapAction="http://tempuri.org/UpdateContainerProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateContainerProjectId">
+      <soap12:operation soapAction="http://tempuri.org/UpdateContainerProjectId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContainerList">
+      <soap12:operation soapAction="http://tempuri.org/GetContainerList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <soap12:operation soapAction="http://tempuri.org/GetSampleList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoomList">
+      <soap12:operation soapAction="http://tempuri.org/GetRoomList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShelfList">
+      <soap12:operation soapAction="http://tempuri.org/GetShelfList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskList">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WorkService">
+    <wsdl:port name="WorkServiceSoap" binding="tns:WorkServiceSoap">
+      <soap:address location="http://localhost:53380/WorkService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WorkServiceSoap12" binding="tns:WorkServiceSoap12">
+      <soap12:address location="http://localhost:53380/WorkService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,4 +1,9 @@
-﻿/// <reference path="../../Page/child/edit-container.html" />
+﻿
+/// <reference path="../../Page/child/edit-container.html" />
+if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
 var containerJs, containerVar;
 var id = $.getUrlParam("containerId");
 var SystemUserId = Globals.getCookie("SystemUserId");
@@ -41,11 +46,10 @@ function initConfig() {
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     var container = JSON.parse(data.d);
-                    if (container.ProjectStatusCode < 3) {
-                        $(".container2.edit1").attr({ style: "dispaly:inline" });
-                        $(".container2.delete1").attr({ style: "dispaly:inline" });
+                 
+                    $("#statuscode").val(container.ProjectStatusCode)
 
-                    }
+                    
                     $("#tleName").text(container.Name);
                     $("#pDescription").text(container.Description);
                     $("#spanContainerCode").text(container.ContainerCode);
@@ -58,12 +62,11 @@ function initConfig() {
                     $("#txtSize").val(container.Size);
                     $("#textDescription").val(container.Description);
 
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
+                }, error: function (xhr) {
+                    alert("请联系管理员");
+                    return false;
                 }
+              
             });
         });
 
@@ -131,51 +134,57 @@ function initConfig() {
                                             window.location.reload();
                                         } else {
                                             alert("删除失败");
+                                            return;
                                         }
                                     }, error: function (xhr) {
-                                        alert(xhr);
+                                        alert("请联系管理员");
+                                        return false;
                                     }
                                 })
                             }
                         }
                        
                     });
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.status);
-                    alert(XMLHttpRequest.readyState);
-                    alert(textStatus);
-                }
+                }           
             });
         });
-
-        $(".delete1.container2").click(function () {
-            jsonPara = {
-                containerId: id
-            };
-
-            if (confirm("确认要删除?")) {
-                $.ajax({
-                    type: "post",
-                    url: Globals.ServiceUrl + "DeleteContainer",
-                    data: JSON.stringify(jsonPara),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        if (data.d) {
-                            alert("删除成功");
-                            location.href = "container-list.html";
-                        }
-                        else
-                            alert("请先删除相关样品");
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status);
-                        alert(XMLHttpRequest.readyState);
-                        alert(textStatus);
-                    }
-                });
+        $(".container2.edit1").click(function () {
+            if ($("#statuscode").val() < 3) {
+                return true;
+            } else {
+                alert("无法编辑");
+                return false;
             }
+        })
+        $(".delete1.container2").click(function () {
+            if ($("#statuscode").val() < 3) {
+                jsonPara = {
+                    containerId: id
+                };
+
+                if (confirm("确认要删除?")) {
+                    $.ajax({
+                        type: "post",
+                        url: Globals.ServiceUrl + "DeleteContainer",
+                        data: JSON.stringify(jsonPara),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.d) {
+                                alert("删除成功");
+                                location.href = "container-list.html";
+                            }
+                            else
+                                alert("请先删除相关样品");
+                            return false;
+                        }
+                    });
+                }
+            } else {
+                alert("无法删除");
+                return false;
+            }
+         
         });
         
 
@@ -204,13 +213,16 @@ function initConfig() {
                             window.location.reload();
                         } else {
                             alert("更新失败");
+                            return false;
                         }
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             } else {
                 alert("周转箱和条码不能为空");
+                return false;
             }
            
         });

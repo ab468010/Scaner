@@ -1,4 +1,8 @@
-﻿$(function () {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+$(function () {
     var id = $.getUrlParam("id");
 
     $("#newcontact").click(function () {
@@ -118,12 +122,14 @@
                         window.location.reload();
                     }
                     else {
-                        alert("失败")
+                        alert("失败");
+                        return false;
                     }
                 }
             })
         } else {
             alert("客户名不能为空");
+            return false;
         }
 
    
@@ -146,11 +152,13 @@
                     alert("更新成功");
                     window.location.reload();
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
-            alert("联系人不能为空")
+            alert("联系人不能为空");
+            return false;
         }
       
     })
@@ -170,7 +178,8 @@
                         alert("删除成功");
                         location.href = "customer-list.html";
                     } else {
-                        alert("请先删除联系人")
+                        alert("请先删除联系人");
+                        return false;
                     }
                 }
             })

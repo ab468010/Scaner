@@ -1,4 +1,8 @@
-﻿var roleid = $.getUrlParam("id");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var roleid = $.getUrlParam("id");
 var mothed;
 function newprivilege() {
     (function () {
@@ -59,7 +63,7 @@ function newprivilege() {
                         alert("创建失败");
                     }
                 }, error: function (xhr) {
-                    alert(xhr)
+                     alert("请联系管理员")
                 }
             })
            })    

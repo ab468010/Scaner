@@ -1,4 +1,8 @@
-﻿if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
     page = 1;
 } else {
     page = $.getUrlParam("page");
@@ -30,7 +34,8 @@ $(function () {
             $("#PageNo").text(page);
             $("#totalPageNo").text(p);
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
     Page((page-1)*10);
@@ -121,7 +126,7 @@ function Page(pa) {
                             if (s == true) {
                                 alert("删除成功")
                                 window.location.reload();
-                            } else { alert("删除失败") }
+                            } else { alert("删除失败");return false }
                         }
                     })
                 }
@@ -145,7 +150,8 @@ function Page(pa) {
                         $("#description").text(s.Description);
 
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             })
@@ -167,13 +173,15 @@ function Page(pa) {
                         alert("更新成功");
                         window.location.reload();
                     }, error: function (xhr) {
-                        alert(xhr);
+                        alert("请联系管理员");
+                        return false;
                     }
                 })
             })
 
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
 }

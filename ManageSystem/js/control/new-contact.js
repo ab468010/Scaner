@@ -1,4 +1,8 @@
-﻿var id = $.getUrlParam("id");
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var id = $.getUrlParam("id");
 var createdby = Globals.getCookie("SystemUserId");
 var address;
 $(function () {
@@ -32,7 +36,8 @@ $(function () {
             }
             
         }, error: function (xhr) {
-            alert(xhr);
+            alert("请联系管理员");
+            return false;
         }
     })
  
@@ -58,14 +63,17 @@ $(function () {
                         location.href = address;
                     } else {
                         alert("创建失败");
+                        return false;
                     }
 
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
         } else {
             alert("姓名不能为空");
+            return false;
         }
            
         })

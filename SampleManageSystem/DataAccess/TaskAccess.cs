@@ -10,6 +10,23 @@ namespace DataAccess
 {
      public  class TaskAccess:IDataAccess.ITaskAccess
     {
+        public bool UpdateTaskActualEnd(int taskid, int systemuserId)
+        {
+            string st = "update dbo.task set actualend=now() ,modifiedby=@modifiedby where taskid=@taskid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@modifiedby",systemuserId),
+                new NpgsqlParameter("@taskid",taskid)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public IList<Task> GetTaskListByProjectIdTesterId(int projectId, int systemuserId)
         {
             IList<Task> tasklist = new List<Task>();

@@ -1,4 +1,8 @@
-﻿var userJs, userVar;
+﻿if (Globals.getCookie("SystemUserId") == null) {
+    alert("请登录");
+    location.href = "login.html";
+}
+var userJs, userVar;
 var page;
 var privilege = JSON.parse(Globals.getCookie("privilege"));
 var roleid = Globals.getCookie("RoleId");
@@ -39,7 +43,8 @@ function initConfig() {
                     $("#PageNo").text(page);
                     $("#totalPageNo").text(pa);
                 }, error: function (xhr) {
-                    alert(xhr);
+                    alert("请联系管理员");
+                    return false;
                 }
             })
             Page((page-1)*10);
@@ -149,9 +154,11 @@ function Page(p) {
                                 window.location.reload();
                             } else {
                                 alert("删除失败");
+                                return false;
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                            alert("请联系管理员");
+                            return false;
                         }
 
                     })

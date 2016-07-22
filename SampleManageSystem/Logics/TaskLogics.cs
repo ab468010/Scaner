@@ -144,6 +144,9 @@ namespace Logics
                 return 0;
             }
         }
-
+        public bool UpdateTaskActualEnd(int taskid, int systemuserId)
+        {
+            return _Dal.UpdateTaskActualEnd(taskid, systemuserId);
+        }
     }
 }

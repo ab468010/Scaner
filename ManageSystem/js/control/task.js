@@ -11,7 +11,7 @@
             $("#PageNo").text(1);
             $("#totalPageNo").text(page);
         }, error: function (xhr) {
-            alert(xhr);
+             alert("请联系管理员");
         }
     })
     Page(0);
@@ -110,7 +110,7 @@ function Page(page) {
                                 alert("删除失败");
                             }
                         }, error: function (xhr) {
-                            alert(xhr);
+                             alert("请联系管理员");
                         }
                     })
                 }
