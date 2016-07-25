@@ -348,39 +348,45 @@ function initConfig() {
             })
         });
         $("#savechange1").click(function () {
-            var jsonPara = {
-                task: {
-                    name: $("#name").val(),
-                    description: $("#description").text(),
-                    taskid: $("#taskid").val(),
-                    estimatedstart: $("#estimatedstart").val(),
-                    estimatedend: $("#estimatedend").val(),
-                    Tester1: $("#tester1").val(),
-                    Tester2: $("#tester2").val(),
-                    roomid:$("#roomid").val(),
-                    ModifiedBy:systemuserid
+            if ($("#tester1").val() == null || $("#tester2").val() == null) {
+                alert("请选择测试工程师");
+                return false;
+            } else {
+                var jsonPara = {
+                    task: {
+                        name: $("#name").val(),
+                        description: $("#description").text(),
+                        taskid: $("#taskid").val(),
+                        estimatedstart: $("#estimatedstart").val(),
+                        estimatedend: $("#estimatedend").val(),
+                        Tester1: $("#tester1").val(),
+                        Tester2: $("#tester2").val(),
+                        roomid: $("#roomid").val(),
+                        ModifiedBy: systemuserid
+                    }
                 }
-            }
-            $.ajax({
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: Globals.ServiceUrl + "UpdateTask",
-                data: JSON.stringify(jsonPara),
-                dataType: "json",
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                    if (s) {
-                        alert("更新成功");
-                        window.location.reload();
-                    } else {
-                        alert("更新失败");
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url: Globals.ServiceUrl + "UpdateTask",
+                    data: JSON.stringify(jsonPara),
+                    dataType: "json",
+                    success: function (data) {
+                        var s = JSON.parse(data.d);
+                        if (s) {
+                            alert("更新成功");
+                            window.location.reload();
+                        } else {
+                            alert("更新失败");
+                            return false;
+                        }
+                    }, error: function (xhr) {
+                        alert("请联系管理员");
                         return false;
                     }
-                }, error: function (xhr) {
-                    alert("请联系管理员");
-                    return false;
-                }
-            })
+                })
+            }
+       
         })
 
         $("#givecustomer").click(function () {         

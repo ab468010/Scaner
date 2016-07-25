@@ -62,39 +62,45 @@ $(function () {
     })
     $("#btnSave").click(function () {
         if (Globals.trim($("#name").val()) != "" && $("#estimatedstart").val() != "" && $("#estimatedend").val() != "") {
-            var jsonPara = {
-                task: {
-                    name: $("#name").val(),
-                    projectid: $("#projectid").val(),
-                    roomid: $("#roomid").val(),
-                    estimatedstart: $("#estimatedstart").val(),
-                    estimatedend: $("#estimatedend").val(),
-                    description: $("#description").val(),
-                    tester1:$("#tester1").val(),
-                    tester2: $("#tester2").val(),
-                    CreatedBy: createdby
+            if ($("#estimatedstart").val() < $("#estimatedend").val()) {
+                var jsonPara = {
+                    task: {
+                        name: $("#name").val(),
+                        projectid: $("#projectid").val(),
+                        roomid: $("#roomid").val(),
+                        estimatedstart: $("#estimatedstart").val(),
+                        estimatedend: $("#estimatedend").val(),
+                        description: $("#description").val(),
+                        tester1: $("#tester1").val(),
+                        tester2: $("#tester2").val(),
+                        CreatedBy: createdby
+                    }
                 }
-            }
-            $.ajax({
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: Globals.ServiceUrl + "CreateTask",
-                data: JSON.stringify(jsonPara),
-                dataType: "json",
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                    if (s) {
-                        alert("创建成功");
-                        location.href = "task-list.html";
-                    } else {
-                        alert("创建失败");
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url: Globals.ServiceUrl + "CreateTask",
+                    data: JSON.stringify(jsonPara),
+                    dataType: "json",
+                    success: function (data) {
+                        var s = JSON.parse(data.d);
+                        if (s) {
+                            alert("创建成功");
+                            location.href = "task-list.html";
+                        } else {
+                            alert("创建失败");
+                            return false;
+                        }
+                    }, error: function (xhr) {
+                        alert("请联系管理员");
                         return false;
                     }
-                }, error: function (xhr) {
-                    alert("请联系管理员");
-                    return false;
-                }
-            })
+                })
+            } else {
+                alert("开始时间必须小于结束时间");
+                return false;
+            }
+        
         } else {
             alert("任务名和预计时间必填");
             return false;

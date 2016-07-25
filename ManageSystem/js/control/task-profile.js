@@ -176,9 +176,11 @@ function taskprofile() {
         });
         $(".task2.edit1").click(function () {
             if (statucode > 2) {
+          
                 alert("无法更改");
                 return false;
             } else {
+       
                 return true;
             }
         })
@@ -216,42 +218,50 @@ function taskprofile() {
 
         })
         $("#savechange").click(function () {
-            if (Globals.trim($("#name").val())!="") {
-                var jsonPara = {
-                    task: {
-                        name: $("#name").val(),
-                        description: $("#description").val(),
-                        taskid: $("#taskid").val(),
-                        estimatedstart: $("#estimatedstart").val(),
-                        estimatedend: $("#estimatedend").val(),
-                        roomid: $("#roomid").val(),
-                        Tester1: $("#tester1").val(),
-                        Tester2:$("#tester2").val(),
-                        ModifiedBy:systemuserid
+            if (Globals.trim($("#name").val()) != "" && $("#estimatedstart").val() != "" && $("#estimatedend").val()!="") {
+                if ($("#estimatedstart").val() < $("#estimatedend").val()) {
+                    var jsonPara = {
+                        task: {
+                            name: $("#name").val(),
+                            description: $("#description").val(),
+                            taskid: $("#taskid").val(),
+                            estimatedstart: $("#estimatedstart").val(),
+                            estimatedend: $("#estimatedend").val(),
+                            roomid: $("#roomid").val(),
+                            Tester1: $("#tester1").val(),
+                            Tester2: $("#tester2").val(),
+                            ModifiedBy: systemuserid
+                        }
                     }
-                }
-                $.ajax({
-                    type: "post",
-                    contentType: "application/json; charset=utf-8",
-                    url: Globals.ServiceUrl + "UpdateTask",
-                    data: JSON.stringify(jsonPara),
-                    dataType: "json",
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("更新成功");
-                            window.location.reload();
-                        } else {
-                            alert("更新失败");
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/json; charset=utf-8",
+                        url: Globals.ServiceUrl + "UpdateTask",
+                        data: JSON.stringify(jsonPara),
+                        dataType: "json",
+                        success: function (data) {
+                            var s = JSON.parse(data.d);
+                            if (s) {
+                                var date = new Date();
+                                alert("更新成功");
+                                window.location.reload();
+                            } else {
+
+                                alert("更新失败");
+                                return false;
+                            }
+                        }, error: function (xhr) {
+                            alert("请选择测试工程师");
                             return false;
                         }
-                    }, error: function (xhr) {
-                        alert("请选择测试工程师");
-                        return false;
-                    }
-                })
+                    })
+                } else {
+                    alert("结束时间必须大于开始时间");
+                    return false;
+                }
+        
             } else {
-                alert("任务名不能为空");
+                alert("任务名和预计时间不能为空");
                 return false;
             }
           
