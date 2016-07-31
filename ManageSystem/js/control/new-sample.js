@@ -6,7 +6,7 @@ var createdby = Globals.getCookie("SystemUserId");
 
 $(function () {
 
-    $('#roomid').selectpicker('refresh');
+
     $("#login").click(function () {
         if (confirm("确定注销？")) {
             location.href = "login.html";

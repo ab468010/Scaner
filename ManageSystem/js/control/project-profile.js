@@ -45,13 +45,12 @@ function initConfig() {
                         option.append($("<option>").val(s[i].SystemUserId).text(s[i].Name));
 
                     }
-                    option.append($("<option>").val(-1).text("Nothing selected"));                    
-                    $('#projectengineer').selectpicker('refresh');
-
+                                  
+    
                     $("#projectengineer option").attr("selected", false);
                     $("#projectengineer option[val=" + engineerid + "]").attr("selected", true);
                     $("#projectengineer").val(engineerid);
-                    $('#projectengineer').selectpicker('refresh');
+                    $('#projectengineer').select2();
                 }
 
             });
@@ -67,7 +66,7 @@ function initConfig() {
                     for (var i in s) {
                         option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
                     }
-                    $('#roomid').selectpicker('refresh');
+                    $('#roomid').select2();
                 }, error: function (xhr) {
                     alert("请联系管理员");
                     return false;
@@ -88,8 +87,8 @@ function initConfig() {
 
                     }
 
-                    $('#tester1').selectpicker('refresh');
-                    $('#tester2').selectpicker('refresh');
+                    $('#tester1').select2();
+                    $('#tester2').select2();
                 }
             });
           var  jsonPara = {
@@ -223,18 +222,18 @@ function initConfig() {
                         $("#tester1 option").attr("selected", false)
                         $("#tester1 option[val=" + tester1 + "]").attr("selected", true);
                         $("#tester1").val(tester1);
-                        $('#tester1').selectpicker('refresh');
+                        $('#tester1').select2();
 
 
                         $("#tester2 option").attr("selected", false)
                         $("#tester2 option[val=" + tester2 + "]").attr("selected", true);
                         $("#tester2").val(tester2);
-                        $('#tester2').selectpicker('refresh');
+                        $('#tester2').select2();
 
                         $("#roomid option").attr("selected", false)
                         $("#roomid option[val=" + roomid + "]").attr("selected", true);
                         $("#roomid").val(roomid);
-                        $('#roomid').selectpicker('refresh');
+                        $('#roomid').select2();
                         var json = {
                             taskid: $(this).parent().parent().parent().parent().find("[name='taskid']").text()
                         }
@@ -310,9 +309,13 @@ function initConfig() {
                     });
                 }
             } else {
-                alert("无法删除")
+                alert("无法删除");
+                return false;
             }
         
+        });
+        $("#createTask").click(function () {
+            location.href = "new-task.html?projectId=" + id;
         });
         $("#savechange").click(function () {
             var jsonPara = {
@@ -352,39 +355,51 @@ function initConfig() {
                 alert("请选择测试工程师");
                 return false;
             } else {
-                var jsonPara = {
-                    task: {
-                        name: $("#name").val(),
-                        description: $("#description").text(),
-                        taskid: $("#taskid").val(),
-                        estimatedstart: $("#estimatedstart").val(),
-                        estimatedend: $("#estimatedend").val(),
-                        Tester1: $("#tester1").val(),
-                        Tester2: $("#tester2").val(),
-                        roomid: $("#roomid").val(),
-                        ModifiedBy: systemuserid
-                    }
-                }
-                $.ajax({
-                    type: "post",
-                    contentType: "application/json; charset=utf-8",
-                    url: Globals.ServiceUrl + "UpdateTask",
-                    data: JSON.stringify(jsonPara),
-                    dataType: "json",
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("更新成功");
-                            window.location.reload();
-                        } else {
-                            alert("更新失败");
-                            return false;
+                if ($("#estimatedstart").val() != "" && $("#estimatedend").val() != "") {
+                    if ($("#estimatedstart").val() < $("#estimatedend").val()) {
+                        var jsonPara = {
+                            task: {
+                                name: $("#name").val(),
+                                description: $("#description").text(),
+                                taskid: $("#taskid").val(),
+                                estimatedstart: $("#estimatedstart").val(),
+                                estimatedend: $("#estimatedend").val(),
+                                Tester1: $("#tester1").val(),
+                                Tester2: $("#tester2").val(),
+                                roomid: $("#roomid").val(),
+                                ModifiedBy: systemuserid
+                            }
                         }
-                    }, error: function (xhr) {
-                        alert("请联系管理员");
+                        $.ajax({
+                            type: "post",
+                            contentType: "application/json; charset=utf-8",
+                            url: Globals.ServiceUrl + "UpdateTask",
+                            data: JSON.stringify(jsonPara),
+                            dataType: "json",
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    alert("更新成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("更新失败");
+                                    return false;
+                                }
+                            }, error: function (xhr) {
+                                alert("请联系管理员");
+                                return false;
+                            }
+                        })
+                    } else {
+                        alert("开始时间必须小于结束时间");
                         return false;
                     }
-                })
+                  
+                } else {
+                    alert("请填写预计时间");
+                    return false;
+                }
+       
             }
        
         })

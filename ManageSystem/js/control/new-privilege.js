@@ -25,7 +25,7 @@ function newprivilege() {
                 for (var i in s) {
                     option.append($("<option>").val(s[i].ModuleId).text(s[i].Name))
                 }
-                $('#Module').selectpicker('refresh');
+                $('#Module').select2();
             }
         });
         $("#login").click(function () {

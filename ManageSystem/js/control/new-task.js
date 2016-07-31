@@ -2,6 +2,7 @@
     alert("请登录");
     location.href = "login.html";
 }
+var id = $.getUrlParam("projectId");
 var createdby = Globals.getCookie("SystemUserId");
 $(function () {
     $.ajax({
@@ -18,8 +19,8 @@ $(function () {
 
             }
        
-            $('#tester1').selectpicker('refresh');
-            $('#tester2').selectpicker('refresh');
+            $("#tester1").select2();
+            $("#tester2").select2();
         }
     });
 
@@ -38,7 +39,14 @@ $(function () {
             for (var i in s) {
                 option.append($("<option>").val(s[i].ProjectId).text(s[i].Name));
             }
-            $('#projectid').selectpicker('refresh');
+            $('#projectid').select2();
+            if (id != null) {
+                $("#projectid option").attr("selected", false);
+                $("#projectid option[val=" + id + "]").attr("selected", true);
+                $("#projectid").val(id);
+                $('#projectid').select2();
+                $("#projectid").attr("disabled","disabled");
+            }
         }, error: function (xhr) {
             alert("请联系管理员");
             return false;
@@ -54,7 +62,7 @@ $(function () {
             for (var i in s) {
                 option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
             }
-            $('#roomid').selectpicker('refresh');
+            $('#roomid').select2();
         }, error: function (xhr) {
             alert("请联系管理员");
             return false;
@@ -62,6 +70,7 @@ $(function () {
     })
     $("#btnSave").click(function () {
         if (Globals.trim($("#name").val()) != "" && $("#estimatedstart").val() != "" && $("#estimatedend").val() != "") {
+
             if ($("#estimatedstart").val() < $("#estimatedend").val()) {
                 var jsonPara = {
                     task: {
@@ -86,7 +95,12 @@ $(function () {
                         var s = JSON.parse(data.d);
                         if (s) {
                             alert("创建成功");
-                            location.href = "task-list.html";
+                            if (id != null) {
+                                location.href = "project-profile.html?projectId=" + id;
+                            } else {
+                                location.href = "task-list.html";
+                            }
+                          
                         } else {
                             alert("创建失败");
                             return false;

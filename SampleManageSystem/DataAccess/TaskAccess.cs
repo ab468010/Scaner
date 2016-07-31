@@ -10,6 +10,89 @@ namespace DataAccess
 {
      public  class TaskAccess:IDataAccess.ITaskAccess
     {
+        public IList<Task> GetTaskListByPId(int number, int systemuserId, int projectId)
+        {
+            IList<Task> tasklist = new List<Task>();
+            string st = @"select taskid,ta.name taskname,COALESCE(ta.projectid,-1),ta.roomid,ta.projectid,ta.description,pr.name projectname,
+                                 ta.modifiedon,tester1.name tester1idname,tester2.name tester2idname,ta.tester1,ta.tester2,
+                                 COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
+                                 from dbo.task ta
+                                 left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                                 left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
+                                 left join dbo.project pr on ta.projectid = pr.projectid
+                                 left join dbo.room ro on ta.roomid = ro.roomid
+                                 where  ta.projectid=@projectid and (tester1=@systemuserid or tester2=@systemuserid) order by estimatedstart limit 10 offset @number";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+          {
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@systemuserid",systemuserId),
+                new NpgsqlParameter("@number",number)
+          };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(rdr["taskid"]);
+                    task.Name = rdr["taskname"].ToString();
+                    task.ProjectName = rdr["projectname"].ToString();
+                    task.RoomName = rdr["roomname"].ToString();
+                    task.EstimatedStart = Convert.ToDateTime(rdr["estimatedstart"]);
+                    task.EstimatedEnd = Convert.ToDateTime(rdr["estimatedend"]);
+                    task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);
+                    task.ActualEnd = Convert.ToDateTime(rdr["actualend"]);
+                    task.Description = rdr["description"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.Tester1 = Convert.ToInt32(rdr["tester1"]);
+                    task.Tester2 = Convert.ToInt32(rdr["tester2"]);
+                    task.RoomId = Convert.ToInt32(rdr["roomid"]);
+                    tasklist.Add(task);
+                }
+            }
+            return tasklist;
+        }
+        public IList<Task> GetAllTaskListByPId(int number, int projectId)
+        {
+            IList<Task> tasklist = new List<Task>();
+            string st = @"select taskid,ta.name taskname,COALESCE(ta.projectid,-1),ta.roomid,ta.projectid,ta.description,pr.name projectname,
+                                 ta.modifiedon,tester1.name tester1idname,tester2.name tester2idname,ta.tester1,ta.tester2,
+                                 COALESCE(ta.roomid,-1) roomid,ro.name roomname,COALESCE(estimatedstart,'1900-1-1') estimatedstart,COALESCE(estimatedend,'1900-1-1') estimatedend,COALESCE(actualstart,'1900-1-1') actualstart,COALESCE(actualend,'1900-1-1') actualend
+                                 from dbo.task ta
+                                 left join dbo.systemuser tester1 on ta.tester1 = tester1.systemuserid
+                                 left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
+                                 left join dbo.project pr on ta.projectid = pr.projectid
+                                 left join dbo.room ro on ta.roomid = ro.roomid
+                                 where  ta.projectid=@projectid order by estimatedstart limit 10 offset @number";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@number",number)
+            };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Task task = new Task();
+                    task.TaskId = Convert.ToInt32(rdr["taskid"]);
+                    task.Name = rdr["taskname"].ToString();
+                    task.ProjectName = rdr["projectname"].ToString();
+                    task.RoomName = rdr["roomname"].ToString();
+                    task.EstimatedStart = Convert.ToDateTime(rdr["estimatedstart"]);
+                    task.EstimatedEnd = Convert.ToDateTime(rdr["estimatedend"]);
+                    task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);
+                    task.ActualEnd = Convert.ToDateTime(rdr["actualend"]);
+                    task.Description = rdr["description"].ToString();
+                    task.Tester1IdName = rdr["tester1idname"].ToString();
+                    task.Tester2IdName = rdr["tester2idname"].ToString();
+                    task.Tester1 = Convert.ToInt32(rdr["tester1"]);
+                    task.Tester2 = Convert.ToInt32(rdr["tester2"]);
+                    task.RoomId = Convert.ToInt32(rdr["roomid"]);
+                    tasklist.Add(task);
+                }
+            }
+            return tasklist;
+        }
         public bool UpdateTaskActualEnd(int taskid, int systemuserId)
         {
             string st = "update dbo.task set actualend=now() ,modifiedby=@modifiedby where taskid=@taskid";
@@ -38,7 +121,7 @@ namespace DataAccess
                                  left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
                                  left join dbo.project pr on ta.projectid = pr.projectid
                                  left join dbo.room ro on ta.roomid = ro.roomid
-                                 where  ta.projectid=@projectid and (tester1=@systemuserid or tester2=@systemuserid)";
+                                 where  ta.projectid=@projectid and (tester1=@systemuserid or tester2=@systemuserid) order by estimatedstart";
             NpgsqlParameter[] par = new NpgsqlParameter[]
           {
                 new NpgsqlParameter("@projectid",projectId),
@@ -362,7 +445,7 @@ namespace DataAccess
                                  left join dbo.systemuser tester2 on ta.tester2 = tester2.systemuserid
                                  left join dbo.project pr on ta.projectid = pr.projectid
                                  left join dbo.room ro on ta.roomid = ro.roomid
-                                     where  ta.projectid=@projectid";
+                                 where  ta.projectid=@projectid order by estimatedstart";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId)

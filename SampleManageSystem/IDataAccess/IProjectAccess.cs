@@ -55,5 +55,8 @@ namespace IDataAccess
           bool   ExistsSample(int ContainerId);
         bool UpdateContainerCode(int ContainerId,int ModifiedBy);
         bool UpdateProjectEndtime(int projectId, int systemuserId);
+        IList<Project> GetProjectIdList();
+        IList<Project> GetProjectIdListByEngineerId(int systemuserId);
+        IList<Project> GetProjectIdListByTesterId(int systemuserId);
     }
 }

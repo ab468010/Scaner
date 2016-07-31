@@ -277,5 +277,23 @@ namespace Logics
         {
             return _Dal.UpdateProjectEndtime(projectId, systemuserId);
         }
+        public IList<Project> GetProjectIdList(int roleId,int systemuserId)
+        {
+            if (roleId == 6 || roleId == 18)
+            {
+                return _Dal.GetProjectIdList();
+            }else if (roleId == 2)
+            {
+                return _Dal.GetProjectIdListByEngineerId(systemuserId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetProjectIdListByTesterId(systemuserId);
+            }
+            else
+            {
+                IList<Project> projectList = new List<Project>();
+                return projectList;
+            }
+        }
     }
 }

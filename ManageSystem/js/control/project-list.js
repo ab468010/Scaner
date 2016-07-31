@@ -78,7 +78,8 @@ function initConfig() {
       
             $("#serch").click(function () {
                 location.href = "project-list.html?page=" + "1" + "&statusCode=" + $("#selectStatusCode").val();
-            })
+            });
+        
             $(".first").click(function () {
                 if ($("#PageNo").text() != 1) {
                     $("#PageNo").text(1);

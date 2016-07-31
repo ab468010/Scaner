@@ -3,6 +3,7 @@
     location.href = "login.html";
 }
 $(function () {
+    $("#Select1").select2();
     $("#login").click(function () {
         if (confirm("确定注销？")) {
             location.href = "login.html";

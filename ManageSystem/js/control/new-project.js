@@ -34,7 +34,7 @@ function initConfig() {
 
                     }
                     
-                    $('#sltEngineer').selectpicker('refresh');
+                    $('#sltEngineer').select2();
                 }
             });
 
@@ -50,7 +50,7 @@ function initConfig() {
                         list.append($("<option>").val(result[i].Customerid).text(result[i].Name));
 
                     }
-                    $('#sltCustomer').selectpicker('refresh');
+                    $('#sltCustomer').select2();
                 },error:function(xhr){
 
                     alert("请联系管理员");
@@ -58,22 +58,7 @@ function initConfig() {
                 }
             });
 
-            //获取测试工程师
-            $.ajax({
-                type: "post",
-                url: Globals.ServiceUrl + "GetTesterList",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var result = JSON.parse(data.d);
-                    var list = $("#sltTester").empty();
-                    for (var i in result) {
-                        list.append($("<option>").val(result[i].SystemUserId).text(result[i].Name));
-
-                    }
-                    list.append($("<option>").val(-1).text("Nothing selected"));
-                    $('#sltTester').selectpicker('refresh');
-                }
-            });
+      
         })
 
         $("#btnCreate").click(function () {

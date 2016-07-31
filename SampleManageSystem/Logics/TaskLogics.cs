@@ -25,7 +25,7 @@ namespace Logics
         {
             return _Dal.Create(task);
         }
-        public IList<Task> SelectTask(int number,int systemuserId,int roleId)
+        public IList<Task> SelectTask(int number,int systemuserId,int roleId, int projectId)
         {
             if (roleId == 6||roleId==18)
             {
@@ -147,6 +147,21 @@ namespace Logics
         public bool UpdateTaskActualEnd(int taskid, int systemuserId)
         {
             return _Dal.UpdateTaskActualEnd(taskid, systemuserId);
+        }
+        public IList<Task> GetTaskListByPId(int number, int systemuserId, int roleId, int projectId)
+        {
+            if (roleId == 6 || roleId == 18 || roleId == 2)
+            {
+                return _Dal.GetAllTaskListByPId(number, projectId);
+            }else if (roleId == 3)
+            {
+                return _Dal.GetTaskListByPId(number,systemuserId,projectId);
+            }
+            else
+            {
+                IList<Task> taskList = new List<Task>();
+                return taskList;
+            }
         }
     }
 }

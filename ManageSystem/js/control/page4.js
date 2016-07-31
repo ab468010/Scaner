@@ -8,7 +8,7 @@ var page;
 var GetList;
 var projectid;
 var privilege = JSON.parse(Globals.getCookie("privilege"));
-if ($.getUrlParam("projectId") == null || $.getUrlParam("projectId")==undefined) {
+if ($.getUrlParam("projectId") == null || $.getUrlParam("projectId") == undefined) {
     projectid = 0;
 } else {
     projectid = $.getUrlParam("projectId");
@@ -20,9 +20,9 @@ if ($.getUrlParam("page") == null || $.getUrlParam("page") == undefined) {
 }
 $(function () {
     if (projectid == 0) {
-        GetList="SelectTask"
+        GetList = "SelectTask"
     } else {
-        GetList="GetTaskListByPId"
+        GetList = "GetTaskListByPId"
     }
     $("#login").click(function () {
         if (confirm("确定注销？")) {
@@ -37,7 +37,7 @@ $(function () {
         success: function (data) {
             var s = JSON.parse(data.d);
             if (s == 0) {
-                s=1
+                s = 1
             }
             var pa = Math.ceil(s / 10);
             $("#PageNo").text(page);
@@ -50,26 +50,25 @@ $(function () {
     Page((page - 1) * 10);
     var jsonPa = {
         roleId: roleid,
-        systemuserId:systemuserid
+        systemuserId: systemuserid
     }
     $.ajax({
         type: "post",
         url: Globals.ServiceUrl + "GetProjectIdList",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonPa),
-        success: function (data) {;
+        success: function (data) {
             var projectList = JSON.parse(data.d);
             var option = $("#projectid").empty();
             option.append($("<option>").val(0).text("所有项目"));
             for (var i in projectList) {
                 option.append($("<option>").val(projectList[i].ProjectId).text(projectList[i].Name))
             }
+            $('#projectid').selectpicker('refresh');
             $("#projectid option").attr("selected", false);
             $("#projectid option[val=" + projectid + "]").attr("selected", true);
             $("#projectid").val(projectid);
-            $("#projectid").select2();
-           
-           
+            $('#projectid').selectpicker('refresh');
         }, error: function (xhr) {
             alert(xhr);
         }
@@ -99,7 +98,7 @@ $(function () {
     })
     $(".next").click(function () {
         if (($("#PageNo").text() < $("#totalPageNo").text())) {
-            var number = parseInt($("#PageNo").text())+1;
+            var number = parseInt($("#PageNo").text()) + 1;
             $("#PageNo").text(number);
             location.href = "task-list.html?page=" + number;
         }
@@ -114,35 +113,35 @@ $(function () {
 
 
 
-   
-  
+
+
 })
 function Page(p) {
     var jsonPar = {
         number: p,
         systemuserId: systemuserid,
         roleId: roleid,
-        projectId:projectid
+        projectId: projectid
     }
     $.ajax({
         type: "post",
         contentType: "application/json; charset=utf-8",
-        url: Globals.ServiceUrl +GetList ,
-        
+        url: Globals.ServiceUrl + GetList,
+
         data: JSON.stringify(jsonPar),
         success: function (data) {
             var s = JSON.parse(data.d);
             var tbody = $(".table tbody").empty();
             for (var i in s) {
                 var estart = Globals.datetime_is_null(s[i].EstimatedStart);
-                var eend = Globals.datetime_is_null(s[i].EstimatedEnd); 
+                var eend = Globals.datetime_is_null(s[i].EstimatedEnd);
 
                 var astart = Globals.datetime_is_null(s[i].ActualStart);
                 var aend = Globals.datetime_is_null(s[i].ActualEnd);
                 var con = "<td>" + s[i].Name + "</td><td>" + s[i].ProjectName + "</td><td>" + s[i].RoomName + "</td><td>" + s[i].Tester1IdName + "</td><td>" + s[i].Tester2IdName + "</td><td>" + estart +
-                    "</td><td name='tester1'style='display:none'>"+s[i].Tester1+"</td><td name='tester2'style='display:none'>"+s[i].Tester2+"</td><td name='roomid'style='display:none'>"+s[i].RoomId+
+                    "</td><td name='tester1'style='display:none'>" + s[i].Tester1 + "</td><td name='tester2'style='display:none'>" + s[i].Tester2 + "</td><td name='roomid'style='display:none'>" + s[i].RoomId +
                     "</td><td>" + eend + "</td><td>" + astart + "</td><td>" + aend + " <ul class='actions'><li class='last'><a href='#myModal' data-toggle='modal' class='task2 read1'style='display:none'>详情</a> <a class='task2 delete1'style='display:none'>删除</a></li></ul>" +
-                    "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td><td name='projectstatuscode'style='display:none'>"+s[i].ProjectStatusCode+"</td>"
+                    "</td><td style='display:none' name='taskid'>" + s[i].TaskId + "</td><td name='projectstatuscode'style='display:none'>" + s[i].ProjectStatusCode + "</td>"
                 var row = document.createElement("tr");
                 row.innerHTML = con;
                 tbody.append(row)
@@ -166,15 +165,15 @@ function Page(p) {
 
 
             $(".task2.read1").click(function () {
-                
+
                 location.href = "task-profile.html?taskid=" + $(this).parent().parent().parent().parent().find("[name='taskid']").text() + "&projectstatuscode=" +
                     $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text()
                 + "&tester1=" + $(this).parent().parent().parent().parent().find("[name='tester1']").text()
                 + "&tester2=" + $(this).parent().parent().parent().parent().find("[name='tester2']").text()
                 + "&roomid=" + $(this).parent().parent().parent().parent().find("[name='roomid']").text();
-                })
-      
-           
+            })
+
+
             $(".task2.delete1").click(function () {
                 var s = $(this).parent().parent().parent().parent().find("[name='projectstatuscode']").text()
                 if (s > 2) {
@@ -205,7 +204,7 @@ function Page(p) {
                         })
                     }
                 }
-           
+
 
             })
 

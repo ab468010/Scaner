@@ -8,6 +8,64 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+        public IList<Project> GetProjectIdListByTesterId(int systemuserId)
+        {
+            IList<Project> projectList = new List<Project>();
+            string st = @"select projectid,name from dbo.project pr 
+                          where exists(select 1 from dbo.task ta where pr.projectid = ta.projectid and(tester1 = @systemuserid or tester2 = @systemuserid))
+                          and statuscode<= 3";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st, par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.Name = rdr["name"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public IList<Project> GetProjectIdListByEngineerId(int systemuserId)
+        {
+            IList<Project> projectList = new List<Project>();
+            string st = "select projectid,name from dbo.project where engineerid=@systemuserid and statuscode<=3";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@systemuserid",systemuserId)
+            };
+            using (NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st,par))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.Name = rdr["name"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
+        public IList<Project> GetProjectIdList()
+        {
+            IList<Project> projectList = new List<Project>();
+            string st = "select projectid,name from dbo.project where statuscode<=3";
+            using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, st))
+            {
+                while (rdr.Read())
+                {
+                    Project project = new Project();
+                    project.ProjectId = Convert.ToInt32(rdr["projectid"]);
+                    project.Name = rdr["name"].ToString();
+                    projectList.Add(project);
+                }
+            }
+            return projectList;
+        }
         public bool UpdateProjectEndtime(int projectId, int systemuserId)
         {
             string st = "update dbo.project set endtime=now(),modifiedby=@modifiedby where projectid=@projectid";
@@ -702,14 +760,15 @@ namespace DataAccess
 
         public IList<Project> GetProjectListByTesterId(int systemuserId,int Page)
         {
-            string sqlStr = @"SELECT project.projectid, project.projectno, 
+            string sqlStr = @"  SELECT project.projectid, project.projectno, 
                                 project.name,project.engineerid,engineer.Name EngineerIdName,project.statecode,project.statuscode,
                                 COALESCE(project.customerid,-1) customerid,customer.Name CustomerIdName,project.createdon
                                 FROM dbo.project project
                                 Left Join dbo.SystemUser engineer On project.engineerid = engineer.systemuserid
-                                left join dbo.task ta on ta.projectid=project.projectid
+       
                                 Left Join dbo.Customer customer On project.customerid = customer.customerid
-                                   where ta.tester1=@testerid or ta.tester2=@testerid order by project.createdon desc limit 10 offset @page";
+                                where  exists(select 1 from dbo.task ta where ta.projectid=project.projectid and( ta.tester1=@testerid or ta.tester2=@testerid ))
+                               order by project.createdon desc limit 10 offset @page";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@testerid",systemuserId),

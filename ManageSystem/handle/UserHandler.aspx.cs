@@ -128,7 +128,12 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ProjectLogics projectLogics = new ProjectLogics();
         return JsonConvert.SerializeObject(projectLogics.GetProjectListByUserId(systemuserId,roleId,Page,statusCode));
     }
-
+    [WebMethod]
+    public static string GetProjectIdList(int roleId,int systemuserId)
+    {
+        ProjectLogics project = new ProjectLogics();
+        return JsonConvert.SerializeObject(project.GetProjectIdList(roleId, systemuserId));
+    }
 
     [WebMethod]
     public static string CreateProject(Project project)
@@ -431,10 +436,16 @@ public partial class handle_UserHandler : System.Web.UI.Page
         return JsonConvert.SerializeObject(task.GetTaskListByProjectId(projectId,roleId,systemuserId));
     }
     [WebMethod]
-    public static string SelectTask(int number,int systemuserId,int roleId)
+    public static string SelectTask(int number,int systemuserId,int roleId,int projectId)
     {
         TaskLogics ta = new TaskLogics();
-        return JsonConvert.SerializeObject(ta.SelectTask(number,systemuserId,roleId));
+        return JsonConvert.SerializeObject(ta.SelectTask(number,systemuserId,roleId,projectId));
+    }
+    [WebMethod]
+    public static string GetTaskListByPId(int number, int systemuserId, int roleId, int projectId)
+    {
+        TaskLogics task = new TaskLogics();
+        return JsonConvert.SerializeObject(task.GetTaskListByPId(number, systemuserId, roleId, projectId));
     }
     [WebMethod]
     public static string DeleteTask(int taskid)
