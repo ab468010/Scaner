@@ -21,7 +21,7 @@ function projecttemplate() {
                 for (var i in s) {
                     option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
                 }
-                $('#editRoomId').selectpicker('refresh');
+                $('#editRoomId').select2();
             }, error: function (xhr) {
                 alert("请联系管理员");
                 return false;

@@ -22,16 +22,16 @@ $(function () {
             for (var i in s) {
                 option.append($("<option>").val(s[i].Customerid).text(s[i].Name));
             }
-            $('#Select1').selectpicker('refresh');
+            $('#Select1').select2();
             if (id!=""&&id!=null) {
                 $("#Select1").attr("disabled", "disabled");
                 $("#Select1 option").attr("selected", false);
                 $("#Select1 option[value=" + id + "]").attr("selected", true);
-                $('#Select1').selectpicker('refresh');
+                $('#Select1').select2();
                 
                  address = "customer-profile.html?id=" + id;
             } else {
-                $('#Select1').selectpicker('refresh');
+                $('#Select1').select2();
                  address = "contact-list.html";
             }
             

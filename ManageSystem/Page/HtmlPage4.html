@@ -14,10 +14,10 @@
     <link rel="stylesheet" type="text/css" href="../css/layout.css" />
     <link rel="stylesheet" type="text/css" href="../css/elements.css" />
     <link rel="stylesheet" type="text/css" href="../css/icons.css" />
-
+    <link href="../css/lib/bootstrap-select.min.css" rel="stylesheet" />
     <!-- libraries -->
     <link href="../css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
-
+    <link href="../css/lib/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <!-- this page specific styles -->
     <link rel="stylesheet" href="../css/compiled/tables.css" type="text/css" media="screen" />
 
@@ -43,8 +43,8 @@
             <ul class="nav pull-right">
 
                 <li class="settings hidden-phone">
-                    <a  role="button">
-                        <i class="icon-user"></i><span id="UserName"style="margin-left:10px;height:100%;"></span>
+                    <a role="button">
+                        <i class="icon-user"></i><span id="UserName" style="margin-left:10px;height:100%;"></span>
                     </a>
                 </li>
                 <li class="settings hidden-phone">
@@ -57,6 +57,7 @@
     </div>
     <!-- end navbar -->
     <!-- sidebar -->
+    <!-- sidebar -->
     <div id="sidebar-nav">
         <ul id="dashboard-menu">
             <li>
@@ -66,18 +67,22 @@
 
                 </a>
             </li>
-            <li>
+            <li class="active">
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
                 <a href="#" class="dropdown-toggle">
                     <i class="icon-edit"></i>
                     <span>项目</span>
                     <i class="icon-chevron-down"></i>
+                    <ul class="submenu active">
+                        <li class="project1"><a href="project-list.html">所有项目</a></li>
+                        <li class="project1"><a href="uproject-list.html">尚未结束项目</a></li>
+                        <li class="task1"><a href="task-list.html" class="active">任务管理</a></li>
+                        <li class="sample1"><a href="sample-list.html">样品管理</a></li>
+                    </ul>
                 </a>
-                <ul class="submenu">
-                    <li class="project1"><a href="project-list.html">所有项目</a></li>
-                    <li class="project1"><a href="uproject-list.html">尚未结束项目</a></li>
-                    <li class="task1"><a href="task-list.html">任务管理</a></li>
-                    <li class="sample1"><a href="sample-list.html">样品管理</a></li>
-                </ul>
             </li>
             <li>
                 <a href="changepwd-list.html">
@@ -96,19 +101,15 @@
                     <li><a href="form-wizard.html">Form wizard</a></li>
                 </ul>
             </li>
-            <li class="active">
-                <div class="pointer">
-                    <div class="arrow"></div>
-                    <div class="arrow_border"></div>
-                </div>
+            <li>
                 <a class="dropdown-toggle" href="#">
                     <i class="icon-inbox"></i>
                     <span>主数据</span>
                     <i class="icon-chevron-down"></i>
-                    <ul class="submenu active">
+                    <ul class="submenu ">
                         <li class="customer1"><a href="customer-list.html">客 户</a></li>
                         <li class="contact1"><a href="contact-list.html">联系人</a></li>
-                        <li class="shelf1"><a href="shelf-list.html" class="active">货 架</a></li>
+                        <li class="shelf1"><a href="shelf-list.html">货 架</a></li>
                         <li class="container1"><a href="container-list.html">周转箱</a></li>
                         <li class="room1"><a href="room-list.html">场 地</a></li>
                     </ul>
@@ -129,10 +130,12 @@
             </li>
         </ul>
     </div>
-    <!-- end sidebar -->
-    <!-- end sidebar -->
+
+    <!-- end sidebar -->    <!-- end sidebar -->
     <!-- main container -->
     <div class="content">
+
+        <!-- settings changer -->
 
 
         <div class="container-fluid">
@@ -143,37 +146,56 @@
                 <div class="table-wrapper products-table section">
                     <div class="row-fluid head">
                         <div class="span12">
-                            <h3>货 架</h3>
-                            <span></span>
+                            <h3>任务列表</h3>
                         </div>
                     </div>
 
                     <div class="row-fluid filter-block">
-                        <div class="pull-right">
+                        <div class="span3 field-box">
+                            <select id="projectid" class="selectpicker form-control" data-live-search="true" data-size="5"></select>
 
-                            <a class="btn-flat success  shelf2 create1"style="display:none;" href="new-shelf.html">新建货架</a>
+
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn-flat success  task2 create1" style="display:none;" id="btnNew" href="new-task.html">新建任务</a>
                         </div>
                     </div>
 
-                    <div class="row-fluid table">
+                    <div class="row-fluid">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                   
-                                    <th class="span4">
-                                        <span class="line"></span>名 称
+                                    <th class="span2">
+                                        任务名
                                     </th>
-                                    <th class="span4">
-                                        <span class="line"></span>条 码
+                                    <th class="span2">
+                                        <span class="line"></span>项 目
                                     </th>
-                                    <th class="span4">
-                                        <span class="line"></span>描 述
+                                    <th class="span2">
+                                        <span class="line"></span>场地
                                     </th>
+                                    <th class="span2">
+                                        <span class="line"></span>样品接收
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>样品交付
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>预计开始时间
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>预计结束时间
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>实际开始时间
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>实际结束时间
+                                    </th>
+
                                 </tr>
                             </thead>
-                            <tbody>                          
-
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -189,30 +211,19 @@
                         <li><a> 第<span id="PageNo"></span>页/总计<span id="totalPageNo"></span>页</a></li>
                     </ul>
                 </div>
+
             </div>
         </div>
-        </div>
-        <!-- end products table -->
-        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">货架信息</h3>
-            </div>
-            <div class="modal-body">
-                <p>One fine body…</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">关 闭</button>
-                <button id="savechange" class="btn btn-primary">保 存</button>
-            </div>
-        </div>
-        <!-- scripts -->
-       <script src="../jq/jquery-2.1.1.min.js"></script>
-        <script src="../js/lib/bootstrap.min.js"></script>
-        <script src="../js/lib/theme.js"></script>
-        <script src="../js/Globals.js"></script>
-         <script src="../js/Command.js"></script>
-        <script src="../js/module/userModule/user.js"></script>       
-    <script src="../js/control/shelf-list.js"></script>
+    </div>
+    <!-- end main container -->
+
+    <script src="../jq/jquery-2.1.1.min.js"></script>
+    <script src="../js/lib/bootstrap.min.js"></script>
+    <script src="../js/lib/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/lib/bootstrap-select.min.js"></script>
+    <script src="../js/lib/theme.js"></script>
+    <script src="../js/Globals.js"></script>
+    <script src="../js/Command.js"></script>
+    <script src="../js/control/task-list.js"></script>
 </body>
 </html>

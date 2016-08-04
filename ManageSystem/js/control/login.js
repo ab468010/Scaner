@@ -8,11 +8,26 @@ function initConfig() {
     userVar = {
     };
 
+
     (function () {
         $(".forgot").click(function () {
             alert("请联系管理员");
             return false;
         })
+
+        
+        if (document.addEventListener) {
+            //如果是Firefox  
+            document.addEventListener("keypress", enterEvent, true);
+        } else {
+            //如果是IE
+            document.attachEvent("onkeypress", enterEvent);
+        }
+        function enterEvent(evt) {
+            if (evt.keyCode == 13) {
+                $(".login").click();
+            }
+        }
         $(".login").click(function () {
             var _username = $("#txtUsername").val();
             var _password = $("#txtPassword").val();

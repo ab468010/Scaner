@@ -51,12 +51,12 @@ function initConfig() {
                         child_option.append($("<option>").val(s[i].ProjectId).text(s[i].Name));
                     }
                  
-                    child_option.append($("<option>").val(-1).text("Nothing Selected"));  
-                    $('#child_sltProject').selectpicker('refresh');
+                    //child_option.append($("<option>").val(-1).text("Nothing Selected"));  
+  
                     $("#child_sltProject option").attr("selected", false);
                     $("#child_sltProject option[value=" + projectid + "]").attr("selected", true);
                     $("#child_sltProject ").val(projectid);
-                    $('#child_sltProject').selectpicker('refresh');
+                    $('#child_sltProject').select2();
                 }, error: function (xhr) {
                     alert("请联系管理员");
                     return false;
@@ -76,12 +76,12 @@ function initConfig() {
                             child_option.append($("<option>").val(s[i].ContainerId).text(s[i].Name))
                         }
  
-                        child_option.append($("<option>").val(-1).text("Nothing Selected"));
-                        $('#child_sltContainer').selectpicker('refresh');
+                        //child_option.append($("<option>").val(-1).text("Nothing Selected"));
+
                         $("#child_sltContainer option").attr("selected", false);
                         $("#child_sltContainer option[value=" + containerid + "]").attr("selected", true);
                         $("#child_sltContainer").val(containerid);
-                        $('#child_sltContainer').selectpicker('refresh');
+                        $('#child_sltContainer').select2();
                     }, error: function (xhr) {
                         alert("请联系管理员");
                         return false;
@@ -121,7 +121,7 @@ function initConfig() {
                             $("#textDescription").val(s.Description);
                             
                          
-                            $('#sltSampleClass').selectpicker('refresh');
+                           // $('#sltSampleClass').select2();
 
 
                             $("#child_txtName").val(s.Name);
@@ -136,9 +136,9 @@ function initConfig() {
                             $("#child_sltSampleClass").val(s.SampleClass);
 
                             $("#child_textDescription").val(s.Description);
-                            $('#child_sltProject').selectpicker('refresh');
-                            $('#child_sltContainer').selectpicker('refresh');
-                            $('#child_sltSampleClass').selectpicker('refresh');
+                            $('#child_sltProject').select2();
+                            $('#child_sltContainer').select2();
+                            $('#child_sltSampleClass').select2();
                         }
 
                     }, error: function (xhr) {
@@ -194,41 +194,52 @@ function initConfig() {
           
         });
         $("#savechange").click(function () {
-            if (Globals.trim($("#child_txtName").val()) != "" && Globals.trim($("#child_txtSampleCode").val()) != "") {
-                var jsonPara = {
-                    sample: {
-                        SampleId: id,
-                        Name: $("#child_txtName").val(),
-                        SampleCode: Globals.trim($("#child_txtSampleCode").val()),
-                        ProjectId: $("#child_sltProject").val() == -1 ? null : $("#child_sltProject").val(),
-                        ContainerId: $("#child_sltContainer").val() == -1 ? null : $("#child_sltContainer").val(),
-                        SampleClass: $("#child_sltSampleClass").val() == -1 ? null : $("#child_sltSampleClass").val(),
-                        Description: $("#child_textDescription").val(),
-                        ModifiedBy:systemuserid
-                    }
-                }
-
-                $.ajax({
-                    type: "post",
-                    url: Globals.ServiceUrl + "UpdateSample",
-                    data: JSON.stringify(jsonPara),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("更新成功");
-                            window.location.reload();
-                        } else {
-                            alert("更新失败");
-                            return false;
+            if (Globals.trim($("#child_txtName").val()) != "") {
+                if ($("#child_sltProject").val() !=null) {
+                    if ($("#child_sltContainer").val() != null) {
+                        var jsonPara = {
+                            sample: {
+                                SampleId: id,
+                                Name: $("#child_txtName").val(),
+                                SampleCode: Globals.trim($("#child_txtSampleCode").val()),
+                                ProjectId: $("#child_sltProject").val() == -1 ? null : $("#child_sltProject").val(),
+                                ContainerId: $("#child_sltContainer").val() == -1 ? null : $("#child_sltContainer").val(),
+                                SampleClass: $("#child_sltSampleClass").val() == -1 ? null : $("#child_sltSampleClass").val(),
+                                Description: $("#child_textDescription").val(),
+                                ModifiedBy: systemuserid
+                            }
                         }
-                    }, error: function (xhr) {
-                        alert("请联系管理员");
+
+                        $.ajax({
+                            type: "post",
+                            url: Globals.ServiceUrl + "UpdateSample",
+                            data: JSON.stringify(jsonPara),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    alert("更新成功");
+                                    window.location.reload();
+                                } else {
+                                    alert("更新失败");
+                                    return false;
+                                }
+                            }, error: function (xhr) {
+                                alert("请联系管理员");
+                                return false;
+                            }
+                        })
+                    } else {
+                        alert("请选择周转箱");
                         return false;
                     }
-                })
+                } else {
+                    alert("请选择所属项目");
+                    return false;
+                }
+                
             } else {
-                alert("样品名和条码不能为空");
+                alert("样品名不能为空");
                 return false;
             }
       

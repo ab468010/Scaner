@@ -33,7 +33,7 @@ function initConfig() {
                 for (var i in s) {
                 option.append($("<option>").val(s[i].RoleId).text(s[i].RoleName))
                 }
-                $('#Role').selectpicker('refresh');
+                $('#Role').select2();
             }, error: function (xhr) {
                 alert("请联系管理员");
                 return false;

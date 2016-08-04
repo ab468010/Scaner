@@ -40,7 +40,7 @@ function taskprofile() {
                             option.append($("<option>").val(s[i].SampleId).text(s[i].Name))
 
                         }
-                        $('#edit_samplename').selectpicker('refresh');
+                        $('#edit_samplename').select2();
                     }, error: function (xhr) {
                         alert("请联系管理员");
                         return false;
@@ -50,30 +50,36 @@ function taskprofile() {
           
         })
         $("#savechange2").click(function () {
-            var jsonPara = {
-                taskid: id,
-                sampleid: $("#edit_samplename").val(),
-             
-            }
-            $.ajax({
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: Globals.ServiceUrl + "CreateTaskSample",
-                data: JSON.stringify(jsonPara),
-                success: function (data) {
-                    var s = JSON.parse(data.d);
-                    if (s) {
-                        alert("添加成功")
-                        window.location.reload();
-                    } else {
-                        alert("添加失败");
+            if ($("#edit_samplename").val() != null) {
+                var jsonPara = {
+                    taskid: id,
+                    sampleid: $("#edit_samplename").val(),
+
+                }
+                $.ajax({
+                    type: "post",
+                    contentType: "application/json; charset=utf-8",
+                    url: Globals.ServiceUrl + "CreateTaskSample",
+                    data: JSON.stringify(jsonPara),
+                    success: function (data) {
+                        var s = JSON.parse(data.d);
+                        if (s) {
+                            alert("添加成功")
+                            window.location.reload();
+                        } else {
+                            alert("添加失败");
+                            return false;
+                        }
+                    }, error: function (xhr) {
+                        alert("请联系管理员");
                         return false;
                     }
-                }, error: function (xhr) {
-                    alert("请联系管理员");
-                    return false;
-                }
-            })
+                })
+            } else {
+                alert("请选择样品");
+                return false;
+            }
+        
         })
         $.ajax({
             type: "post",
@@ -86,11 +92,11 @@ function taskprofile() {
                 for (var i in s) {
                     option.append($("<option>").val(s[i].RoomId).text(s[i].Name));
                 }
-                $('#roomid').selectpicker('refresh');
+             
                 $("#roomid option").attr("selected", false)
                 $("#roomid option[val=" + roomid + "]").attr("selected", true);
                 $("#roomid").val(roomid);
-                $('#roomid ').selectpicker('refresh');
+                $('#roomid ').select2();
             }, error: function (xhr) {
                 alert("请联系管理员");
                 return false;
@@ -111,17 +117,17 @@ function taskprofile() {
 
                 }
             
-                $('#tester1').selectpicker('refresh');
+          
                 $("#tester1 option").attr("selected", false)
                 $("#tester1 option[val=" + tester1 + "]").attr("selected", true);
                 $("#tester1").val(tester1);
-                $('#tester1 ').selectpicker('refresh');
+                $('#tester1 ').select2();
 
-                $('#tester2').selectpicker('refresh');
+           
                 $("#tester2 option").attr("selected", false)
                 $("#tester2 option[val=" + tester2+ "]").attr("selected", true);
                 $("#tester2").val(tester2);
-                $('#tester2 ').selectpicker('refresh');
+                $('#tester2 ').select2();
             }
         });
         var jsonPa = {
@@ -140,11 +146,11 @@ function taskprofile() {
             
 
 
-                $('#tester2 .selectpicker').selectpicker('refresh');
+
                 $("#tester2 option").attr("selected", false)
                 $("#tester2 option[val=" + sh.Tester2+ "]").attr("selected", true);
                 $("#tester2").val(sh.Tester2);
-                $('#tester2 ').selectpicker('refresh');
+                $('#tester2 ').select2();
 
                 $("#Tester1").text(sh.Tester1IdName);
                 $("#Tester2").text(sh.Tester2IdName);
@@ -176,9 +182,11 @@ function taskprofile() {
         });
         $(".task2.edit1").click(function () {
             if (statucode > 2) {
+          
                 alert("无法更改");
                 return false;
             } else {
+       
                 return true;
             }
         })
@@ -216,42 +224,56 @@ function taskprofile() {
 
         })
         $("#savechange").click(function () {
-            if (Globals.trim($("#name").val())!="") {
-                var jsonPara = {
-                    task: {
-                        name: $("#name").val(),
-                        description: $("#description").val(),
-                        taskid: $("#taskid").val(),
-                        estimatedstart: $("#estimatedstart").val(),
-                        estimatedend: $("#estimatedend").val(),
-                        roomid: $("#roomid").val(),
-                        Tester1: $("#tester1").val(),
-                        Tester2:$("#tester2").val(),
-                        ModifiedBy:systemuserid
-                    }
-                }
-                $.ajax({
-                    type: "post",
-                    contentType: "application/json; charset=utf-8",
-                    url: Globals.ServiceUrl + "UpdateTask",
-                    data: JSON.stringify(jsonPara),
-                    dataType: "json",
-                    success: function (data) {
-                        var s = JSON.parse(data.d);
-                        if (s) {
-                            alert("更新成功");
-                            window.location.reload();
-                        } else {
-                            alert("更新失败");
-                            return false;
+            if (Globals.trim($("#name").val()) != "" && $("#estimatedstart").val() != "" && $("#estimatedend").val()!="") {
+                if ($("#estimatedstart").val() < $("#estimatedend").val()) {
+                    if ($("#tester1").val() != null && $("#tester2").val() != null) {
+                        var jsonPara = {
+                            task: {
+                                name: $("#name").val(),
+                                description: $("#description").val(),
+                                taskid: $("#taskid").val(),
+                                estimatedstart: $("#estimatedstart").val(),
+                                estimatedend: $("#estimatedend").val(),
+                                roomid: $("#roomid").val(),
+                                Tester1: $("#tester1").val(),
+                                Tester2: $("#tester2").val(),
+                                ModifiedBy: systemuserid
+                            }
                         }
-                    }, error: function (xhr) {
+                        $.ajax({
+                            type: "post",
+                            contentType: "application/json; charset=utf-8",
+                            url: Globals.ServiceUrl + "UpdateTask",
+                            data: JSON.stringify(jsonPara),
+                            dataType: "json",
+                            success: function (data) {
+                                var s = JSON.parse(data.d);
+                                if (s) {
+                                    var date = new Date();
+                                    alert("更新成功");
+                                    window.location.reload();
+                                } else {
+
+                                    alert("更新失败");
+                                    return false;
+                                }
+                            }, error: function (xhr) {
+                                alert("请联系管理员");
+                                return false;
+                            }
+                        })
+                    } else {
                         alert("请选择测试工程师");
                         return false;
                     }
-                })
+         
+                } else {
+                    alert("结束时间必须大于开始时间");
+                    return false;
+                }
+        
             } else {
-                alert("任务名不能为空");
+                alert("任务名和预计时间不能为空");
                 return false;
             }
           
