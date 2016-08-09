@@ -8,6 +8,24 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
+        public bool UpdateContainerTaskId(int ContainerId,int ModifiedBy)
+        {
+            string st = "update dbo.container set taskid=@null,modifiedon=now(),modifiedby=@modifiedby where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@null",DBNull.Value),
+                new NpgsqlParameter("@containerid",ContainerId),
+                new NpgsqlParameter("@modifiedby",ModifiedBy)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public IList<Project> GetProjectIdListByTesterId(int systemuserId)
         {
             IList<Project> projectList = new List<Project>();

@@ -99,5 +99,9 @@ namespace Logics
         {
             return _Dal.UpdateContainerProjectId(containerId, projectId,systemuserId);
         }
+        public bool UpdateContainerTaskId(int containerId,int taskId)
+        {
+            return _Dal.UpdateContainerTaskId(containerId, taskId);
+        }
     }
 }

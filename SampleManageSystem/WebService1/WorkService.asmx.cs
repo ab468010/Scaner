@@ -61,6 +61,12 @@ namespace SystemService
             return true;
         }
         [WebMethod]
+        public bool UpdateContainerTaskId(int containerId,int taskId)
+        {
+            ContainerLogics con = new ContainerLogics();
+            return con.UpdateContainerTaskId(containerId, taskId);
+        }
+        [WebMethod]
         public bool UpdateTaskSample(int[] sampleIds, int taskId)
         {
             SampleLogics sampleLogics = new SampleLogics();

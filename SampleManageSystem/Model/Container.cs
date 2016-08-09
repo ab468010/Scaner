@@ -31,5 +31,6 @@ namespace Model
         /*Join*/
         public string ProjectIdName { get; set; }
         public int ProjectStatusCode { get; set; }
+        public int? TaskId { get; set; }
     }
 }

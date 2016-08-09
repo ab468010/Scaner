@@ -23,7 +23,7 @@ namespace IDataAccess
         long GetBigContainer();
         long GetSmallContainer();
         IList<Container> GetUseContainerList(int Page);
-
+        bool UpdateContainerTaskId(int containerId, int taskId);
         bool UpdateContainerProjectId(int containerId, int projectId, int systemuserId);
     }
 }

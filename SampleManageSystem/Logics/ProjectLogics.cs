@@ -114,12 +114,12 @@ namespace Logics
             _Dal.UpdateSampleContainer(projectId,ModifiedBy);
             foreach (Container container in containerList)
             {
+                _Dal.UpdateContainerTaskId(container.ContainerId,ModifiedBy);
                 if (!_Dal.ExistsSample(container.ContainerId))
                 {
                     _Dal.UpdateContainerCode(container.ContainerId,ModifiedBy);
                 }
             }
-            
                 
                 return _Dal.UpdateProjectStatusCode(projectId,ModifiedBy);
             

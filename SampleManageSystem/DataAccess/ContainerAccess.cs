@@ -8,6 +8,23 @@ namespace DataAccess
 {
     public class ContainerAccess : IDataAccess.IContainerAccess
     {
+        public bool UpdateContainerTaskId(int containerId, int taskId)
+        {
+            string st = "update dbo.container set taskid=@taskid where containerid=@containerid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@taskid",taskId),
+                new NpgsqlParameter("@containerid",containerId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool UpdateContainerProjectId(int containerId, int projectId, int systemuserId)
         {
             string st = "update dbo.container set projectid=@projectid,modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
@@ -253,7 +270,7 @@ namespace DataAccess
 
         public IList<Container> GetContainerList()
         {
-            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description,
+            string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description,COALESCE(box.taskid,-1) taskid,
                                       box.createdby bcreatedby,box.createdon bcreatedon,box.modifiedby bmodifiedby,box.modifiedon bmodifiedon
                                 FROM dbo.container box
                                 Left Join dbo.Project project on box.projectid = project.projectid";
@@ -278,6 +295,7 @@ namespace DataAccess
                     container.CreatedOn = Convert.ToDateTime(rdr["bcreatedon"]);
                     container.ModifiedBy = Convert.ToInt32(rdr["bmodifiedby"]);
                     container.ModifiedOn = Convert.ToDateTime(rdr["bmodifiedon"]);
+                    container.TaskId = Convert.ToInt32(rdr["taskid"]);
                     containerList.Add(container);
                 }
             }
