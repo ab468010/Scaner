@@ -27,7 +27,9 @@ namespace IDataAccess
         long GetUTaskByTesterId(int systemuserId);
         long GetDelayTaskCountByEngineerId(int systemuserId);
         long GetDelayTaskCountByTesterId(int systemuserId);
-        bool UpdateTaskActualEnd(int taskid, int systemuserId);
+        bool UpdateTaskActualStart(int taskid, DateTime startTime, int systemuserId);
+
+        bool UpdateTaskActualEnd(int taskid,DateTime endTime, int systemuserId);
         IList<Task> GetAllTaskListByPId(int number, int projectId);
         IList<Task> GetTaskListByPId(int number, int systemuserId, int projectId);
 

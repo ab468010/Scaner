@@ -92,17 +92,30 @@ namespace SystemService
             }
             return true;
         }
+
         [WebMethod]
-        public bool UpdateTaskActualEnd(int taskid,int systemuserId)
+        public bool UpdateTaskActualStart(int taskid, DateTime startTime, int systemuserId)
         {
             TaskLogics task = new TaskLogics();
-            return task.UpdateTaskActualEnd(taskid, systemuserId);
+            return task.UpdateTaskActualStart(taskid, startTime, systemuserId);
         }
         [WebMethod]
-        public bool UpdateProjectEndtime(int projectId,int systemuserId)
+        public bool UpdateTaskActualEnd(int taskid,DateTime endTime,int systemuserId)
+        {
+            TaskLogics task = new TaskLogics();
+            return task.UpdateTaskActualEnd(taskid,endTime, systemuserId);
+        }
+        [WebMethod]
+        public bool UpdateProjectStarttime(int projectId, DateTime startTime, int systemuserId)
         {
             ProjectLogics project = new ProjectLogics();
-            return project.UpdateProjectEndtime(projectId, systemuserId);
+            return project.UpdateProjectStarttime(projectId,startTime, systemuserId);
+        }
+        [WebMethod]
+        public bool UpdateProjectEndtime(int projectId, DateTime endTime, int systemuserId)
+        {
+            ProjectLogics project = new ProjectLogics();
+            return project.UpdateProjectEndtime(projectId,endTime, systemuserId);
         }
         /// <summary>
         /// 获得状态为'创建项目'、'项目测试'、'测试完成'的项目列表

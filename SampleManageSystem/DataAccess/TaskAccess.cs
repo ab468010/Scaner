@@ -93,11 +93,31 @@ namespace DataAccess
             }
             return tasklist;
         }
-        public bool UpdateTaskActualEnd(int taskid, int systemuserId)
+
+        public bool UpdateTaskActualStart(int taskid, DateTime startTime, int systemuserId)
         {
-            string st = "update dbo.task set actualend=now() ,modifiedby=@modifiedby where taskid=@taskid";
+            string st = "update dbo.task set actualStart=@startTime ,modifiedby=@modifiedby where taskid=@taskid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
+                new NpgsqlParameter("@startTime",startTime),
+                new NpgsqlParameter("@modifiedby",systemuserId),
+                new NpgsqlParameter("@taskid",taskid)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateTaskActualEnd(int taskid, DateTime endTime, int systemuserId)
+        {
+            string st = "update dbo.task set actualend=@endTime ,modifiedby=@modifiedby where taskid=@taskid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@endTime",endTime),
                 new NpgsqlParameter("@modifiedby",systemuserId),
                 new NpgsqlParameter("@taskid",taskid)
             };
@@ -413,6 +433,7 @@ namespace DataAccess
                     task.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     task.ProjectName = rdr["projectname"].ToString();
                     task.RoomName = rdr["roomname"].ToString();
+                    task.RoomId = Convert.ToInt32(rdr["roomid"]);
                     task.EstimatedStart = Convert.ToDateTime(rdr["estimatedstart"]);
                     task.EstimatedEnd = Convert.ToDateTime(rdr["estimatedend"]);
                     task.ActualStart = Convert.ToDateTime(rdr["actualstart"]);

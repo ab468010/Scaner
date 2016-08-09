@@ -84,11 +84,30 @@ namespace DataAccess
             }
             return projectList;
         }
-        public bool UpdateProjectEndtime(int projectId, int systemuserId)
+        public bool UpdateProjectStarttime(int projectId, DateTime startTime, int systemuserId)
         {
-            string st = "update dbo.project set endtime=now(),modifiedby=@modifiedby where projectid=@projectid";
+            string st = "update dbo.project set startTime=@startTime,modifiedby=@modifiedby where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
+                new NpgsqlParameter("@startTime",startTime),
+                new NpgsqlParameter("@projectid",projectId),
+                new NpgsqlParameter("@modifiedby",systemuserId)
+            };
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateProjectEndtime(int projectId, DateTime endTime, int systemuserId)
+        {
+            string st = "update dbo.project set endtime=@endTime,modifiedby=@modifiedby where projectid=@projectid";
+            NpgsqlParameter[] par = new NpgsqlParameter[]
+            {
+                new NpgsqlParameter("@endTime",endTime),
                 new NpgsqlParameter("@projectid",projectId),
                 new NpgsqlParameter("@modifiedby",systemuserId)
             };

@@ -273,9 +273,13 @@ namespace Logics
                 return a;
             }
         }
-        public bool UpdateProjectEndtime(int projectId, int systemuserId)
+        public bool UpdateProjectStarttime(int projectId, DateTime startTime, int systemuserId)
         {
-            return _Dal.UpdateProjectEndtime(projectId, systemuserId);
+            return _Dal.UpdateProjectStarttime(projectId, startTime, systemuserId);
+        }
+        public bool UpdateProjectEndtime(int projectId,DateTime endTime, int systemuserId)
+        {
+            return _Dal.UpdateProjectEndtime(projectId, endTime, systemuserId);
         }
         public IList<Project> GetProjectIdList(int roleId,int systemuserId)
         {

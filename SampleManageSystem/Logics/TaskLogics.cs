@@ -144,9 +144,13 @@ namespace Logics
                 return 0;
             }
         }
-        public bool UpdateTaskActualEnd(int taskid, int systemuserId)
+        public bool UpdateTaskActualStart(int taskid, DateTime startTime, int systemuserId)
         {
-            return _Dal.UpdateTaskActualEnd(taskid, systemuserId);
+            return _Dal.UpdateTaskActualStart(taskid, startTime, systemuserId);
+        }
+        public bool UpdateTaskActualEnd(int taskid,DateTime endTime, int systemuserId)
+        {
+            return _Dal.UpdateTaskActualEnd(taskid,endTime, systemuserId);
         }
         public IList<Task> GetTaskListByPId(int number, int systemuserId, int roleId, int projectId)
         {

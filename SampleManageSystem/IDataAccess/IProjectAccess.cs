@@ -1,4 +1,5 @@
 ﻿using Model;
+using System;
 using System.Collections.Generic;
 
 namespace IDataAccess
@@ -55,7 +56,9 @@ namespace IDataAccess
           bool   ExistsSample(int ContainerId);
         bool UpdateContainerTaskId(int ContainerId,int ModifiedBy);
         bool UpdateContainerCode(int ContainerId,int ModifiedBy);
-        bool UpdateProjectEndtime(int projectId, int systemuserId);
+        bool UpdateProjectStarttime(int projectId, DateTime startTime, int systemuserId);
+
+        bool UpdateProjectEndtime(int projectId,DateTime endTime, int systemuserId);
         IList<Project> GetProjectIdList();
         IList<Project> GetProjectIdListByEngineerId(int systemuserId);
         IList<Project> GetProjectIdListByTesterId(int systemuserId);
