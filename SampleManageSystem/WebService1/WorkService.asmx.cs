@@ -20,11 +20,6 @@ namespace SystemService
     // [System.Web.Script.Services.ScriptService]
     public class WorkService : System.Web.Services.WebService
     {
-        [WebMethod]
-        public string HelloWorld()
-        {
-            return "HelloWorld";
-        }
 
         [WebMethod]
         public XmlDocument GetUserList()
