@@ -64,11 +64,9 @@ $(function () {
             for (var i in projectList) {
                 option.append($("<option>").val(projectList[i].ProjectId).text(projectList[i].Name))
             }
-            $('#projectid').selectpicker('refresh');
             $("#projectid option").attr("selected", false);
             $("#projectid option[val=" + projectid + "]").attr("selected", true);
             $("#projectid").val(projectid);
-            $('#projectid').selectpicker('refresh');
         }, error: function (xhr) {
             alert(xhr);
         }

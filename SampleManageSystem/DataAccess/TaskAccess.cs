@@ -598,7 +598,8 @@ namespace DataAccess
         }
          public bool Create(Task task)
         {
-            string st = "insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description,tester1,tester2,createdby,createdon,modifiedby,modifiedon) values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now(),@modifiedby,now())";
+            string st = @"insert into dbo.task (name,projectid,roomid,estimatedstart,estimatedend,description,tester1,tester2,createdby,createdon,modifiedby,modifiedon)
+             values(@name,@projectid,@roomid,@estimatedstart,@estimatedend,@description,@tester1,@tester2,@createdby,now(),@modifiedby,now())";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@name",task.Name),

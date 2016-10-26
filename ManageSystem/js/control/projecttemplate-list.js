@@ -84,7 +84,6 @@ function projecttemplate() {
                             $("#editProjecttemplateid").val(s.ProjectTemplateId);
                             $("#editRoomId").attr("selected", false);
                             $("#editRoomId option[value=" + s.RoomId + "]").attr("selected", true);
-                            $('#editRoomId').selectpicker('refresh');
                            
                         },
                         error: function (xhr)
