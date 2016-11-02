@@ -255,6 +255,12 @@ namespace Logics
                 return projectList;
             }
         }
+
+        public void Release()
+        {
+ 
+        }
+
         public long GetProjectStatusCodeCount(int systemuserId, int roleId, int statusCode)
         {
             if (roleId == 6||roleId==18)
