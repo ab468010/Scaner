@@ -25,6 +25,52 @@ namespace DataAccess
                 return false;
             }
         }
+
+        /// <summary>
+        /// 释放所属Project下所有周转箱的Task
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        public bool ReleaseContainerTaskByProjectId(int projectId)
+        {
+            string sqlStr = "update dbo.container Set taskId = null,modifiedon=now() where projectId = @ProjectId";
+
+            NpgsqlParameter para = new NpgsqlParameter("@ProjectId",projectId);
+
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, para) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
+        /// <summary>
+        /// 释放所属Project下所有周转箱
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        public bool ReleaseContainer(int projectId)
+        {
+            string sqlStr = "update dbo.container Set projectId = null,statuscode = 1,modifiedon=now() where projectId = @ProjectId";
+
+            NpgsqlParameter para = new NpgsqlParameter("@ProjectId", projectId);
+
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, para) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         public bool UpdateContainerProjectId(int containerId, int projectId, int systemuserId)
         {
             string st = "update dbo.container set projectid=@projectid,modifiedby=@modifiedby,modifiedon=now() where containerid=@containerid";
@@ -271,7 +317,7 @@ namespace DataAccess
         public IList<Container> GetContainerList()
         {
             string sqlStr = @"SELECT box.containerid, box.name, box.size, box.containercode, box.statuscode, COALESCE(box.projectid,-1) projectid,project.Name ProjectIdName,box.description,COALESCE(box.taskid,-1) taskid,
-                                      box.createdby bcreatedby,box.createdon bcreatedon,box.modifiedby bmodifiedby,box.modifiedon bmodifiedon
+                                      box.createdby,box.createdon,box.modifiedby,box.modifiedon
                                 FROM dbo.container box
                                 Left Join dbo.Project project on box.projectid = project.projectid";
 
@@ -290,11 +336,11 @@ namespace DataAccess
                     container.StatusCode = Convert.ToInt32(rdr["statuscode"]);
                     container.ProjectId = Convert.ToInt32(rdr["projectid"]);
                     container.ProjectIdName = rdr["projectIdName"].ToString();
-                    container.Description = rdr["Description"].ToString();
-                    container.CreatedBy = Convert.ToInt32(rdr["bcreatedby"]);
-                    container.CreatedOn = Convert.ToDateTime(rdr["bcreatedon"]);
-                    container.ModifiedBy = Convert.ToInt32(rdr["bmodifiedby"]);
-                    container.ModifiedOn = Convert.ToDateTime(rdr["bmodifiedon"]);
+                    container.Description = rdr["description"].ToString();
+                    container.CreatedBy = Convert.ToInt32(rdr["createdby"] == DBNull.Value ? -1 : rdr["createdby"]);
+                    container.CreatedOn = Convert.ToDateTime(rdr["createdon"] == DBNull.Value ? "1900-01-01 00:00:00" : rdr["createdon"]);
+                    container.ModifiedBy = Convert.ToInt32(rdr["modifiedby"] == DBNull.Value ? -1 : rdr["modifiedby"]);
+                    container.ModifiedOn = Convert.ToDateTime(rdr["modifiedon"] == DBNull.Value ? "1900-01-01 00:00:00" : rdr["modifiedon"]);
                     container.TaskId = Convert.ToInt32(rdr["taskid"]);
                     containerList.Add(container);
                 }

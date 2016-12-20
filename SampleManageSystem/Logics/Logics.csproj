@@ -60,6 +60,7 @@
     <Compile Include="ProjectLogics.cs" />
     <Compile Include="ShelfLogics.cs" />
     <Compile Include="TaskLogics.cs" />
+    <Compile Include="TaskContainerLogics.cs" />
     <Compile Include="TaskSampleLogics.cs" />
     <Compile Include="UserLogics.cs" />
   </ItemGroup>

@@ -57,6 +57,7 @@
     <Compile Include="Project.cs" />
     <Compile Include="Shelf.cs" />
     <Compile Include="Task.cs" />
+    <Compile Include="TaskContainer.cs" />
     <Compile Include="TaskSample.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

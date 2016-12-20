@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using DataAccess;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,20 +109,22 @@ namespace Logics
             }
             return projectId;
         }
-        public bool UpdateProjectStatusCode(int projectId,int ModifiedBy)
+        public bool ArchiveProject(int projectId, int modifiedBy)
         {
-            IList<Container> containerList = _Dal.UpdateContainerProjectId(projectId,ModifiedBy);
-            _Dal.UpdateSampleContainer(projectId,ModifiedBy);
-            foreach (Container container in containerList)
-            {
-                _Dal.UpdateContainerTaskId(container.ContainerId,ModifiedBy);
-                if (!_Dal.ExistsSample(container.ContainerId))
-                {
-                    _Dal.UpdateContainerCode(container.ContainerId,ModifiedBy);
-                }
-            }
-                
-                return _Dal.UpdateProjectStatusCode(projectId,ModifiedBy);
+            
+            //释放周转箱任务
+            ContainerAccess containerAccess = new ContainerAccess();
+            SampleAccess sampleAccess = new SampleAccess();
+            sampleAccess.ReleaseContainerSampleByProjectId(projectId);
+            containerAccess.ReleaseContainerTaskByProjectId(projectId);
+            containerAccess.ReleaseContainer(projectId);
+            //归还周转箱,设置周转箱所属项目为空
+           // IList<Container> containerList = _Dal.UpdateContainerProjectId(projectId, modifiedBy);
+
+            //清理周转箱下样品，设置项目下样品所属周转箱为空
+            //_Dal.UpdateSampleContainer(projectId, modifiedBy);
+
+            return _Dal.UpdateProjectStatusCode(projectId, modifiedBy);
             
         }
         public IList<Project> GetProjectListByStatus()

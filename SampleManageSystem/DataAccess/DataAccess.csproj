@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
     <Compile Include="ContainerAccess.cs" />
     <Compile Include="ShelfAccess.cs" />
     <Compile Include="TaskAccess.cs" />
+    <Compile Include="TaskContainerAccess.cs" />
     <Compile Include="TaskSampleAccess.cs" />
     <Compile Include="UserAccess.cs" />
   </ItemGroup>

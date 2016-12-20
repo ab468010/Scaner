@@ -31,6 +31,29 @@ namespace SystemService
             return xmlDoc;
         }
 
+
+        [WebMethod]
+        public XmlDocument GetTaskSampleList()
+        {
+            TaskSampleLogics taskSampleLogcis = new TaskSampleLogics();
+            IList<TaskSample> taskSampleList = taskSampleLogcis.GetTaskSampleList();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.InnerXml = Xml<TaskSample>.EntityToXml(taskSampleList);
+            return xmlDoc;
+
+        }
+
+        [WebMethod]
+        public XmlDocument GetTaskContainerList()
+        {
+            TaskContainerLogics taskContainerLogcis = new TaskContainerLogics();
+            IList<TaskContainer> taskContainerList = taskContainerLogcis.GetTaskContainerList();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.InnerXml = Xml<TaskContainer>.EntityToXml(taskContainerList);
+            return xmlDoc;
+
+        }
+
         [WebMethod]
         public int[] usx(int[] a)
         {

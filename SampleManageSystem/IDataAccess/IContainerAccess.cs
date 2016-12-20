@@ -25,5 +25,12 @@ namespace IDataAccess
         IList<Container> GetUseContainerList(int Page);
         bool UpdateContainerTaskId(int containerId, int taskId);
         bool UpdateContainerProjectId(int containerId, int projectId, int systemuserId);
+
+        /// <summary>
+        /// 释放所属Project下所有周转箱的Task
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        bool ReleaseContainerTaskByProjectId(int projectId);
     }
 }

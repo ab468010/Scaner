@@ -24,5 +24,10 @@ namespace Logics
         {
             return _Dal.CreateTaskSample(taskid, sampleid);
         }
+
+        public IList<TaskSample> GetTaskSampleList()
+        {
+            return _Dal.GetTaskSampleList();
+        }
     }
 }

@@ -141,11 +141,18 @@ public partial class handle_UserHandler : System.Web.UI.Page
         ProjectLogics projectLogics = new ProjectLogics();
         return JsonConvert.SerializeObject(projectLogics.CreateProject(project));
     }
+
+    /// <summary>
+    /// 归档项目
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <param name="ModifiedBy"></param>
+    /// <returns></returns>
     [WebMethod]
-    public static string UpdateProjectStatusCode(int projectId,int ModifiedBy)
+    public static string ArchiveProject(int projectId, int modifiedBy)
     {
-        ProjectLogics project = new ProjectLogics();
-        return JsonConvert.SerializeObject(project.UpdateProjectStatusCode(projectId,ModifiedBy));
+        ProjectLogics projectLogics = new ProjectLogics();
+        return JsonConvert.SerializeObject(projectLogics.ArchiveProject(projectId, modifiedBy));
     }
 
     [WebMethod]

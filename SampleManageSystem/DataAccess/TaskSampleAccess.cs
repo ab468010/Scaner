@@ -28,6 +28,24 @@ namespace DataAccess
                 return false;
             }
         }
+
+        public IList<TaskSample> GetTaskSampleList()
+        {
+            string sqlStr = "Select tasksampleid,taskid,sampleid from dbo.tasksample";
+            
+            IList<TaskSample> taskSampleList = new List<TaskSample>();
+            using (NpgsqlDataReader drt = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr))
+            {
+                while (drt.Read())
+                {
+                    TaskSample taskSample = new TaskSample();
+                    taskSample.TaskId = Convert.ToInt32(drt["taskid"]);
+                    taskSample.SampleId = Convert.ToInt32(drt["sampleid"]);
+                    taskSampleList.Add(taskSample);
+                }
+            }
+            return taskSampleList;
+        }
        public  bool Create(TaskSample model)
         {
             return true;

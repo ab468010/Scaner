@@ -9,5 +9,7 @@ namespace IDataAccess
     public interface ITaskSampleAccess:IBaseAccess<Model.TaskSample>
     {
         bool CreateTaskSample(int taskid, int sampleid);
+
+        IList<TaskSample> GetTaskSampleList();
     }
 }

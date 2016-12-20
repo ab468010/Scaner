@@ -115,7 +115,7 @@ function initConfig() {
                     $("#projectstatuscode").val(project.StatusCode);
 
                     if (project.StatusCode == 4) {
-                        $("#givecustomer").attr({style:"display:inline"})
+                        $("#giveback").attr({ style: "display:inline" })
                     } 
 
                     $("#tleName").text(project.Name);                  
@@ -224,7 +224,7 @@ function initConfig() {
                         $("#tester1").val(tester1);
                         $('#tester1').select2();
 
-
+    
                         $("#tester2 option").attr("selected", false)
                         $("#tester2 option[val=" + tester2 + "]").attr("selected", true);
                         $("#tester2").val(tester2);
@@ -404,14 +404,14 @@ function initConfig() {
        
         })
 
-        $("#givecustomer").click(function () {         
+        $("#giveback").click(function () {
             var jsonPara = {
                 projectId: id,
-                ModifiedBy:systemuserid
+                modifiedBy:systemuserid
             }
             $.ajax({
                 type: "post",
-                url: Globals.ServiceUrl + "UpdateProjectStatusCode",
+                url: Globals.ServiceUrl + "ArchiveProject",
                 data: JSON.stringify(jsonPara),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -425,7 +425,11 @@ function initConfig() {
                         return false;
                     }
 
-                }
+                },
+                error: function(xhr){
+                    alert("请填写预计时间");
+            return false;
+        }
             })
         })
     })();

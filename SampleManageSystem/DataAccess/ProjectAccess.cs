@@ -8,24 +8,6 @@ namespace DataAccess
 {
     public class ProjectAccess : IDataAccess.IProjectAccess
     {
-        public bool UpdateContainerTaskId(int ContainerId,int ModifiedBy)
-        {
-            string st = "update dbo.container set taskid=@null,modifiedon=now(),modifiedby=@modifiedby where containerid=@containerid";
-            NpgsqlParameter[] par = new NpgsqlParameter[]
-            {
-                new NpgsqlParameter("@null",DBNull.Value),
-                new NpgsqlParameter("@containerid",ContainerId),
-                new NpgsqlParameter("@modifiedby",ModifiedBy)
-            };
-            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, st, par) > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public IList<Project> GetProjectIdListByTesterId(int systemuserId)
         {
             IList<Project> projectList = new List<Project>();
@@ -737,14 +719,13 @@ namespace DataAccess
             long count = Convert.ToInt64(NpgSqlHelper.ExecuteScalar(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par));
             return count;
         }
-        public bool UpdateSampleContainer(int projectId,int ModifiedBy)
+        public bool UpdateSampleContainer(int projectId,int modifiedBy)
         {
-            string sqlStr = "update  dbo.sample set containerid=@null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid";
+            string sqlStr = "update dbo.sample set containerid=null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId),
-                new NpgsqlParameter("@null",DBNull.Value),
-                new NpgsqlParameter("@modifiedby",ModifiedBy)
+                new NpgsqlParameter("@modifiedby",modifiedBy)
             };
             if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par) > 0)
             {
@@ -755,14 +736,14 @@ namespace DataAccess
                 return false;
             }
         }
-        public IList<Container> UpdateContainerProjectId(int projectId,int ModifiedBy)
-        { IList<Container> containerList = new List<Container>();
-            string sqlStr = "update  dbo.container set projectid=@null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid returning containerid";
+        public IList<Container> UpdateContainerProjectId(int projectId,int modifiedBy)
+        { 
+            IList<Container> containerList = new List<Container>();
+            string sqlStr = "update dbo.container set projectid=null,modifiedby=@modifiedby,modifiedon=now() where projectid=@projectid returning containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
                 new NpgsqlParameter("@projectid",projectId),
-                new NpgsqlParameter("@null",DBNull.Value),
-                new NpgsqlParameter("@modifiedby",ModifiedBy)
+                new NpgsqlParameter("@modifiedby",modifiedBy)
             };
          using(NpgsqlDataReader rdr = NpgSqlHelper.ExecuteReader(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, par))
             {

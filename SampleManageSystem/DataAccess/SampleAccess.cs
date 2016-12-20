@@ -8,8 +8,10 @@ namespace DataAccess
 {
     public class SampleAccess : IDataAccess.ISampleAccess
     {
-        public bool  UpdContainerStatus(int containerId)
+
+        public bool UpdContainerStatus(int containerId)
         {
+
             string st = "update dbo.container set statuscode=2 where containerid=@containerid";
             NpgsqlParameter[] par = new NpgsqlParameter[]
             {
@@ -24,6 +26,41 @@ namespace DataAccess
                 return false;
             }
         }
+
+        public void Tran()
+        {
+
+ //           NpgsqlTransaction a = new NpgsqlTransaction();
+ //using (System.Transactions.TransactionScope sc = new TransactionScope(TransactionScopeOption.Required))
+ //           NpgsqlConnection c = new NpgsqlConnection(NpgSqlHelper.ConnectionString);
+ //           NpgsqlTransaction tran = c.BeginTransaction();
+ //           NpgsqlCommand command = new NpgsqlCommand();
+ //           command.Connection = c;
+
+ //           command.Transaction = tran;
+ //           tran.Commit();
+ //           tran.Rollback();
+        }
+
+        public bool ReleaseContainerSampleByProjectId(int projectId)
+        {
+            
+            string sqlStr = "update dbo.sample Set containerid = null,modifiedon=now() where projectId = @ProjectId";
+
+            NpgsqlParameter para = new NpgsqlParameter("@ProjectId", projectId);
+
+
+            if (NpgSqlHelper.ExecuteNonQuery(NpgSqlHelper.ConnectionString, CommandType.Text, sqlStr, para) > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         public bool UpdateSampleContainerId(int sampleId, int containerId, int systemuserId)
         {
             string st = "update dbo.sample set containerid=@containerid,modifiedon=now(),modifiedby=@modifiedby where sampleid=@sampleid";
